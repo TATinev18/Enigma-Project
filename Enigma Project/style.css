@@ -1,0 +1,6 @@
+.bg_image{
+  background-position: center;
+  background-repeat: repeat-y;
+  background-size: cover;
+  background-image:url('boats.jpg');
+}
