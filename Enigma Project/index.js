@@ -1,3 +1,5 @@
+var count=0;
+var global_nums=getGameNumbers();
 function getRandomNumbers() {
 
     let digits = [];
@@ -28,46 +30,69 @@ function getGameNumbers() {
     }
     while (checkNumbersRepeat(gameDigits))
     console.log(gameDigits);
+    return gameDigits;
 }
 
 function countCorrectNums(userInput, code) {
-    let count = 0;
+    let numCount = 0;
     for (let i = 0; i < 4; i++) {
         for (let j = 0; j < 4; j++) {
             if (userInput[i] == code[j])
-                count++;
+                numCount++;
         }
     }
-    console.log("You got " + count + " correct numbers");
-    return count;
+    console.log("You got " + numCount + " correct numbers");
+    return numCount;
 }
 
 function countCorrectPositions(userInput, code) {
-    let count = 0;
-    for (let i = 0; i < 4; i++)
-        if (userInput[i] == code[i])
-            count++;
-    console.log("You got " + count + " correct positions");
-    return count;
+    console.log(userInput+" "+code);
+    let posCount=0
+    for(let i=0;i<4;i++)
+        if(userInput[i]==code[i])
+            posCount++;
+    console.log("u got "+posCount+" correct positions")
+    return posCount;
 }
 
-function startGame() {
-    let arr = [1, 2, 3, 4], nums = [1, 2, 4, 3];
-    countCorrectPositions(nums, arr);
-    countCorrectNums(nums, arr);
-}
-
-/*
 function extractNumbers()
 {
-    let arr=[];
-    num=document.getElementById("textfield").value;
+    let input=[];
+    let num=document.getElementById("input").value;
     for(let i=0;i<4;i++)
     {
-        arr[i]=parseInt(num[i]);
+        input[i]=parseInt(num[i]);
     }
-    return arr;
+    console.log(input);
+    count++;
+    return input;
 }
-*/
 
-startGame();
+function checkVictoryConditions(input)
+{
+    if(countCorrectPositions(input,global_nums)==4)
+        $("#over").text("win");
+    if(count>13)
+        $("#over").text("lose");
+}
+
+function recordHistory(count,input,arr)
+{
+    let element='#'+(count+1).toString();
+    console.log(element);
+    $(element).text(
+        countCorrectNums(input,arr) + 
+        " " + 
+        input[0] + input[1] + input[2] + input[3] +
+        " " +
+        countCorrectPositions(input,arr)
+    );
+}
+
+function checkGameStatus()
+{
+    let input = extractNumbers();
+    recordHistory(count,input,global_nums);
+    checkVictoryConditions(input);
+}
+
