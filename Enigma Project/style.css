@@ -2,7 +2,7 @@
   background-position: center;
   background-repeat: repeat-y;
   background-size: cover;
-  background-image:url('boats.jpg');
+  background-image:url('PHOTOS/boats.jpg');
   animation: fadeIn ease 0.8s;
   -webkit-animation: fadeIn ease 0.8s;
   -moz-animation: fadeIn ease 0.8s;
@@ -14,7 +14,7 @@
   background-position: center;
   background-repeat: repeat-y;
   background-size: cover;
-  background-image:url('boats2.jpg');
+  background-image:url('PHOTOS/boats2.jpg');
   animation: fadeIn ease 0.8s;
   -webkit-animation: fadeIn ease 0.8s;
   -moz-animation: fadeIn ease 0.8s;
