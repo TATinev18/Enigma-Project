@@ -3,16 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="MultiPlayerGame.js"></script>
 </head>
 <body>
-
+    <form>
+        <input type="text" id="send">
+    </form>
+    <button  onclick="send()">send</button>
 <script>
     const connection = new WebSocket('ws://localhost:8080');
     connection.onmessage = function(event){
         console.log(event.data);
     }
+
+    function send()
+    {
+        let msg = document.getElementById("send").value;
+        let HEADER = JSON.stringify({type: 'chat', msg:msg});
+        connection.send(HEADER);
+    }
+
     connection.onopen = function (event) {
-        connection.send("SLIVI");
+        //connection.send("SLIVI");
     }
 
 </script>
