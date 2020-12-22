@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+    const connection = new WebSocket('ws://localhost:8080');
+    connection.onmessage = function(event){
+        console.log(event.data);
+    }
+    connection.onopen = function (event) {
+        connection.send("SLIVI");
+    }
+
+</script>
+</body>
+</html>
