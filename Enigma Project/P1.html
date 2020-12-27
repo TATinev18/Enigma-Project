@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="MultiPlayerGame.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="map.js"></script>
+    <script src="P1.js"></script>
+    <script>
+        const connection = new WebSocket('ws://localhost:8080');
+        let msg = {
+            type: "chat",
+            msg: "xD"
+        }
+        connection.onmessage = function (event) {
+            console.log(event.data);
+        }
+        connection.onopen = function (event) {
+            connection.send();
+        }
+
+
+    </script>
+</head>
+
+<body>
+
+    <form>
+        <input type="text" id="send" placeholder="chat">
+        <input type="text" id="input" placeholder="input">
+    </form>
+    <div id="Map"></div>
+    <button onclick="send()">send</button>
+    <button onclick="checkGameStatus()">aaa</button>
+    <button onclick="useScan()">use scan (-10)</button>
+    <div id="Map"></div>
+    <p id="points"></p>
+    <p id="1"></p>
+    <p id="2"></p>
+    <p id="3"></p>
+    <p id="4"></p>
+    <p id="5"></p>
+    <p id="6"></p>
+    <p id="7"></p>
+    <p id="8"></p>
+    <p id="9"></p>
+    <p id="10"></p>
+    <p id="11"></p>
+    <p id="12"></p>
+    <p id="13"></p>
+    <p id="over"></p>
+</body>
+<script>
+    document.getElementById("Map").innerHTML = gameMap;
+    if (scanning) {
+        for(let i=0;i<5;i++)
+        {
+            $('#G'+i+1).hover(()=>{
+                $('#G'+i+1)
+                .css("fill", "red")
+                .css("cursor", "pointer");
+            },()=>{
+                $('#G'+i+1).css("fill", "white");
+            });
+        }
+    }
+</script>
+
+</html>

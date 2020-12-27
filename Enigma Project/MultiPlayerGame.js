@@ -1,17 +1,5 @@
-let VICTORY = {
-    GERMAN: 1,
-    BRITISH: 2,
-    NONE: 0
-}
-
-let PRICES = {
-    plane: 250,
-    ship: 150,
-    LC: 125
-}
-
 function MultiPlayerGame() {
-    var gold = 235;
+    var gold = 275;
     var round = 0;
     var global_nums = [];
     var history = [];
@@ -19,6 +7,28 @@ function MultiPlayerGame() {
     var germanProvinces = [];
     var britishProvinces = [];
     var fleets = [];
+    var points=0;
+
+    const VICTORY = {
+        GERMAN: 1,
+        BRITISH: 2,
+        NONE: 0
+    }
+    
+    let DAMAGE = {
+        plane: 7,
+        ship: 5,
+        LC: 2
+    }
+    
+    let PRICES = {
+        plane: 250, 
+        ship: 150,  
+        LC: 125,
+        defence: 100,
+        farm: 200,
+        scanner: 10
+    }
 
     function GermanProvince(i) {
         this.id = i;
@@ -133,6 +143,7 @@ function MultiPlayerGame() {
             }
         }
         console.log("You got " + numCount + " correct numbers");
+        points=points+0.5;
         return numCount;
     }
 
@@ -142,6 +153,7 @@ function MultiPlayerGame() {
             if (userInput[i] == global_nums[i])
                 posCount++;
         console.log("u got " + posCount + " correct positions")
+        points++;
         return posCount;
     }
 
@@ -162,6 +174,16 @@ function MultiPlayerGame() {
         return result;
     }
 
+    function useScan()
+    {
+        if(points>=10)
+        {
+            points-=10;
+            return true;
+        }
+        return false;
+    }
+
     function reset() {
         round = 0;
         global_nums = [];
@@ -171,6 +193,7 @@ function MultiPlayerGame() {
         britishProvinces = [];
         fleets = [];
         gold=235;
+        points=0;
     }
 
     function getRounds() {
@@ -185,6 +208,13 @@ function MultiPlayerGame() {
         return gold;
     }
 
+    function getPoints() {
+        return points;
+    }
+
+    function getFleets() {
+        return fleets;
+    }
     return {
         generateRandomNumbers,
         checkNumbersRepeat,
@@ -199,8 +229,12 @@ function MultiPlayerGame() {
         isNumericInput,
         initMapProvinces,
         getGold,
-        createFleet
+        createFleet,
+        getPoints,
+        getFleets,
+        useScan,
+        VICTORY
     }
 }
 
-module.exports = { MultiPlayerGame, HEADER };
+module.exports = {MultiPlayerGame};

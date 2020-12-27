@@ -4,13 +4,27 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="MultiPlayerGame.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="map.js"></script>
 </head>
 <body>
     <form>
         <input type="text" id="send">
     </form>
     <button  onclick="send()">send</button>
+    <div id="Map"></div>
+</body>
 <script>
+    document.getElementById("Map").innerHTML=gameMap;
+    $("#G1").hover (
+        ()=>{
+            $("#G1")
+                .css("fill","red")
+                .css("cursor","pointer");
+        },()=>{
+            $("#G1").css("fill","white");
+        }
+    );
     const connection = new WebSocket('ws://localhost:8080');
     connection.onmessage = function(event){
         console.log(event.data);
@@ -28,5 +42,4 @@
     }
 
 </script>
-</body>
 </html>
