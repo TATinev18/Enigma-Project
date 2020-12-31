@@ -178,7 +178,7 @@ function MultiPlayerGame() {
     {
         if(points>=10)
         {
-            points-=10;
+            points=points-10;
             return true;
         }
         return false;

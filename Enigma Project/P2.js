@@ -89,7 +89,7 @@ function sendGameStatus(type,data)
     let HEADER = JSON.stringify({
         type: type,
         data: data,
-        sender: "P1"
+        sender: "P2"
     });
     console.log(HEADER);
     connection.send(HEADER);
