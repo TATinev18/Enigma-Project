@@ -2,11 +2,13 @@ const WebSocket = require('ws');
 const game = require('./MultiPlayerGame');
 
 const ws = new WebSocket.Server({ port: 8080 });
-
+let games = [];
+let lobbyMaker =[];
 ws.on('connection', server => {
     console.log("CONNECTION INITIATED");
     server.on('message', message => {
         decodeMSG(message);
+
     });
     server.send("CLIENT CONNECTION ESTABLISHED");
 });
@@ -22,5 +24,19 @@ function decodeMSG(msg) {
                 client.send(msg);
             });
             break;
+        case "matchMakingUnranked":
+            matchMaker(decodedMsg);
+            break;
+    }
+}
+//------------------------------------
+function matchMaker(data){
+    let side = data.data;
+    if (side == "German"){
+        for (let i = 0; i < lobbyMaker.length;i++){
+            if (lobbyMaker[i]==0.25){
+
+            }
+        }
     }
 }
