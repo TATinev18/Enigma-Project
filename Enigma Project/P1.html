@@ -23,30 +23,49 @@
             <input type="submit" value="Unranked">
         </form>
     </div>
+    <div id="fleet" style="display: none;">
+        <div> <span id="planeDisplay">0</span> <button id="plane--" onclick="planeM5()">
+                << </button><button id="plane-" onclick="planeM()">
+                        << /button><button id="plane+" onclick="planeP()">></button><button id="plane++"
+                                onclick="planeP5()">>></button> <span id="planeCost">0</span></div>
+        <div> <span id="shipDisplay">0</span> <button id="ship--" onclick="shipM5()">
+                << </button><button id="ship-" onclick="shipM()">
+                        < </button><button id="ship+" onclick="shipP()">></button><button id="ship++"
+                                onclick="shipP5()">>></button> <span id="shipCost">0</span></div>
+        <div> <span id="LCDisplay">0</span> <button id="LC--" onclick="LCM5()">
+                << </button><button id="LC-" onclick="LCM()">
+                        < </button><button id="LC+" onclick="LCP()">></button><button id="LC++"
+                                onclick="LCP5()">>></button> <span id="LCCost">0</span>
+        </div>
+        <button id="sendFleet" onclick="sendFleet()">send</button> <span id="total">0</span>
+    </div>
     <div id="game" style="display:none">
         <form>
             <input type="text" id="send" placeholder="chat">
             <input type="text" id="input" placeholder="input">
         </form>
         <div id="Map"></div>
-        <button onclick="chat(document.getElementById('send').value);">send</button>
-        <button onclick="checkGameStatus()">aaa</button>
-        <button onclick="scan()">use scan (-10)</button>
+        <button onclick="chat(document.getElementById('send').value);">send chat</button>
+        <button id="guess" onclick="guess()">guess</button>
+        <button id="scan" onclick="scan()">use scan (-10)</button>
+        <button id="ET" onclick="endTurn()">End Turn</button>
         <div id="Map"></div>
         <p id="points"></p>
-        <p id="1"></p>
-        <p id="2"></p>
-        <p id="3"></p>
-        <p id="4"></p>
-        <p id="5"></p>
-        <p id="6"></p>
-        <p id="7"></p>
-        <p id="8"></p>
-        <p id="9"></p>
-        <p id="10"></p>
-        <p id="11"></p>
-        <p id="12"></p>
-        <p id="13"></p>
+        <div id="history">
+            <p id="1"></p>
+            <p id="2"></p>
+            <p id="3"></p>
+            <p id="4"></p>
+            <p id="5"></p>
+            <p id="6"></p>
+            <p id="7"></p>
+            <p id="8"></p>
+            <p id="9"></p>
+            <p id="10"></p>
+            <p id="11"></p>
+            <p id="12"></p>
+            <p id="13"></p>
+        </div>
         <p id="over"></p>
         <div id="chatbox"></div>
     </div>
@@ -83,12 +102,42 @@
         socket.on("chat", (msg) => {
             $('#chatbox').html($('#chatbox').html() + '<p>' + msg.user + ' ' + msg.msg);
         });
+
+        socket.on("beginTurn", () => {
+            beginTurn();
+        });
+
+        socket.on("endTurn", () => {
+            endTurn();
+        })
+
     }
 
     function chat(msg) {
         console.log(socket);
         console.log(msg);
         socket.emit("chat", msg);
+    }
+
+    function guess() {
+        let nums = extractNumbers();
+        console.log(nums);
+        socket.emit("guess", nums);
+    }
+
+    function endTurn() {
+        $("#input").attr("disabled", true);
+        $("#guess").attr("disabled", true);
+        $("#ET").attr("disabled", true);
+        $("#scan").attr("disabled", true);
+        socket.emit("endTurn");
+    }
+
+    function beginTurn() {
+        $("#input").attr("disabled", false);
+        $("#guess").attr("disabled", false);
+        $("#ET").attr("disabled", false);
+        $("#scan").attr("disabled", false);
     }
 
 </script>

@@ -1,46 +1,3 @@
-/*const WebSocket = require('ws');
-let io = require("socket.io")();
-const game = require('./MultiPlayerGame');
-
-const ws = new WebSocket.Server({ port: 8080 });
-let games = [];
-let lobbyMaker =[];
-ws.on('connection', server => {
-    console.log("CONNECTION INITIATED");
-    server.on('message', message => {
-        decodeMSG(message);
-
-    });
-    server.send("CLIENT CONNECTION ESTABLISHED");
-});
-
-function decodeMSG(msg) {
-    let decodedMsg = JSON.parse(msg);
-    console.log("MESSAGE TYPE: ", decodedMsg.type)
-    console.log("MESSAGE RECEIVED", decodedMsg.data);
-    console.log("SENDER", decodedMsg.sender);
-    switch (decodedMsg.type) {
-        case "chat":
-            ws.clients.forEach(client=>{
-                client.send(msg);
-            });
-            break;
-        case "matchMakingUnranked":
-            matchMaker(decodedMsg);
-            break;
-    }
-}
-//------------------------------------
-function matchMaker(data){
-    let side = data.data;
-    if (side == "German"){
-        for (let i = 0; i < lobbyMaker.length;i++){
-            if (lobbyMaker[i]==0.25){
-
-            }
-        }
-    }
-}*/
 const server = require('http').createServer();
 let app = require("./MultiPlayerGame.js");
 let britains = [];
@@ -67,7 +24,7 @@ function matchMake() {
         room: "room" + roomCount,
         ger: { socket: germans[r1].socket, name: germans[r1].user },
         gbr: { socket: britains[r2].socket, name: britains[r2].user }
-    }
+    };
 
     roomCount++;
     germans.splice(r1, 1);
@@ -90,6 +47,7 @@ io.on('connection', socket => {
 
         if (users) {
             io.to(users.room).emit('begin');
+            users.gbr.socket.emit("endTurn");
 
             users.ger.socket.on("chat", (msg) => {
                 io.to(users.room).emit("chat", { user: users.ger.name, msg: msg });
@@ -97,10 +55,21 @@ io.on('connection', socket => {
             users.gbr.socket.on("chat", (msg) => {
                 io.to(users.room).emit("chat", { user: users.gbr.name, msg: msg });
             });
+            users.ger.socket.on("endTurn",()=>{
+                users.gbr.socket.emit("beginTurn");
+            });
+            users.gbr.socket.on("endTurn",()=>{
+                users.ger.socket.emit("beginTurn");
+            });
 
             let game = new app.MultiPlayerGame();
 
             users.ger.socket.emit("initNum");
+
+            users.gbr.socket.on("guess",(input)=>{
+                console.log(input);
+                console.log(game.checkUserInput(input));
+            });
 
         }
     });

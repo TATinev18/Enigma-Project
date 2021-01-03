@@ -1,3 +1,5 @@
+const { Socket } = require("socket.io");
+
 let game = new MultiPlayerGame();
 game.generateGameNumbers();
 
@@ -22,7 +24,7 @@ function extractNumbers() {
     for (let i = 0; i < num.length; i++) {
         input[i] = parseInt(num[i]);
     }
-    sendGameStatus("input",input);
+    document.getElementById("input").value = "";
     return input;
 }
 
@@ -84,13 +86,3 @@ function scan() {
     });
 }
 
-function sendGameStatus(type,data)
-{
-    let HEADER = JSON.stringify({
-        type: type,
-        data: data,
-        sender: "P1"
-    });
-    console.log(HEADER);
-    connection.send(HEADER);
-}

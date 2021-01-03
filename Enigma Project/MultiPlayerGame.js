@@ -130,8 +130,6 @@ function MultiPlayerGame() {
             if (result.cPos == 4 || round > 13)
                 gameOver = true;
         }
-
-
         return result;
     }
 
