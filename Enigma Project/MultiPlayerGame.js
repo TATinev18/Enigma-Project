@@ -7,6 +7,7 @@ function MultiPlayerGame() {
     var germanProvinces = [];
     var britishProvinces = [];
     var fleets = [];
+    var chat=[];
     var points=0;
 
     const VICTORY = {
@@ -215,6 +216,14 @@ function MultiPlayerGame() {
     function getFleets() {
         return fleets;
     }
+
+    function getChat() {
+        return chat;
+    }
+
+    function recordChat(msg) {
+        chat.push(msg);
+    }
     return {
         generateRandomNumbers,
         checkNumbersRepeat,
@@ -233,6 +242,8 @@ function MultiPlayerGame() {
         getPoints,
         getFleets,
         useScan,
+        getChat,
+        recordChat,
         VICTORY
     }
 }

@@ -16,63 +16,81 @@
         <form action="javascript:findMatch(this.value)">
             <p>Select side</p>
             <input type="radio" id="Germans" name="side" value="German">
-            <label for="Germans">NAZI</label><br>
+            <label for="Germans">Germans</label><br>
             <input type="radio" id="Great Britain" name="side" value="British">
-            <label for="Great Britain">TEA GEEKS</label><br>
+            <label for="Great Britain">Britains</label><br>
             <input type="text" id="user" placeholder="username">
             <input type="submit" value="Unranked">
         </form>
     </div>
     <div id="game" style="display:none">
-    <form>
-        <input type="text" id="send" placeholder="chat">
-        <input type="text" id="input" placeholder="input">
-    </form>
-    <div id="Map"></div>
-    <button onclick="sendGameStatus('chat',document.getElementById('send').value);">send</button>
-    <button onclick="checkGameStatus()">aaa</button>
-    <button onclick="scan()">use scan (-10)</button>
-    <div id="Map"></div>
-    <p id="points"></p>
-    <p id="1"></p>
-    <p id="2"></p>
-    <p id="3"></p>
-    <p id="4"></p>
-    <p id="5"></p>
-    <p id="6"></p>
-    <p id="7"></p>
-    <p id="8"></p>
-    <p id="9"></p>
-    <p id="10"></p>
-    <p id="11"></p>
-    <p id="12"></p>
-    <p id="13"></p>
-    <p id="over"></p>
-    <div id="chatbox"></div>
-</div>
+        <form>
+            <input type="text" id="send" placeholder="chat">
+            <input type="text" id="input" placeholder="input">
+        </form>
+        <div id="Map"></div>
+        <button onclick="chat(document.getElementById('send').value);">send</button>
+        <button onclick="checkGameStatus()">aaa</button>
+        <button onclick="scan()">use scan (-10)</button>
+        <div id="Map"></div>
+        <p id="points"></p>
+        <p id="1"></p>
+        <p id="2"></p>
+        <p id="3"></p>
+        <p id="4"></p>
+        <p id="5"></p>
+        <p id="6"></p>
+        <p id="7"></p>
+        <p id="8"></p>
+        <p id="9"></p>
+        <p id="10"></p>
+        <p id="11"></p>
+        <p id="12"></p>
+        <p id="13"></p>
+        <p id="over"></p>
+        <div id="chatbox"></div>
+    </div>
 </body>
 <script>
-    document.getElementById("Map").innerHTML = gameMap; 
+    document.getElementById("Map").innerHTML = gameMap;
+
+    var socket;
+
     function findMatch() {
         let side = document.querySelector('[name="side"]:checked');
         let user = document.getElementById("user").value;
 
         let data = {
-            type: "matchMaking",
             side: side.value,
             matchType: "unranked",
             user: user
         };
 
-        var socket = io('http://localhost:8080');
-        socket.emit("matchMake",data);
+        socket = io('http://localhost:8080');
+        socket.emit("matchMake", data);
 
-        socket.on("begin",()=>{
+        socket.on("begin", () => {
             console.log("beggining");
-            $('#search').css('display','none');
-            $('#game').css('display','block');
+            $('#search').css('display', 'none');
+            $('#game').css('display', 'block');
+            socket.emit("side", side.value);
+        });
+
+        socket.on("initNum", () => {
+            alert("german enter num");
+        });
+
+        socket.on("chat", (msg) => {
+            $('#chatbox').html($('#chatbox').html() + '<p>' + msg.user + ' ' + msg.msg);
         });
     }
+
+    function chat(msg) {
+        console.log(socket);
+        console.log(msg);
+        socket.emit("chat", msg);
+    }
+
 </script>
 
 </html>
