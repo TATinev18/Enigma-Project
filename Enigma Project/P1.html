@@ -6,33 +6,24 @@
     <title>Title</title>
     <script src="MultiPlayerGame.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
     <script src="map.js"></script>
     <script src="P1.js"></script>
-    <script>
-        const connection = new WebSocket('ws://localhost:8080');
-
-        function decodeMSG(msg) {
-            let decodedMSG = JSON.parse(msg.data);
-            console.log(decodedMSG.data);
-            switch (decodedMSG.type) {
-                case "chat":
-                    $('#chatbox').html($('#chatbox').html()+'<p>'+decodedMSG.sender+' '+decodedMSG.data);
-            }
-        }
-
-        connection.onmessage = function (msg) {
-            decodeMSG(msg);
-        }
-        connection.onopen = function (event) {
-            connection.send();
-        }
-
-
-    </script>
 </head>
 
 <body>
-
+    <div id="search">
+        <form action="javascript:findMatch(this.value)">
+            <p>Select side</p>
+            <input type="radio" id="Germans" name="side" value="German">
+            <label for="Germans">NAZI</label><br>
+            <input type="radio" id="Great Britain" name="side" value="British">
+            <label for="Great Britain">TEA GEEKS</label><br>
+            <input type="text" id="user" placeholder="username">
+            <input type="submit" value="Unranked">
+        </form>
+    </div>
+    <div id="game" style="display:none">
     <form>
         <input type="text" id="send" placeholder="chat">
         <input type="text" id="input" placeholder="input">
@@ -58,9 +49,30 @@
     <p id="13"></p>
     <p id="over"></p>
     <div id="chatbox"></div>
+</div>
 </body>
 <script>
     document.getElementById("Map").innerHTML = gameMap; 
+    function findMatch() {
+        let side = document.querySelector('[name="side"]:checked');
+        let user = document.getElementById("user").value;
+
+        let data = {
+            type: "matchMaking",
+            side: side.value,
+            matchType: "unranked",
+            user: user
+        };
+
+        var socket = io('http://localhost:8080');
+        socket.emit("matchMake",data);
+
+        socket.on("begin",()=>{
+            console.log("beggining");
+            $('#search').css('display','none');
+            $('#game').css('display','block');
+        });
+    }
 </script>
 
 </html>

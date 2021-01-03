@@ -1,4 +1,5 @@
-const WebSocket = require('ws');
+/*const WebSocket = require('ws');
+let io = require("socket.io")();
 const game = require('./MultiPlayerGame');
 
 const ws = new WebSocket.Server({ port: 8080 });
@@ -39,4 +40,55 @@ function matchMaker(data){
             }
         }
     }
+}*/
+const server = require('http').createServer();
+let britains =[];
+let germans = [];
+var roomCount=0;
+const io = require("socket.io")(server, {
+    cors: {
+      origin: "*",
+      methods: ["GET", "POST"]
+    }
+});
+
+function matchMake()
+{
+    if(germans.length==0 || britains.length==0)
+        return 0;
+    let r1 = Math.floor(Math.random() * (germans.length-1));
+    let r2 = Math.floor(Math.random() * (britains.length-1));
+    germans[r1].join("room"+roomCount);
+    britains[r2].join("room"+roomCount);
+    console.log(britains[r2]);
+    roomCount++;
+    germans.splice(r1,1);
+    britains.splice(r2,1);
+    return "room"+(roomCount-1);
 }
+
+io.on('connection', socket => {
+    socket.on("matchMake", (data)=>{
+        console.log(data);
+        if(data.side=="British") {
+            britains.push(socket);
+            console.log("1 british");
+        }
+        else {
+            germans.push(socket);
+            console.log("1 german");
+        }
+        let room = matchMake();
+        if(room)
+        {
+            io.to(room).emit('begin');
+        }
+    });
+});
+
+while(germans.length>0 && britains.length>0)
+{
+    matchMake();
+}
+
+server.listen(8080);
