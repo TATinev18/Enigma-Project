@@ -70,7 +70,25 @@ function scan() {
             }
         });
     }
-    
+}
+
+function createFarm() {
+    $("#G1, #G2, #G3, #G4, #G5").css("fill", "green");
+    for (let i = 1; i < 6; i++) {
+        $("#G" + i).on({
+            mouseenter: function () {
+                $("#G" + i).css("fill", "white").css("cursor", "pointer");
+            },
+            mouseleave: function () {
+                $("#G" + i).css("fill", "green").css("cursor", "auto");
+            },
+            click: function () {
+                $("#G1, #G2, #G3, #G4, #G5").off().css("fill", "white").css("cursor", "auto");
+                console.log(i);
+                socket.emit("createFarm",i);
+            }
+        });
+    }
 }
 
 

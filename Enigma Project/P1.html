@@ -43,12 +43,13 @@
             <button id="LC+" onclick="changeUtilityValues('LCDisplay','LCCost','+',125)">></button>
             <span id="LCCost">0</span>
         </div>
-        <div>
+        <!--<div>
             <span id="farmDisplay">0</span>
             <button id="farm-" onclick="changeUtilityValues('farmDisplay','farmCost','-',200)"><</button>
             <button id="farm+" onclick="changeUtilityValues('farmDisplay','farmCost','+',200)">></button>
             <span id="farmCost">0</span>
-        </div>
+        </div>-->
+        <button onclick="createFarm()">create farm (200 gold)</button>
         <button id="sendFleet" onclick="sendFleet()">send</button> <span id="total">0</span>
     </div>
     <div id="game" style="display:none">
@@ -140,15 +141,19 @@
 
         socket.on("endTurn", () => {
             endTurn();
-        })
+        });
 
         socket.on("fleetResult",(msg)=>{
             console.log(msg);
-        })
+        });
 
         socket.on("scanResult",(msg)=>{
             console.log(msg);
-        })
+        });
+
+        socket.on("farmResult",(msg)=>{
+            console.log(msg);
+        });
     }
 
     function chat(msg) {

@@ -220,6 +220,10 @@ function MultiPlayerGame() {
         goldPerTurn = 0;
     }
 
+    function getProvinces() {
+        return {ger:germanProvinces,gbr:britishProvinces};
+    }
+
     function getRounds() {
         return round;
     }
@@ -285,7 +289,8 @@ function MultiPlayerGame() {
         getVICTORY,
         attack,
         calculateGoldNewTurn,
-        updateGold
+        updateGold,
+        getProvinces
     }
 }
 

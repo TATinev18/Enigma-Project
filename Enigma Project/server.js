@@ -65,6 +65,8 @@ io.on('connection', socket => {
 
             game.initMapProvinces();
 
+            users.ger.socket.emit("initNum");
+
             users.ger.socket.on("chat", (msg) => {
                 io.to(users.room).emit("chat", { user: users.ger.name, msg: msg });
                 game.recordChat({ user: users.ger.name, msg: msg });
@@ -81,39 +83,53 @@ io.on('connection', socket => {
                 game.calculateGoldNewTurn();
             });
 
-            users.ger.socket.on("farm", (data) => {
-                game.createFarm(data.province);
+            users.ger.socket.on("createFarm", (province) => {
+                if (province) {
+                    if (game.getGold() >= 200) {
+                        if (game.getProvinces().ger[province].hasFarm == false) {
+                            game.updateGold(game.getGold() - 200);
+                            game.createFarm(province);
+                            users.ger.socket.emit("farmResult", { status: "Farm successfully created!" });
+                        } else {
+                            users.ger.socket.emit("farmResult", { status: "Province already has farm" });
+                        }
+                    } else {
+                        users.ger.socket.emit("farmResult", { status: "Not enough gold!" });
+                    }
+                } else {
+                    users.ger.socket.emit("farmResult", { status: "Incorrect province (internal server error, please try again)" })
+                }
             });
 
             users.gbr.socket.on("scan", (province) => {
-
-                if (game.getPoints() >= 10) {
-                    if (game.useScan(province)) {
-                        users.gbr.socket.emit("scanResult", "Success, farm destroyed");
+                if (province) {
+                    if (game.getPoints() >= 10) {
+                        if (game.useScan(province)) {
+                            users.gbr.socket.emit("scanResult", { status: "Success, farm destroyed" });
+                        } else {
+                            users.gbr.socket.emit("scanResult", { status: "Failure, no farm detected" });
+                        }
                     } else {
-                        users.gbr.socket.emit("scanResult", "Failure, no farm detected");
+                        users.gbr.socket.emit("scanResult", { status: "Not enough money" });
                     }
                 } else {
-                    users.gbr.socket.emit("scanResult", "Not enough money");
+                    users.gbr.socket.emit("scanResult", { status: "Incorrect province (internal server error, please try again)" });
                 }
             });
 
             users.ger.socket.on("fleet", (fleet) => {
-                console.log("received fleet");
-                if (fleet.price <= game.getGold()) {
-                    /*if(fleet.plane==0 && fleet.ship==0 && fleet.LC==0) {
- 
-                    } */
-                    game.createFleet(fleet.plane, fleet.ship, fleet.LC);
-                    game.updateGold(game.getGold() - fleet.price);
-
-                    users.ger.socket.emit("fleetResult", "Success");
+                if (fleet) {
+                    if (fleet.price <= game.getGold()) {
+                        game.createFleet(fleet.plane, fleet.ship, fleet.LC);
+                        game.updateGold(game.getGold() - fleet.price);
+                        users.ger.socket.emit("fleetResult", { status: "Success" });
+                    } else {
+                        users.ger.socket.emit("fleetResult", { status: "Fail" });
+                    }
                 } else {
-                    users.ger.socket.emit("fleetResult", "Fail");
+                    users.ger.socket.emit("fleetResult", { status: "No fleet detected, internal server error, please try again!" });
                 }
             });
-
-            users.ger.socket.emit("initNum");
 
             users.gbr.socket.on("guess", (input) => {
                 console.log(input);
@@ -133,8 +149,9 @@ server.listen(8080);
 -german enter number => end turn
 -british guess number and/or use points for scan
 -scan (server) $
+-scan (client) &
 end turn
-german create fleet (server) $
+german create fleet $
 german create farm (server) $
 end turn
 *repeat 13 times or until brit guesses num*
