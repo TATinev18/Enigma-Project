@@ -10,8 +10,8 @@ function MultiPlayerGame() {
     var fleets = [];
     var chat = [];
     var points = 0;
-    var fleetID=0;
-    
+    var fleetID = 0;
+
     const VICTORY = {
         GERMAN: 1,
         BRITISH: 2,
@@ -60,9 +60,9 @@ function MultiPlayerGame() {
     function attack() {
         let damage = 0;
         for (let i = 0; i < fleets.length; i++) {
-            damage  += (fleets[i].planes) * DAMAGE.plane
-                    + (fleets[i].ships)*DAMAGE.ship
-                    + (fleets[i].LC)*DAMAGE.LC;
+            damage += (fleets[i].planes) * DAMAGE.plane
+                + (fleets[i].ships) * DAMAGE.ship
+                + (fleets[i].LC) * DAMAGE.LC;
         }
         return damage
     }
@@ -83,7 +83,7 @@ function MultiPlayerGame() {
     }
 
     function initMapProvinces() {
-        for (let i = 0; i < 5; i++) {
+        for (let i = 1; i < 6; i++) {
             germanProvinces[i] = new GermanProvince(i);
             britishProvinces[i] = new BritishProvince(i);
         }
@@ -192,18 +192,19 @@ function MultiPlayerGame() {
     }
 
     function useScan(province) {
-        if (points >= 10) {
-            if (germanProvinces[province].hasFarm) {
-                points = points - 10;
-                germanProvinces[province].hasFarm = false;
-                return true
-            }
+        console.log(germanProvinces);
+        console.log(province);
+        if (germanProvinces[province].hasFarm) {
+            points = points - 10;
+            germanProvinces[province].hasFarm = false;
+            return true
         }
+
         return false;
     }
 
     function calculateGoldNewTurn() {
-        gold+=getGoldPerTurn();
+        gold += getGoldPerTurn();
     }
 
     function reset() {
@@ -256,7 +257,7 @@ function MultiPlayerGame() {
     }
 
     function updateGold(newGold) {
-        gold=newGold;
+        gold = newGold;
     }
 
     return {

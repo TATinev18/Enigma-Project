@@ -143,7 +143,10 @@
         })
 
         socket.on("fleetResult",(msg)=>{
-            console.log("received");
+            console.log(msg);
+        })
+
+        socket.on("scanResult",(msg)=>{
             console.log(msg);
         })
     }

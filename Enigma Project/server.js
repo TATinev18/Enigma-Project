@@ -85,18 +85,27 @@ io.on('connection', socket => {
                 game.createFarm(data.province);
             });
 
-            users.gbr.socket.on("scan", (data) => {
-                game.useScan(data.province);
+            users.gbr.socket.on("scan", (province) => {
+
+                if (game.getPoints() >= 10) {
+                    if (game.useScan(province)) {
+                        users.gbr.socket.emit("scanResult", "Success, farm destroyed");
+                    } else {
+                        users.gbr.socket.emit("scanResult", "Failure, no farm detected");
+                    }
+                } else {
+                    users.gbr.socket.emit("scanResult", "Not enough money");
+                }
             });
 
             users.ger.socket.on("fleet", (fleet) => {
                 console.log("received fleet");
                 if (fleet.price <= game.getGold()) {
-                   /*if(fleet.plane==0 && fleet.ship==0 && fleet.LC==0) {
-
-                   } */
+                    /*if(fleet.plane==0 && fleet.ship==0 && fleet.LC==0) {
+ 
+                    } */
                     game.createFleet(fleet.plane, fleet.ship, fleet.LC);
-                    game.updateGold(game.getGold()-fleet.price);
+                    game.updateGold(game.getGold() - fleet.price);
 
                     users.ger.socket.emit("fleetResult", "Success");
                 } else {
