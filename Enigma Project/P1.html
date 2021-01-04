@@ -23,19 +23,21 @@
             <input type="submit" value="Unranked">
         </form>
     </div>
-    <div id="fleet" style="display: none;">
-        <div> <span id="planeDisplay">0</span> <button id="plane--" onclick="planeM5()">
-                << </button><button id="plane-" onclick="planeM()">
-                        << /button><button id="plane+" onclick="planeP()">></button><button id="plane++"
-                                onclick="planeP5()">>></button> <span id="planeCost">0</span></div>
-        <div> <span id="shipDisplay">0</span> <button id="ship--" onclick="shipM5()">
-                << </button><button id="ship-" onclick="shipM()">
-                        < </button><button id="ship+" onclick="shipP()">></button><button id="ship++"
-                                onclick="shipP5()">>></button> <span id="shipCost">0</span></div>
-        <div> <span id="LCDisplay">0</span> <button id="LC--" onclick="LCM5()">
-                << </button><button id="LC-" onclick="LCM()">
-                        < </button><button id="LC+" onclick="LCP()">></button><button id="LC++"
-                                onclick="LCP5()">>></button> <span id="LCCost">0</span>
+    <div id="fleet" style="display: ;">
+        <div> <span id="planeDisplay">0</span>
+            </button><button id="plane-" onclick="planeM()">
+                <</button><button id="plane+" onclick="planeP()">></button>
+            </button> <span id="planeCost">0</span></div>
+        <div> <span id="shipDisplay">0</span>
+            </button><button id="ship-" onclick="shipM()">
+                < </button><button id="ship+" onclick="shipP()">></button>
+            </button> <span id="shipCost">0</span></div>
+        <div> <span id="LCDisplay">0</span> </button><button id="LC-" onclick="LCM()">
+                < </button><button id="LC+" onclick="LCP()">></button>
+            </button> <span id="LCCost">0</span>
+        </div>
+        <div>
+            <span id="farmDisplay">0</span><button id="farm-" onclick="farmM()"><</button><button id="farm+" onclick="farmP()">></button><span id="farmCost">0</span>
         </div>
         <button id="sendFleet" onclick="sendFleet()">send</button> <span id="total">0</span>
     </div>
