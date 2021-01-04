@@ -4,11 +4,11 @@ let VICTORY = {
     NONE: 0
 }
 
-function SinglePlayerGame() {
+function SinglePlayerGame(level) {
     var round = 0;
     var global_nums = [];
     var history = [];
-    var gameOver=false;
+    var gameOver = false;
     function generateRandomNumbers() {
 
         let digits = [];
@@ -19,11 +19,9 @@ function SinglePlayerGame() {
         return digits;
     }
 
-    function isNumericInput(input)
-    {
-        for(let i=0;i<input.length;i++)
-        {
-            if(isNaN(input[i]))
+    function isNumericInput(input) {
+        for (let i = 0; i < input.length; i++) {
+            if (isNaN(input[i]))
                 return false;
         }
         return true;
@@ -41,12 +39,15 @@ function SinglePlayerGame() {
     }
 
     function generateGameNumbers() {
-
-        do {
-            global_nums = generateRandomNumbers();
+        if (level == 1) {
+            do {
+                global_nums = generateRandomNumbers();
+            }
+            while (checkNumbersRepeat(global_nums))
+            console.log(global_nums);
         }
-        while (checkNumbersRepeat(global_nums))
-        console.log(global_nums);
+        else
+            global_nums = generateRandomNumbers();
         return global_nums;
     }
 
@@ -59,9 +60,11 @@ function SinglePlayerGame() {
             round
         };
 
-        if (checkNumbersRepeat(input)) {
-            result.err = "repeating numbers";
-            return result;
+        if (level == 1) {
+            if (checkNumbersRepeat(input)) {
+                result.err = "repeating numbers";
+                return result;
+            }
         }
 
         if (input.length != 4) {
@@ -69,17 +72,16 @@ function SinglePlayerGame() {
             return result;
         }
 
-        if(!isNumericInput(input))
-        {
-            result.err="invalid characters, please try numbers only";
+        if (!isNumericInput(input)) {
+            result.err = "invalid characters, please try numbers only";
             return result;
         }
 
         if (result.err == "") {
             round++;
             recordHistory(result);
-            if(result.cPos==4 || round>13)
-                gameOver=true;
+            if (result.cPos == 4 || round > 13)
+                gameOver = true;
         }
 
 
@@ -88,13 +90,55 @@ function SinglePlayerGame() {
 
     function countCorrectNums(userInput) {
         let numCount = 0;
-        for (let i = 0; i < 4; i++) {
-            for (let j = 0; j < 4; j++) {
-                if (userInput[i] == global_nums[j])
-                    numCount++;
+        if (level == 1) {
+            for (let i = 0; i < 4; i++) {
+                for (let j = 0; j < 4; j++) {
+                    if (userInput[i] == global_nums[j])
+                        numCount++;
+                }
             }
+            console.log("You got " + numCount + " correct numbers");
         }
-        console.log("You got " + numCount + " correct numbers");
+        else {
+            let globalNumsObject = {
+                n0: 0,
+                n1: 0,
+                n2: 0,
+                n3: 0,
+                n4: 0,
+                n5: 0,
+                n6: 0,
+                n7: 0,
+                n8: 0,
+            };
+            let inputNumsObject = {
+                n0: 0,
+                n1: 0,
+                n2: 0,
+                n3: 0,
+                n4: 0,
+                n5: 0,
+                n6: 0,
+                n7: 0,
+                n8: 0,
+            };
+            for (let i = 0; i < 4; i++) {
+                console.log(global_nums[i]);
+                globalNumsObject["n" + global_nums[i]]++;
+            }
+            for(let i=0;i<4;i++)
+            {
+                inputNumsObject["n" + userInput[i]]++;
+            }
+            for(let i=0;i<9;i++) {
+                if((globalNumsObject["n"+i]-inputNumsObject["n"+i])==0 || (globalNumsObject["n"+i]-inputNumsObject["n"+i])>0)
+                    numCount+=inputNumsObject["n"+i];
+                if((globalNumsObject["n"+i]-inputNumsObject["n"+i])<0)
+                    numCount+=globalNumsObject["n"+i];
+            }
+            console.log(globalNumsObject);
+            console.log(inputNumsObject);
+        }
         return numCount;
     }
 
@@ -128,7 +172,7 @@ function SinglePlayerGame() {
         global_nums = [];
         history = [];
         round = 0;
-        gameOver=false;
+        gameOver = false;
     }
 
     function getRounds() {

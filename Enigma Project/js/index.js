@@ -1,4 +1,4 @@
-let game = new SinglePlayerGame();
+let game = new SinglePlayerGame(1);
 game.generateGameNumbers();
 
 function displayHistory() {
