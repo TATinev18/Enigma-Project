@@ -24,20 +24,30 @@
         </form>
     </div>
     <div id="fleet" style="display: ;">
-        <div> <span id="planeDisplay">0</span>
-            </button><button id="plane-" onclick="planeM()">
-                <</button><button id="plane+" onclick="planeP()">></button>
-            </button> <span id="planeCost">0</span></div>
-        <div> <span id="shipDisplay">0</span>
-            </button><button id="ship-" onclick="shipM()">
-                < </button><button id="ship+" onclick="shipP()">></button>
-            </button> <span id="shipCost">0</span></div>
-        <div> <span id="LCDisplay">0</span> </button><button id="LC-" onclick="LCM()">
-                < </button><button id="LC+" onclick="LCP()">></button>
-            </button> <span id="LCCost">0</span>
+        <div>
+            <span id="planeDisplay">0</span>
+            <button id="plane-" onclick="changeUtilityValues('planeDisplay','planeCost','-',250)"><</button>
+            <button id="plane+" onclick="changeUtilityValues('planeDisplay','planeCost','+',250)">></button>
+
+            <span id="planeCost">0</span>
         </div>
         <div>
-            <span id="farmDisplay">0</span><button id="farm-" onclick="farmM()"><</button><button id="farm+" onclick="farmP()">></button><span id="farmCost">0</span>
+            <span id="shipDisplay">0</span>
+            <button id="ship-" onclick="changeUtilityValues('shipDisplay','shipCost','-',150)">< </button>
+            <button id="ship+" onclick="changeUtilityValues('shipDisplay','shipCost','+',150)">></button>
+            <span id="shipCost">0</span>
+        </div>
+        <div>
+            <span id="LCDisplay">0</span>
+            <button id="LC-" onclick="changeUtilityValues('LCDisplay','LCCost','-',125)">< </button>
+            <button id="LC+" onclick="changeUtilityValues('LCDisplay','LCCost','+',125)">></button>
+            <span id="LCCost">0</span>
+        </div>
+        <div>
+            <span id="farmDisplay">0</span>
+            <button id="farm-" onclick="changeUtilityValues('farmDisplay','farmCost','-',200)"><</button>
+            <button id="farm+" onclick="changeUtilityValues('farmDisplay','farmCost','+',200)">></button>
+            <span id="farmCost">0</span>
         </div>
         <button id="sendFleet" onclick="sendFleet()">send</button> <span id="total">0</span>
     </div>
@@ -76,7 +86,26 @@
     document.getElementById("Map").innerHTML = gameMap;
 
     var socket;
+    function changeUtilityValues(id,priceId ,operation,priceUnit) {
+        let value = parseInt(document.getElementById(id).innerHTML);
+        let price = parseInt(document.getElementById(priceId).innerHTML);
+        if (operation=="+"){
+            document.getElementById(id).innerHTML =value+1;
+            document.getElementById(priceId).innerHTML =priceUnit*(value+1);
+        }
+        else{
+            if (value-1>=0){
+                document.getElementById(id).innerHTML = value-1 ;
+                document.getElementById(priceId).innerHTML =priceUnit*(value-1);
+            }
+        }
+        let planeCost = parseInt(document.getElementById("planeCost").innerHTML);
+        let shipCost = parseInt(document.getElementById("shipCost").innerHTML);
+        let LCCost = parseInt(document.getElementById("LCCost").innerHTML);
+        let farmCost = parseInt(document.getElementById("farmCost").innerHTML);
 
+        document.getElementById("total").innerHTML =(planeCost+shipCost+LCCost+farmCost);
+    }
     function findMatch() {
         let side = document.querySelector('[name="side"]:checked');
         let user = document.getElementById("user").value;
