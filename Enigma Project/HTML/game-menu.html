@@ -6,50 +6,54 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <link rel="stylesheet" href="../style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" 
+    integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 
 <body>
-    <div class="fade-in">
+    <div class="bg_image_secondary fade-in-animation">
 
         <!-----NAVBAR----->
-        <div class="w3-container w3-animate-top">
-            <nav class="navbar navbar-inverse">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <a class="navbar-brand" href="index.html">Game</a>
-                    </div>
-                    <ul class="nav navbar-nav">
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="#">About us</a></li>
-                    </ul>
-                </div>
-            </nav>
-        </div>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark w3-container w3-animate-top">  
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                  <a class="nav-link" href="index.html">Home </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">About</a>
+                </li>
+                
+              </ul>
+              
+            </div>
+          </nav>
 
 
         <!--CONTENT-->
-        <div class="w3-container w3-animate-top">
-            <div class="container" style="background-color: rgba(248, 199, 140, 0.877);width: 60%;padding: 22%;">
 
-                <div class="w3-show-inline-block">
-                    <div class="w3-bar">
-                        <a href="single-player.html">
-                          <button class="btn btn-lg">Single Player</button>  
-                        </a>
-                        <a href="">
-                           <button class="btn btn-lg">Two Players</button> 
-                        </a>
-                    </div>
-                </div>
-            </div>
+        <div class="container" style="background-color: rgba(87, 87, 92, 0.863);padding: 21%;">
+
+            <center>
+                <span style="display: inline-block;">
+                    <a href="single-player.html">
+                        <button type="button" class="btn btn-lg " style="background-color: rgba(252, 216, 173, 0.822);">Single Player</button>
+                    </a>
+                </span>
+
+                <span style="display: inline-block;">
+                    <a href="">
+                        <button type="button" class="btn btn-lg" style="background-color: rgb(252, 216, 173,0.822);">Two Players</button>
+                    </a>
+                </span>
+            </center>
         </div>
 
     </div>
-
 </body>
 
 </html>
