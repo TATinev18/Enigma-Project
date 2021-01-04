@@ -142,6 +142,10 @@
             endTurn();
         })
 
+        socket.on("fleetResult",(msg)=>{
+            console.log("received");
+            console.log(msg);
+        })
     }
 
     function chat(msg) {
@@ -171,6 +175,17 @@
         $("#scan").attr("disabled", false);
     }
 
+    function sendFleet() {
+    let fleet = {
+        plane: $("#planeDisplay").text(),
+        ship:  $("#shipDisplay").text(),
+        LC:    $("#LCDisplay").text(),
+        farm:  $("#farmDisplay").text(),
+        price: $("#total").text()
+    };
+    console.log("emit");
+    socket.emit("fleet",fleet);
+}
 </script>
 
 </html>

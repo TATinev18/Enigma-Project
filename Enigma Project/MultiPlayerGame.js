@@ -11,6 +11,7 @@ function MultiPlayerGame() {
     var chat = [];
     var points = 0;
     var fleetID=0;
+    
     const VICTORY = {
         GERMAN: 1,
         BRITISH: 2,
@@ -254,6 +255,10 @@ function MultiPlayerGame() {
         return VICTORY;
     }
 
+    function updateGold(newGold) {
+        gold=newGold;
+    }
+
     return {
         generateRandomNumbers,
         checkNumbersRepeat,
@@ -278,7 +283,8 @@ function MultiPlayerGame() {
         createFarm,
         getVICTORY,
         attack,
-        calculateGoldNewTurn
+        calculateGoldNewTurn,
+        updateGold
     }
 }
 

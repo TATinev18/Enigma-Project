@@ -32,17 +32,28 @@ function matchMake() {
     return obj;
 }
 
+function retry(socket, msg) {
+    socket.emit("retry", msg);
+}
+
 //user input checks
 
 io.on('connection', socket => {
     socket.on("matchMake", (data) => {
-        if (data.side == "British") {
-            britains.push({ socket: socket, user: data.user });
-            console.log("1 british");
-        }
-        else {
-            germans.push({ socket: socket, user: data.user });
-            console.log("1 german");
+        if (data && (data.side == "British" || data.side == "German")) {
+            if (data.side == "British") {
+                britains.push({ socket: socket, user: data.user });
+                console.log("1 british");
+            }
+            else if (data.side == "German") {
+                germans.push({ socket: socket, user: data.user });
+                console.log("1 german");
+            }
+            else {
+                retry(socket, "Invalid side. try again.");
+                socket.disconnect();
+                return;
+            }
         }
 
         let users = matchMake();
@@ -51,6 +62,7 @@ io.on('connection', socket => {
             io.to(users.room).emit('begin');
             users.gbr.socket.emit("endTurn");
             let game = new app.MultiPlayerGame();
+
             game.initMapProvinces();
 
             users.ger.socket.on("chat", (msg) => {
@@ -61,29 +73,40 @@ io.on('connection', socket => {
                 io.to(users.room).emit("chat", { user: users.gbr.name, msg: msg });
                 game.recordChat({ user: users.gbr.name, msg: msg });
             });
-            users.ger.socket.on("endTurn",()=>{
+            users.ger.socket.on("endTurn", () => {
                 users.gbr.socket.emit("beginTurn");
             });
-            users.gbr.socket.on("endTurn",()=>{
+            users.gbr.socket.on("endTurn", () => {
                 users.ger.socket.emit("beginTurn");
                 game.calculateGoldNewTurn();
             });
 
-            users.ger.socket.on("farm", (data)=>{
+            users.ger.socket.on("farm", (data) => {
                 game.createFarm(data.province);
             });
 
-            users.gbr.socket.on("scan", (data)=>{
+            users.gbr.socket.on("scan", (data) => {
                 game.useScan(data.province);
             });
 
-            users.ger.socket.on("fleet", (fleet)=>{
-                game.createFleet(fleet.p,fleet.s,fleet.LC);
+            users.ger.socket.on("fleet", (fleet) => {
+                console.log("received fleet");
+                if (fleet.price <= game.getGold()) {
+                   /*if(fleet.plane==0 && fleet.ship==0 && fleet.LC==0) {
+
+                   } */
+                    game.createFleet(fleet.plane, fleet.ship, fleet.LC);
+                    game.updateGold(game.getGold()-fleet.price);
+
+                    users.ger.socket.emit("fleetResult", "Success");
+                } else {
+                    users.ger.socket.emit("fleetResult", "Fail");
+                }
             });
 
             users.ger.socket.emit("initNum");
 
-            users.gbr.socket.on("guess",(input)=>{
+            users.gbr.socket.on("guess", (input) => {
                 console.log(input);
                 console.log(game.checkUserInput(input));
             });
@@ -92,3 +115,23 @@ io.on('connection', socket => {
 });
 
 server.listen(8080);
+
+/*
+-client connection to server $
+-client match make $
+-chat $
+=====BEGIN GAME====
+-german enter number => end turn
+-british guess number and/or use points for scan
+-scan (server) $
+end turn
+german create fleet (server) $
+german create farm (server) $
+end turn
+*repeat 13 times or until brit guesses num*
+*attack event for germans on 13th turn*
+*victor conditions*
+=====END GAME======
+* ensure all user input
+
+*/

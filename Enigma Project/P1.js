@@ -1,4 +1,4 @@
-const { Socket } = require("socket.io");
+//const { Socket } = require("socket.io");
 
 let game = new MultiPlayerGame();
 game.generateGameNumbers();
@@ -52,37 +52,8 @@ function checkGameStatus() {
 }
 
 function scan() {
-    let scanning = game.useScan();
-    if (scanning) {
-        for (let i = 1; i < 6; i++) {
-            $('#G' + i).css("fill", "yellow");
-            console.log('#G' + i);
-            $('#G' + i).hover(() => {
-                $('#G' + i)
-                    .css("fill", "red")
-                    .css("cursor", "pointer");
-            }, () => {
-                $('#G' + i).css("fill", "yellow");
-            });
-        }
-        $("#points").text(game.getPoints());
-    }
-    else {
-        $('#G' + i).css("fill", "white");
-        for (let i = 1; i < 6; i++) {
-            $('#G' + i).css("fill", "yellow");
-            console.log('#G' + i);
-            $('#G' + i).hover(() => {
-                $('#G' + i)
-                    .css("fill", "white")
-                    .css("cursor", "auto");
-            }, () => {
-                $('#G' + i).css("fill", "white");
-            });
-        }
-    }
-    $("#G1").click(() => {
-        $("#G1").css("fill", "white").css("cursor", "auto");
-    });
+    
 }
+
+
 
