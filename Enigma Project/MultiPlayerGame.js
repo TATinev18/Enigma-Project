@@ -1,5 +1,6 @@
 function MultiPlayerGame() {
     var gold = 275;
+    var goldPerTurn = 0;
     var round = 0;
     var global_nums = [];
     var history = [];
@@ -7,24 +8,24 @@ function MultiPlayerGame() {
     var germanProvinces = [];
     var britishProvinces = [];
     var fleets = [];
-    var chat=[];
-    var points=0;
-
+    var chat = [];
+    var points = 0;
+    var fleetID=0;
     const VICTORY = {
         GERMAN: 1,
         BRITISH: 2,
         NONE: 0
     }
-    
+
     let DAMAGE = {
         plane: 7,
         ship: 5,
         LC: 2
     }
-    
+
     let PRICES = {
-        plane: 250, 
-        ship: 150,  
+        plane: 250,
+        ship: 150,
         LC: 125,
         defence: 100,
         farm: 200,
@@ -35,12 +36,12 @@ function MultiPlayerGame() {
         this.id = i;
         this.hasFarm = false;
     }
-    
+
     function BritishProvince(i) {
         this.id = i;
         this.health = 200;
     }
-    
+
     function Fleet(i, planes, ships, LC) {
         this.id = i;
         this.planes = planes;
@@ -49,9 +50,25 @@ function MultiPlayerGame() {
     }
 
     function createFleet(p, s, lc) {
-        let fleet = new Fleet(0, p, s, lc);
+        let fleet = new Fleet(fleetID, p, s, lc);
         fleets.push(fleet);
+        fleetID++;
         return fleet;
+    }
+
+    function attack() {
+        let damage = 0;
+        for (let i = 0; i < fleets.length; i++) {
+            damage  += (fleets[i].planes) * DAMAGE.plane
+                    + (fleets[i].ships)*DAMAGE.ship
+                    + (fleets[i].LC)*DAMAGE.LC;
+        }
+        return damage
+    }
+
+    function createFarm(province) {
+        germanProvinces[province].hasFarm = true;
+        goldPerTurn += 100;
     }
 
     function generateRandomNumbers() {
@@ -142,7 +159,7 @@ function MultiPlayerGame() {
             }
         }
         console.log("You got " + numCount + " correct numbers");
-        points=points+0.5;
+        points = points + 0.5;
         return numCount;
     }
 
@@ -173,14 +190,19 @@ function MultiPlayerGame() {
         return result;
     }
 
-    function useScan()
-    {
-        if(points>=10)
-        {
-            points=points-10;
-            return true;
+    function useScan(province) {
+        if (points >= 10) {
+            if (germanProvinces[province].hasFarm) {
+                points = points - 10;
+                germanProvinces[province].hasFarm = false;
+                return true
+            }
         }
         return false;
+    }
+
+    function calculateGoldNewTurn() {
+        gold+=getGoldPerTurn();
     }
 
     function reset() {
@@ -191,8 +213,9 @@ function MultiPlayerGame() {
         germanProvinces = [];
         britishProvinces = [];
         fleets = [];
-        gold=235;
-        points=0;
+        gold = 235;
+        points = 0;
+        goldPerTurn = 0;
     }
 
     function getRounds() {
@@ -222,6 +245,15 @@ function MultiPlayerGame() {
     function recordChat(msg) {
         chat.push(msg);
     }
+
+    function getGoldPerTurn() {
+        return goldPerTurn;
+    }
+
+    function getVICTORY() {
+        return VICTORY;
+    }
+
     return {
         generateRandomNumbers,
         checkNumbersRepeat,
@@ -242,8 +274,12 @@ function MultiPlayerGame() {
         useScan,
         getChat,
         recordChat,
-        VICTORY
+        getGoldPerTurn,
+        createFarm,
+        getVICTORY,
+        attack,
+        calculateGoldNewTurn
     }
 }
 
-module.exports = {MultiPlayerGame};
+module.exports = { MultiPlayerGame };
