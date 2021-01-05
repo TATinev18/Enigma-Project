@@ -18,7 +18,6 @@ function matchMake() {
     let r2 = Math.floor(Math.random() * (britains.length - 1));
     germans[r1].socket.join("room" + roomCount);
     britains[r2].socket.join("room" + roomCount);
-    console.log(britains[r2]);
 
     let obj = {
         room: "room" + roomCount,
@@ -82,6 +81,8 @@ io.on('connection', socket => {
                 users.ger.socket.emit("beginTurn");
                 game.calculateGoldNewTurn();
             });
+            users.ger.socket.on("getCurrency",() => {users.ger.socket.emit("updateCurrency",game.getGold())});
+            users.gbr.socket.on("getCurrency",() => {users.gbr.socket.emit("updateCurrency",game.getPoints())});
 
             users.ger.socket.on("createFarm", (province) => {
                 if (province) {

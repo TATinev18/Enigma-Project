@@ -23,7 +23,7 @@
             <input type="submit" value="Unranked">
         </form>
     </div>
-    <div id="fleet" style="display: ;">
+    <div id="fleet" style="display: none;">
         <div>
             <span id="planeDisplay">0</span>
             <button id="plane-" onclick="changeUtilityValues('planeDisplay','planeCost','-',250)"><</button>
@@ -49,10 +49,11 @@
             <button id="farm+" onclick="changeUtilityValues('farmDisplay','farmCost','+',200)">></button>
             <span id="farmCost">0</span>
         </div>-->
-        <button onclick="createFarm()">create farm (200 gold)</button>
+        <button id="createFarm" onclick="createFarm()">create farm (200 gold)</button>
         <button id="sendFleet" onclick="sendFleet()">send</button> <span id="total">0</span>
     </div>
     <div id="game" style="display:none">
+        <span id="currency">Gold: 0</span>
         <form>
             <input type="text" id="send" placeholder="chat">
             <input type="text" id="input" placeholder="input">
@@ -124,7 +125,10 @@
             console.log("beggining");
             $('#search').css('display', 'none');
             $('#game').css('display', 'block');
+            $("#fleet").css("display","block");
             socket.emit("side", side.value);
+            hideElements(side.value);
+            updateCurrency();
         });
 
         socket.on("initNum", () => {
@@ -132,15 +136,17 @@
         });
 
         socket.on("chat", (msg) => {
-            $('#chatbox').html($('#chatbox').html() + '<p>' + msg.user + ' ' + msg.msg);
+            $('#chatbox').html($('#chatbox').html() + '<p>' + msg.user + ': ' + msg.msg);
         });
 
         socket.on("beginTurn", () => {
             beginTurn();
+            updateCurrency();
         });
 
         socket.on("endTurn", () => {
             endTurn();
+            updateCurrency();
         });
 
         socket.on("fleetResult",(msg)=>{
@@ -154,17 +160,23 @@
         socket.on("farmResult",(msg)=>{
             console.log(msg);
         });
+        socket.on("updateCurrency", (currency)=> {
+            if(data.side=="British")
+                $("#currency").text("Points: "+currency);
+            if(data.side=="German")
+                $("#currency").text("Gold: "+currency);
+        });
     }
 
     function chat(msg) {
         console.log(socket);
         console.log(msg);
+        $("#send").val("");
         socket.emit("chat", msg);
     }
 
     function guess() {
         let nums = extractNumbers();
-        console.log(nums);
         socket.emit("guess", nums);
     }
 
@@ -173,6 +185,7 @@
         $("#guess").attr("disabled", true);
         $("#ET").attr("disabled", true);
         $("#scan").attr("disabled", true);
+        lockFleetMenu(1);
         socket.emit("endTurn");
     }
 
@@ -181,6 +194,7 @@
         $("#guess").attr("disabled", false);
         $("#ET").attr("disabled", false);
         $("#scan").attr("disabled", false);
+        lockFleetMenu(2);
     }
 
     function sendFleet() {

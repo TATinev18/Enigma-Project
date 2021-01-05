@@ -67,6 +67,7 @@ function scan() {
                 $("#G1, #G2, #G3, #G4, #G5").off().css("fill", "white").css("cursor", "auto");
                 console.log(i);
                 socket.emit("scan",i);
+                updateCurrency();
             }
         });
     }
@@ -86,10 +87,34 @@ function createFarm() {
                 $("#G1, #G2, #G3, #G4, #G5").off().css("fill", "white").css("cursor", "auto");
                 console.log(i);
                 socket.emit("createFarm",i);
+                updateCurrency();
             }
         });
     }
 }
 
+function hideElements(side) {
+    if(side=="British") {
+        $("#fleet").css("display","none");
+        $("#createFleet").css("display","none");
+    }
+    if(side=="German") {
+        $("#scan").css("display","none");
+    }
+}
 
+function lockFleetMenu(lock) {
+    if(lock==1) {
+        $("#fleet").children().attr("disabled",true);
+        $("#fleet").children().children().attr("disabled",true);
+    }
+    if(lock==2) {
+        $("#fleet").children().children().attr("disabled",false);
+        $("#fleet").children().attr("disabled",false);
+    }
+}
+
+function updateCurrency() {
+    socket.emit("getCurrency");
+}
 
