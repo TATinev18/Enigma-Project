@@ -69,22 +69,65 @@ describe('Single player', function() {
 
             });
 
-            it('should return false when the size usn\'t equal to 4', function() {
-                assert.equal(app.SinglePlayerGame(1).checkNumbersRepeat([1, 3, 3]), false);
+            // it('should return false when the size isn\'t equal to 4', function() {
+            //     assert.equal(app.SinglePlayerGame(1).checkNumbersRepeat([1, 3, 3]), false);
 
-            });
+            // });
         })
 
-        describe('checkNumbersRepeat()', function() {
-            it('should return true when they repeat', function() {
+        // describe('checkVictoryConditions()', function() {
+        //     it('should win British when they guess the number', function() {
+        //         checkVictoryConditions()
 
+        //     });
+
+        //     it('should win German after the last round (13)', function() {
+
+
+        //     });
+
+        //     it('should return NONE when no one has won yet', function() {
+
+
+        //     });
+        // })
+
+
+        describe('checkUserInput()', function() {
+            it('should return an error if the length is not 4', function() {
+                assert.notEqual(app.SinglePlayerGame(1).checkUserInput([1, 2, 3] && [1, 2, 3, 4, 5]).err, "");
 
             });
 
-            it('should return false when they don\'t repeat', function() {
-
+            it('should return an error if the numbers repeat', function() {
+                assert.notEqual(app.SinglePlayerGame(1).checkUserInput([1, 2, 3, 3] && [5, 6, 3, 3]).err, "");
 
             });
+
+            it('should return an error if the input is not a number', function() {
+                assert.notEqual(app.SinglePlayerGame(1).checkUserInput("test" && true).err, "");
+
+            });
+
+            it('should return an error if the input is out of range 0-7', function() {
+                assert.notEqual(app.SinglePlayerGame(1).checkUserInput([-1, -5, 3, 5] && [7, 8, 9, 10]).err, "");
+
+            });
+
+            it('should return an error if the input is repeated', function() {
+                assert.notEqual(app.SinglePlayerGame(1).checkUserInput([1, 2, 3, 4] && [1, 2, 3, 4]).err, "");
+
+            });
+
+            it('should not return an error if the input is correct', function() {
+                assert.equal(app.SinglePlayerGame(1).checkUserInput([1, 2, 3, 4] && [5, 6, 7, 8]).err, "");
+            });
+
         })
+
     })
 });
+
+
+
+// to run the checks open the terminal (ctrl + `) and type "npm run test".

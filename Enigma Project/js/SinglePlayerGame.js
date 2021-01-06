@@ -84,7 +84,6 @@ function SinglePlayerGame(level) {
                 gameOver = true;
         }
 
-
         return result;
     }
 
@@ -97,7 +96,7 @@ function SinglePlayerGame(level) {
                         numCount++;
                 }
             }
-            console.log("You got " + numCount + " correct numbers");
+            //console.log("You got " + numCount + " correct numbers");
         } else {
             let globalNumsObject = {
                 n0: 0,
@@ -122,7 +121,7 @@ function SinglePlayerGame(level) {
                 n8: 0,
             };
             for (let i = 0; i < 4; i++) {
-                console.log(global_nums[i]);
+                // console.log(global_nums[i]);
                 globalNumsObject["n" + global_nums[i]]++;
             }
             for (let i = 0; i < 4; i++) {
@@ -134,8 +133,8 @@ function SinglePlayerGame(level) {
                 if ((globalNumsObject["n" + i] - inputNumsObject["n" + i]) < 0)
                     numCount += globalNumsObject["n" + i];
             }
-            console.log(globalNumsObject);
-            console.log(inputNumsObject);
+            // console.log(globalNumsObject);
+            //console.log(inputNumsObject);
         }
         return numCount;
     }
@@ -145,7 +144,7 @@ function SinglePlayerGame(level) {
         for (let i = 0; i < 4; i++)
             if (userInput[i] == global_nums[i])
                 posCount++;
-        console.log("u got " + posCount + " correct positions")
+            // console.log("u got " + posCount + " correct positions")
         return posCount;
     }
 
