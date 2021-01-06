@@ -9,6 +9,7 @@ function SinglePlayerGame(level) {
     var global_nums = [];
     var history = [];
     var gameOver = false;
+
     function generateRandomNumbers() {
 
         let digits = [];
@@ -45,8 +46,7 @@ function SinglePlayerGame(level) {
             }
             while (checkNumbersRepeat(global_nums))
             console.log(global_nums);
-        }
-        else
+        } else
             global_nums = generateRandomNumbers();
         return global_nums;
     }
@@ -98,8 +98,7 @@ function SinglePlayerGame(level) {
                 }
             }
             console.log("You got " + numCount + " correct numbers");
-        }
-        else {
+        } else {
             let globalNumsObject = {
                 n0: 0,
                 n1: 0,
@@ -126,15 +125,14 @@ function SinglePlayerGame(level) {
                 console.log(global_nums[i]);
                 globalNumsObject["n" + global_nums[i]]++;
             }
-            for(let i=0;i<4;i++)
-            {
+            for (let i = 0; i < 4; i++) {
                 inputNumsObject["n" + userInput[i]]++;
             }
-            for(let i=0;i<9;i++) {
-                if((globalNumsObject["n"+i]-inputNumsObject["n"+i])==0 || (globalNumsObject["n"+i]-inputNumsObject["n"+i])>0)
-                    numCount+=inputNumsObject["n"+i];
-                if((globalNumsObject["n"+i]-inputNumsObject["n"+i])<0)
-                    numCount+=globalNumsObject["n"+i];
+            for (let i = 0; i < 9; i++) {
+                if ((globalNumsObject["n" + i] - inputNumsObject["n" + i]) == 0 || (globalNumsObject["n" + i] - inputNumsObject["n" + i]) > 0)
+                    numCount += inputNumsObject["n" + i];
+                if ((globalNumsObject["n" + i] - inputNumsObject["n" + i]) < 0)
+                    numCount += globalNumsObject["n" + i];
             }
             console.log(globalNumsObject);
             console.log(inputNumsObject);
@@ -197,3 +195,5 @@ function SinglePlayerGame(level) {
         isNumericInput
     }
 }
+
+exports.SinglePlayerGame = SinglePlayerGame;
