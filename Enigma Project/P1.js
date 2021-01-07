@@ -3,10 +3,8 @@
 const { Socket } = require("socket.io");
 
 let game = new MultiPlayerGame();
-game.generateGameNumbers();
 
-function displayHistory() {
-    let history = game.getHistory();
+function displayHistory(history) {
     console.log(history);
     for (i in history) {
         let element = '#' + (history[i].round + 1).toString();
@@ -97,9 +95,12 @@ function hideElements(side) {
     if(side=="British") {
         $("#fleet").css("display","none");
         $("#createFleet").css("display","none");
+        $("#setCode").css("display","none");
     }
     if(side=="German") {
         $("#scan").css("display","none");
+        $("#guess").css("display","none");
+        
     }
 }
 
@@ -116,5 +117,14 @@ function lockFleetMenu(lock) {
 
 function updateCurrency() {
     socket.emit("getCurrency");
+}
+
+function setCode() {
+    let code = extractNumbers();
+    console.log(code);
+    socket.emit("getCode",code);
+    $("#setCode").css("display","none");
+    $("#input").css("display","none");
+    $("#ET").attr("disabled",false);
 }
 

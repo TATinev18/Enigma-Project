@@ -40,7 +40,7 @@ function MultiPlayerGame() {
 
     function BritishProvince(i) {
         this.id = i;
-        this.health = 200;
+        this.health = 100;
     }
 
     function Fleet(i, planes, ships, LC) {
@@ -60,26 +60,17 @@ function MultiPlayerGame() {
     function attack() {
         let damage = 0;
         for (let i = 0; i < fleets.length; i++) {
-            damage += (fleets[i].planes) * DAMAGE.plane
-                + (fleets[i].ships) * DAMAGE.ship
-                + (fleets[i].LC) * DAMAGE.LC;
+            damage += parseInt(fleets[i].planes) * DAMAGE.plane
+                + parseInt(fleets[i].ships) * DAMAGE.ship
+                + parseInt(fleets[i].landingCraft) * DAMAGE.LC;
         }
-        return damage
+        console.log("damage:" +damage);
+        return damage;
     }
 
     function createFarm(province) {
         germanProvinces[province].hasFarm = true;
         goldPerTurn += 100;
-    }
-
-    function generateRandomNumbers() {
-
-        let digits = [];
-
-        for (let i = 0; i < 4; i++) {
-            digits[i] = Math.floor(Math.random() * 8);
-        }
-        return digits;
     }
 
     function initMapProvinces() {
@@ -106,16 +97,6 @@ function MultiPlayerGame() {
             }
         }
         return false;
-    }
-
-    function generateGameNumbers() {
-
-        do {
-            global_nums = generateRandomNumbers();
-        }
-        while (checkNumbersRepeat(global_nums))
-        console.log(global_nums);
-        return global_nums;
     }
 
     function checkUserInput(input) {
@@ -145,6 +126,7 @@ function MultiPlayerGame() {
         if (result.err == "") {
             round++;
             recordHistory(result);
+            calculatePoints(result.cNums,result.cPos)
             if (result.cPos == 4 || round > 13)
                 gameOver = true;
         }
@@ -160,7 +142,6 @@ function MultiPlayerGame() {
             }
         }
         console.log("You got " + numCount + " correct numbers");
-        points = points + 0.5;
         return numCount;
     }
 
@@ -170,7 +151,6 @@ function MultiPlayerGame() {
             if (userInput[i] == global_nums[i])
                 posCount++;
         console.log("u got " + posCount + " correct positions")
-        points++;
         return posCount;
     }
 
@@ -181,8 +161,13 @@ function MultiPlayerGame() {
     function checkVictoryConditions(input) {
         if (countCorrectPositions(input) == 4)
             return VICTORY.BRITISH;
-        if (round > 13)
-            return VICTORY.GERMAN;
+        if (round >= 13) {
+            if(attack()>=100)
+                return VICTORY.GERMAN;
+            else
+                return VICTORY.BRITISH;
+        }
+            
         return VICTORY.NONE;
     }
 
@@ -205,6 +190,15 @@ function MultiPlayerGame() {
 
     function calculateGoldNewTurn() {
         gold += getGoldPerTurn();
+    }
+
+    function calculatePoints(cNums,cPos) {
+        points+= cPos + (cNums-cPos)/2;
+    }
+
+    function setCode(code) {
+        global_nums=code;
+        return global_nums;
     }
 
     function reset() {
@@ -265,9 +259,7 @@ function MultiPlayerGame() {
     }
 
     return {
-        generateRandomNumbers,
         checkNumbersRepeat,
-        generateGameNumbers,
         checkVictoryConditions,
         recordHistory,
         reset,
@@ -290,7 +282,9 @@ function MultiPlayerGame() {
         attack,
         calculateGoldNewTurn,
         updateGold,
-        getProvinces
+        getProvinces,
+        setCode,
+        calculatePoints
     }
 }
 

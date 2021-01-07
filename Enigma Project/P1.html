@@ -12,6 +12,7 @@
 </head>
 
 <body>
+    <p id="error"></p>
     <div id="search">
         <form action="javascript:findMatch(this.value)">
             <p>Select side</p>
@@ -43,12 +44,6 @@
             <button id="LC+" onclick="changeUtilityValues('LCDisplay','LCCost','+',125)">></button>
             <span id="LCCost">0</span>
         </div>
-        <!--<div>
-            <span id="farmDisplay">0</span>
-            <button id="farm-" onclick="changeUtilityValues('farmDisplay','farmCost','-',200)"><</button>
-            <button id="farm+" onclick="changeUtilityValues('farmDisplay','farmCost','+',200)">></button>
-            <span id="farmCost">0</span>
-        </div>-->
         <button id="createFarm" onclick="createFarm()">create farm (200 gold)</button>
         <button id="sendFleet" onclick="sendFleet()">send</button> <span id="total">0</span>
     </div>
@@ -60,6 +55,7 @@
         </form>
         <div id="Map"></div>
         <button onclick="chat(document.getElementById('send').value);">send chat</button>
+        <button id="setCode" onclick="setCode()">Set Code</button>
         <button id="guess" onclick="guess()">guess</button>
         <button id="scan" onclick="scan()">use scan (-10)</button>
         <button id="ET" onclick="endTurn()">End Turn</button>
@@ -80,7 +76,7 @@
             <p id="12"></p>
             <p id="13"></p>
         </div>
-        <p id="over"></p>
+        <p id="victory"></p>
         <div id="chatbox"></div>
     </div>
 </body>
@@ -104,9 +100,7 @@
         let planeCost = parseInt(document.getElementById("planeCost").innerHTML);
         let shipCost = parseInt(document.getElementById("shipCost").innerHTML);
         let LCCost = parseInt(document.getElementById("LCCost").innerHTML);
-        let farmCost = parseInt(document.getElementById("farmCost").innerHTML);
-
-        document.getElementById("total").innerHTML =(planeCost+shipCost+LCCost+farmCost);
+        document.getElementById("total").innerHTML =(planeCost+shipCost+LCCost);
     }
     function findMatch() {
         let side = document.querySelector('[name="side"]:checked');
@@ -126,13 +120,10 @@
             $('#search').css('display', 'none');
             $('#game').css('display', 'block');
             $("#fleet").css("display","block");
+            
             socket.emit("side", side.value);
             hideElements(side.value);
             updateCurrency();
-        });
-
-        socket.on("initNum", () => {
-            alert("german enter num");
         });
 
         socket.on("chat", (msg) => {
@@ -151,10 +142,12 @@
 
         socket.on("fleetResult",(msg)=>{
             console.log(msg);
+            updateCurrency();
         });
 
         socket.on("scanResult",(msg)=>{
             console.log(msg);
+            updateCurrency();
         });
 
         socket.on("farmResult",(msg)=>{
@@ -165,6 +158,32 @@
                 $("#currency").text("Points: "+currency);
             if(data.side=="German")
                 $("#currency").text("Gold: "+currency);
+        });
+        socket.on("forceTurn", ()=> {
+            $("#ET").attr("disabled",true);
+        });
+
+        socket.on("error", (data)=>{
+            $("#error").text(data.err);
+        });
+        socket.on("history", (history)=>{
+            $("#input").attr("disabled",true);
+            $("#guess").attr("disabled",true);
+            displayHistory(history);
+            updateCurrency();
+        });
+        socket.on("victory",(data)=>{
+            console.log(data);
+            if(data.victory=="GERMAN") {
+                $("#victory").text("Germany wins");
+            }
+            if(data.victory=="BRITISH") {
+                $("#victory").text("Britain wins");
+            }
+            $("#input").attr("disabled", true);
+            $("#guess").attr("disabled", true);
+            $("#ET").attr("disabled", true);
+            $("#scan").attr("disabled", true);
         });
     }
 
@@ -198,16 +217,16 @@
     }
 
     function sendFleet() {
-    let fleet = {
-        plane: $("#planeDisplay").text(),
-        ship:  $("#shipDisplay").text(),
-        LC:    $("#LCDisplay").text(),
-        farm:  $("#farmDisplay").text(),
-        price: $("#total").text()
-    };
-    console.log("emit");
-    socket.emit("fleet",fleet);
-}
+        let fleet = {
+            plane: $("#planeDisplay").text(),
+            ship:  $("#shipDisplay").text(),
+            LC:    $("#LCDisplay").text(),
+            farm:  $("#farmDisplay").text(),
+            price: $("#total").text()
+        };
+        console.log("emit");
+        socket.emit("fleet",fleet);
+    }
 </script>
 
 </html>

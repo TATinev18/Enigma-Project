@@ -35,7 +35,25 @@ function retry(socket, msg) {
     socket.emit("retry", msg);
 }
 
-//user input checks
+function isValidData(obj,arg,expectedVal) {
+    let status = {
+        err: ""
+    };
+    if(obj.length) {
+        if(obj.hasOwnProperty(arg)) {
+            if(obj.arg!=expectedVal) {
+                status.err="";
+            } else {
+                status.err="Unexpected data value!";
+            }
+        } else {
+            status.err="No property "+arg+" found in "+obj;
+        }
+    } else {
+        status.err="The object doesn't exist / hasn't been received correctly";
+    }
+    return status;
+}
 
 io.on('connection', socket => {
     socket.on("matchMake", (data) => {
@@ -59,12 +77,16 @@ io.on('connection', socket => {
 
         if (users) {
             io.to(users.room).emit('begin');
-            users.gbr.socket.emit("endTurn");
+            users.ger.socket.emit("forceTurn");
+
             let game = new app.MultiPlayerGame();
 
             game.initMapProvinces();
 
-            users.ger.socket.emit("initNum");
+            users.ger.socket.on("getCode",(code)=>{
+                console.log(code);
+                game.setCode(code);
+            });
 
             users.ger.socket.on("chat", (msg) => {
                 io.to(users.room).emit("chat", { user: users.ger.name, msg: msg });
@@ -123,6 +145,7 @@ io.on('connection', socket => {
                     if (fleet.price <= game.getGold()) {
                         game.createFleet(fleet.plane, fleet.ship, fleet.LC);
                         game.updateGold(game.getGold() - fleet.price);
+                        console.log(game.getFleets())
                         users.ger.socket.emit("fleetResult", { status: "Success" });
                     } else {
                         users.ger.socket.emit("fleetResult", { status: "Fail" });
@@ -134,7 +157,18 @@ io.on('connection', socket => {
 
             users.gbr.socket.on("guess", (input) => {
                 console.log(input);
-                console.log(game.checkUserInput(input));
+                let result =game.checkUserInput(input);
+                if(result.err=="") {
+                    io.to(users.room).emit("history", game.getHistory());
+                    console.log(game.getVICTORY());
+                    console.log(game.checkVictoryConditions(input));
+                    if(game.checkVictoryConditions(input)==game.getVICTORY().BRITISH) {
+                        io.in(users.room).emit("victory",{victory:"BRITISH"});
+                    }
+                    if(game.checkVictoryConditions(input)==game.getVICTORY().GERMAN) {
+                        io.in(users.room).emit("victory",{victory:"GERMAN"});
+                    }
+                }
             });
         }
     });
@@ -147,7 +181,7 @@ server.listen(8080);
 -client match make $
 -chat $
 =====BEGIN GAME====
--german enter number => end turn
+-german enter number => end turn 
 -british guess number and/or use points for scan
 -scan (server) $
 -scan (client) &
