@@ -105,6 +105,9 @@ io.on('connection', socket => {
             });
             users.ger.socket.on("getCurrency",() => {users.ger.socket.emit("updateCurrency",game.getGold())});
             users.gbr.socket.on("getCurrency",() => {users.gbr.socket.emit("updateCurrency",game.getPoints())});
+            users.ger.socket.on("requestProvinces", ()=>{
+                users.ger.socket.emit("receiveProvinces",game.getProvinces());
+            });
 
             users.ger.socket.on("createFarm", (province) => {
                 if (province) {
@@ -156,17 +159,16 @@ io.on('connection', socket => {
             });
 
             users.gbr.socket.on("guess", (input) => {
-                console.log(input);
                 let result =game.checkUserInput(input);
                 if(result.err=="") {
                     io.to(users.room).emit("history", game.getHistory());
-                    console.log(game.getVICTORY());
-                    console.log(game.checkVictoryConditions(input));
                     if(game.checkVictoryConditions(input)==game.getVICTORY().BRITISH) {
                         io.in(users.room).emit("victory",{victory:"BRITISH"});
+                        game.reset();
                     }
                     if(game.checkVictoryConditions(input)==game.getVICTORY().GERMAN) {
                         io.in(users.room).emit("victory",{victory:"GERMAN"});
+                        game.reset();
                     }
                 }
             });
@@ -181,17 +183,17 @@ server.listen(8080);
 -client match make $
 -chat $
 =====BEGIN GAME====
--german enter number => end turn 
--british guess number and/or use points for scan
+-german enter number => end turn  
+-british guess number and/or use points for scan $
 -scan (server) $
 -scan (client) &
 end turn
 german create fleet $
 german create farm (server) $
 end turn
-*repeat 13 times or until brit guesses num*
-*attack event for germans on 13th turn*
-*victor conditions*
+*repeat 13 times or until brit guesses num* $
+*attack event for germans on 13th turn* $
+*victor conditions* $
 =====END GAME======
 * ensure all user input
 

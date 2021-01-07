@@ -11,6 +11,7 @@ function MultiPlayerGame() {
     var chat = [];
     var points = 0;
     var fleetID = 0;
+    var guessedNums=[];
 
     const VICTORY = {
         GERMAN: 1,
@@ -123,25 +124,63 @@ function MultiPlayerGame() {
             return result;
         }
 
+        for(let i=0;i<4;i++) {
+            if( input[i]<0 || input[i]>7) {
+                result.err = "Number is not in range from 0 to 7";
+                return result;
+            }
+        }
+
+        for(let i=0;i<guessedNums.length;i++) {
+            if(JSON.stringify(input)==JSON.stringify(guessedNums[i])) {
+                result.err="Number has already been guessed! Try a different one!";
+                return result;
+            }
+        }
+
         if (result.err == "") {
+            guessedNums.push(input);
             round++;
             recordHistory(result);
             calculatePoints(result.cNums,result.cPos)
-            if (result.cPos == 4 || round > 13)
-                gameOver = true;
+            //if (result.cPos == 4 || round > 13)
+                //gameOver = true;
         }
         return result;
     }
 
     function countCorrectNums(userInput) {
         let numCount = 0;
+        let globalNumsObject = {
+            n0: 0,
+            n1: 0,
+            n2: 0,
+            n3: 0,
+            n4: 0,
+            n5: 0,
+            n6: 0,
+            n7: 0,
+        };
+        let inputNumsObject = {
+            n0: 0,
+            n1: 0,
+            n2: 0,
+            n3: 0,
+            n4: 0,
+            n5: 0,
+            n6: 0,
+            n7: 0,
+        };
         for (let i = 0; i < 4; i++) {
-            for (let j = 0; j < 4; j++) {
-                if (userInput[i] == global_nums[j])
-                    numCount++;
-            }
+            globalNumsObject["n" + global_nums[i]]++;
+            inputNumsObject["n" + userInput[i]]++;
         }
-        console.log("You got " + numCount + " correct numbers");
+        for (let i = 0; i < 9; i++) {
+            if ((globalNumsObject["n" + i] - inputNumsObject["n" + i]) == 0 || (globalNumsObject["n" + i] - inputNumsObject["n" + i]) > 0)
+                numCount += inputNumsObject["n" + i];
+            if ((globalNumsObject["n" + i] - inputNumsObject["n" + i]) < 0)
+                numCount += globalNumsObject["n" + i];
+        }
         return numCount;
     }
 
@@ -212,6 +251,7 @@ function MultiPlayerGame() {
         gold = 235;
         points = 0;
         goldPerTurn = 0;
+        guessedNums=[];
     }
 
     function getProvinces() {
