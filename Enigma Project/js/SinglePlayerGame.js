@@ -128,8 +128,6 @@ function SinglePlayerGame(level) {
         };
         for (let i = 0; i < 4; i++) {
             globalNumsObject["n" + global_nums[i]]++;
-        }
-        for (let i = 0; i < 4; i++) {
             inputNumsObject["n" + userInput[i]]++;
         }
         for (let i = 0; i < 9; i++) {
@@ -156,7 +154,7 @@ function SinglePlayerGame(level) {
     function checkVictoryConditions(input) {
         if (countCorrectPositions(input) == 4)
             return VICTORY.BRITISH;
-        if (round > 13)
+        if (round >= 13)
             return VICTORY.GERMAN;
         return VICTORY.NONE;
     }

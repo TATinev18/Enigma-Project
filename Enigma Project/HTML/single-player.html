@@ -24,26 +24,26 @@
     <!-----NAVBAR----->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" 
-          aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-            
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link active" href="index.html">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">About</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="login.html">Login</a>
-              </li>
-            </ul>
-          </div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
+                aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.html">Login</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-      </nav>
+    </nav>
     <!-----NAVBAR----->
 
     <!--CONTENT-->
@@ -62,42 +62,13 @@
 
                 </span>
                 <span style="display: inline-flex;">
-                    <button class="btn btn-dark" onclick="checkGameStatus()">submit</button>
+                    <button id="progressGameButton" class="btn btn-dark" onclick="checkGameStatus()">submit</button>
                 </span>
-            
-            
-            </div>
-            <hr>
-            <div class="row" id="history" style="position: absolute;top: 22%;left: 36%;">
-                    <div class="col-sm" style="background-color: burlywood;">
-                        One of three columns
-                    </div>
-                    <div class="col-sm" style="background-color: cornflowerblue;">
-                        One of three columns
-                    </div>
-                    <div class="col-sm" style="background-color: darkkhaki;">
-                        One of three columns
-                    </div>
-                </div>
-                
-            
 
-            <div id="history">
-                <p id="1"></p>
-                <p id="2"></p>
-                <p id="3"></p>
-                <p id="4"></p>
-                <p id="5"></p>
-                <p id="6"></p>
-                <p id="7"></p>
-                <p id="8"></p>
-                <p id="9"></p>
-                <p id="10"></p>
-                <p id="11"></p>
-                <p id="12"></p>
-                <p id="13"></p>
-                <p id="over"></p>
             </div>
+            <p id="error"></p>
+            <hr>
+            <div id="history"></div>
         </div>
     </div>
 

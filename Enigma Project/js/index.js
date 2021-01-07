@@ -1,19 +1,33 @@
+// 🍝🍝🍝 WARNING SPAGHETTI CODE AHEAD 🍝🍝🍝
+
 let game = new SinglePlayerGame(1);
 game.generateGameNumbers();
 
 function displayHistory() {
     let history = game.getHistory();
     console.log(history);
+    let str='';
     for (i in history) {
-        let element = '#' + (history[i].round + 1).toString();
-        $(element).text(
-            history[i].cNums +
-            " " +
-            history[i].input[0] + history[i].input[1] + history[i].input[2] + history[i].input[3] +
-            " " +
-            history[i].cPos
-        );
+        str+='<div class="row" style=";top: 22%;left: 36%;"><div class="col-sm" style="background-color: burlywood;">'+printSquares(history[i].cNums)+'</div><div class="col-sm" style="background-color: cornflowerblue;"><span id="">'+history[i].input[0] + history[i].input[1] + history[i].input[2] + history[i].input[3]+'</span></div><div class="col-sm" style="background-color: darkkhaki;">'+printSquares(history[i].cPos)+'</div></div>';
+        //str+="</div>";
+        console.log(str);
     }
+    $("#history").html(str);
+}
+
+function printSquares(correctSquareCount) {
+    let res="";
+    for(let i=0;i<correctSquareCount;i++) {
+        res+="🟩";
+    }
+    for(let i=0;i<4-correctSquareCount;i++) {
+        res+="🟥";
+    }
+    return res;
+}
+
+function reportError(error) {
+    $("#error").text(error);
 }
 
 function extractNumbers() {
@@ -27,10 +41,15 @@ function extractNumbers() {
 }
 
 function checkVictoryConditions(input) {
-    if (game.checkVictoryConditions(input)==VICTORY.BRITISH)
+    console.log(game.checkVictoryConditions(input));
+    if (game.checkVictoryConditions(input)==VICTORY.BRITISH) {
         $("#over").text("win");
-    if (game.checkVictoryConditions(input)==VICTORY.GERMAN)
+        $("#progressGameButton").attr("disabled",true);
+    }
+    if (game.checkVictoryConditions(input)==VICTORY.GERMAN) {
         $("#over").text("lose");
+        $("#progressGameButton").attr("disabled",true);
+    }
 }
 
 function checkGameStatus() {
@@ -38,12 +57,12 @@ function checkGameStatus() {
     let result = game.checkUserInput(input);
     if(result.err)
     {
-        console.log(result.err);
+        reportError(result.err);
         return 0;
     }
     displayHistory();
     console.log(result);
-    checkVictoryConditions(result);
+    checkVictoryConditions(input);
     if(game.isGameOver())
     {
         game.reset();
