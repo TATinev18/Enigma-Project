@@ -1,5 +1,5 @@
 const server = require('http').createServer();
-let app = require("./MultiPlayerGame.js");
+let app = require("./MultiPlayerGame");
 let britains = [];
 let germans = [];
 var roomCount = 0;

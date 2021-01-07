@@ -20,8 +20,8 @@ function MultiPlayerGame() {
     }
 
     let DAMAGE = {
-        plane: 7,
-        ship: 5,
+        plane: 5,
+        ship: 7,
         LC: 2
     }
 

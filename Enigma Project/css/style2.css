@@ -7,7 +7,7 @@ html {
     background-position: center;
     background-repeat: repeat;
     background-size: cover;
-    background-image: url('boats2.jpg');
+    background-image: url('../photos/boats2.jpg');
 }
 
 .fade-in-animation {

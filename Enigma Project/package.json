@@ -11,5 +11,8 @@
     "devDependencies": {
         "chai": "^4.2.0",
         "mocha": "^8.2.1"
+    },
+    "dependencies": {
+        "socket.io": "^3.0.5"
     }
 }

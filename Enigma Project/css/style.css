@@ -2,14 +2,14 @@
   background-position: center;
   background-repeat: repeat;
   background-size: cover;
-  background-image:url('PHOTOS/boats.jpg');
+  background-image:url('../photos/boats.jpg');
 }
 
 .bg_image_secondary{
   background-position: center;
   background-repeat: repeat;
   background-size: cover;
-  background-image:url('PHOTOS/boats2.jpg');
+  background-image:url('../photos/boats2.jpg');
   }
 
   .fade-in-animation{
