@@ -1,5 +1,3 @@
-// 🍝🍝🍝 WARNING SPAGHETTI CODE AHEAD 🍝🍝🍝
-
 let game = new SinglePlayerGame(1);
 game.generateGameNumbers();
 

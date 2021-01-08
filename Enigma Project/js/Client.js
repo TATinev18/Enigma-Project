@@ -5,16 +5,24 @@ let game = new MultiPlayerGame();
 
 function displayHistory(history) {
     console.log(history);
+    let str='';
     for (i in history) {
-        let element = '#' + (history[i].round + 1).toString();
-        $(element).text(
-            history[i].cNums +
-            " " +
-            history[i].input[0] + history[i].input[1] + history[i].input[2] + history[i].input[3] +
-            " " +
-            history[i].cPos
-        );
+        str+='<div class="row" style=";top: 22%;left: 36%;"><div class="col-sm" style="background-color: burlywood;">'+printSquares(history[i].cNums)+'</div><div class="col-sm" style="background-color: cornflowerblue;"><span id="">'+history[i].input[0] + history[i].input[1] + history[i].input[2] + history[i].input[3]+'</span></div><div class="col-sm" style="background-color: darkkhaki;">'+printSquares(history[i].cPos)+'</div></div>';
+        //str+="</div>";
+        console.log(str);
     }
+    $("#history").html(str);
+}
+
+function printSquares(correctSquareCount) {
+    let res="";
+    for(let i=0;i<correctSquareCount;i++) {
+        res+="🟩";
+    }
+    for(let i=0;i<4-correctSquareCount;i++) {
+        res+="🟥";
+    }
+    return res;
 }
 
 function extractNumbers() {
@@ -34,23 +42,16 @@ function checkVictoryConditions(input) {
         $("#over").text("lose");
 }
 
-function checkGameStatus() {
-    let input = extractNumbers();
-    $("#points").text(game.getPoints());
-    let result = game.checkUserInput(input);
-    if (result.err) {
-        console.log(result.err);
-        return 0;
-    }
-    displayHistory();
-    checkVictoryConditions(result);
-    if (game.isGameOver()) {
-        game.reset();
-        //clear
-    }
+function deselectScan() {
+    console.log("aaa");
+    $("#scan").text("Scan province for farm ( -10P )");
+    $("#G1, #G2, #G3, #G4, #G5").off().css("fill", "white").css("cursor", "auto");
+    $("#scan").data('clicked', false);
 }
 
 function scan() {
+    $("#scan").text("Cancel Scan");
+    $("#scan").data('clicked', true);
     $("#G1, #G2, #G3, #G4, #G5").css("fill", "yellow");
     for (let i = 1; i < 6; i++) {
         $("#G" + i).on({
@@ -64,14 +65,44 @@ function scan() {
                 $("#G1, #G2, #G3, #G4, #G5").off().css("fill", "white").css("cursor", "auto");
                 console.log(i);
                 socket.emit("scan",i);
+                deselectScan();
                 updateCurrency();
             }
         });
     }
 }
 
-function createFarm() {
+function deselectFarm() {
+    console.log("aaa");
+    $("#createFarm").text("Create Farm ( 200 G )");
+    $("#G1, #G2, #G3, #G4, #G5").off().css("fill", "white").css("cursor", "auto");
+    $("#createFarm").data('clicked', false);
+}
+
+function requestProvinces() {
+    let dataObj={};
+    socket.emit("getProvinces");
+    socket.on("receiveProvinces", async (data)=>{
+        dataObj=await data;
+    });
+    return dataObj;
+}
+
+function displayUsedProvinces(provinces) {
+    console.log(provinces);
+    for(let i=1;i<6;i++) {
+        if(provinces.ger[i].hasFarm)
+            $("#G"+i).css("fill","yellow");
+    }
+}
+
+function createFarm() { 
+    $("#createFarm").text("Cancel Farm");
+    $('#createFarm').data('clicked', true);
     $("#G1, #G2, #G3, #G4, #G5").css("fill", "green");
+    let a = requestProvinces();
+console.log(a);
+    
     for (let i = 1; i < 6; i++) {
         $("#G" + i).on({
             mouseenter: function () {
@@ -85,10 +116,12 @@ function createFarm() {
                 console.log(i);
                 socket.emit("createFarm",i);
                 updateCurrency();
+                $("#createFarm").text("Create Farm ( 200 G )");
             }
         });
     }
 }
+
 
 function hideElements(side) {
     if(side=="British") {

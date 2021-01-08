@@ -119,7 +119,7 @@
                     <button id="LC+" onclick="changeUtilityValues('LCDisplay','LCCost','+',125)">></button>
                     <span id="LCCost">0</span>
                 </div>
-                <button id="createFarm" onclick="createFarm()">create farm (200 gold)</button>
+                <button id="createFarm" >"Create Farm ( 200 G )"</button>
                 <button id="sendFleet" onclick="sendFleet()">send</button> <span id="total">0</span>
             </div>
             <div id="game" style="display:none">
@@ -132,7 +132,7 @@
                 <button onclick="chat(document.getElementById('send').value);">send chat</button>
                 <button id="setCode" onclick="setCode()">Set Code</button>
                 <button id="guess" onclick="guess()">guess</button>
-                <button id="scan" onclick="scan()">use scan (-10)</button>
+                <button id="scan">Scan province for farm ( -10P );</button>
                 <button id="ET" onclick="endTurn()">End Turn</button>
                 <div id="Map"></div>
                 <p id="points"></p>
@@ -252,6 +252,9 @@
             displayHistory(history);
             updateCurrency();
         });
+        //socket.on("receiveProvinces",(provinces)=>{
+        //    displayUsedProvinces(provinces);
+        //})
         socket.on("victory", (data) => {
             console.log(data);
             if (data.victory == "GERMAN") {
@@ -284,6 +287,10 @@
         $("#guess").attr("disabled", true);
         $("#ET").attr("disabled", true);
         $("#scan").attr("disabled", true);
+        $("#createFarm").data("clicked",false);
+        $("#scan").data("clicked",false);
+        deselectFarm();
+        deselectScan();
         lockFleetMenu(1);
         socket.emit("endTurn");
     }
@@ -307,5 +314,23 @@
         console.log("emit");
         socket.emit("fleet", fleet);
     }
+
+    $('#createFarm').click(function() {
+        var $foo = $(this);
+        if (!$foo.data('clicked')) {
+            createFarm();
+        } else {
+            deselectFarm();
+        }
+    });
+
+    $('#scan').click(function() {
+        var $foo = $(this);
+        if (!$foo.data('clicked')) {
+            scan()
+        } else {
+            deselectScan();
+        }
+    });
 </script>
 </html>

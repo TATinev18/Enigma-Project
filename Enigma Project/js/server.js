@@ -1,7 +1,7 @@
 const app = require('express')();
 var bodyParser = require('body-parser')
 const server = require('http').createServer(app);
-let register = require('./register');
+//let register = require('./register');
 var path = require('path');
 let MP = require("./MultiPlayerGame");
 let britains = [];
@@ -13,12 +13,13 @@ const io = require("socket.io")(server, {
         methods: ["GET", "POST"]
     }
 });
-
+////////////////////////////////// VANKA SPACE////////////////////
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 
 // parse application/json
 app.use(bodyParser.json())
+////////////////////////////////////////////////////////////////////
 
 function matchMake() {
     if (germans.length == 0 || britains.length == 0)
@@ -50,7 +51,7 @@ app.post('/register',function (request,res) {
 })
 
 app.get('/',function (request,response) {
-    response.sendFile(path.join(__dirname + '/../HTML/register.html'));
+    //response.sendFile(path.join(__dirname + '/../HTML/register.html'));
 })
 function isValidData(obj,arg,expectedVal) {
     let status = {
@@ -103,6 +104,9 @@ io.on('connection', socket => {
             users.ger.socket.on("getCode",(code)=>{
                 console.log(code);
                 game.setCode(code);
+            });
+            users.ger.socket.on("getProvinces", ()=>{
+                users.ger.socket.emit("receiveProvinces", game.getProvinces());
             });
 
             users.ger.socket.on("chat", (msg) => {
