@@ -1,5 +1,9 @@
-const server = require('http').createServer();
-let app = require("./MultiPlayerGame");
+const app = require('express')();
+var bodyParser = require('body-parser')
+const server = require('http').createServer(app);
+let register = require('./register');
+var path = require('path');
+let MP = require("./MultiPlayerGame");
 let britains = [];
 let germans = [];
 var roomCount = 0;
@@ -9,6 +13,12 @@ const io = require("socket.io")(server, {
         methods: ["GET", "POST"]
     }
 });
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
 
 function matchMake() {
     if (germans.length == 0 || britains.length == 0)
@@ -34,7 +44,14 @@ function matchMake() {
 function retry(socket, msg) {
     socket.emit("retry", msg);
 }
+app.post('/register',function (request,res) {
 
+    register.register(request);
+})
+
+app.get('/',function (request,response) {
+    response.sendFile(path.join(__dirname + '/../HTML/register.html'));
+})
 function isValidData(obj,arg,expectedVal) {
     let status = {
         err: ""
@@ -79,7 +96,7 @@ io.on('connection', socket => {
             io.to(users.room).emit('begin');
             users.ger.socket.emit("forceTurn");
 
-            let game = new app.MultiPlayerGame();
+            let game = new MP.MultiPlayerGame();
 
             game.initMapProvinces();
 
@@ -183,7 +200,7 @@ server.listen(8080);
 -client match make $
 -chat $
 =====BEGIN GAME====
--german enter number => end turn  
+-german enter number => end turn
 -british guess number and/or use points for scan $
 -scan (server) $
 -scan (client) &

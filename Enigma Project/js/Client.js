@@ -1,5 +1,4 @@
 //const { Socket } = require("socket.io");
-
 const { Socket } = require("socket.io");
 
 let game = new MultiPlayerGame();
@@ -100,7 +99,7 @@ function hideElements(side) {
     if(side=="German") {
         $("#scan").css("display","none");
         $("#guess").css("display","none");
-        
+
     }
 }
 

@@ -7,7 +7,10 @@ let config = {
     database: 'enigmaproject',
     port: 3306
 };
-let connection =mysql.createConnection(config);
-module.exports ={
-    connection : mysql.createConnection(config)
+try {
+    var connection =mysql.createConnection(config);
+}catch (e) {
+    console.log("Chupq se po vreme na requere-a "+e);
 }
+
+module.exports.connection = connection;

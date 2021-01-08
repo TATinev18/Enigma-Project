@@ -1,11 +1,18 @@
-let server = require('http').createServer();
 let db = require('./DB');
 let bcrypt = require('bcrypt');
 let con = db.connection;
 
 
+try {
+    con.connect(function(err) {
+        if (err) throw err;
+        console.log("Connected!");
+    });
+}catch (e) {
+    console.log("Chupq se v register"+e);
+}
 
-
+module.exports.register = register;
 
 function validation(username,email,password,confirmPassword){
     if (email==""){
@@ -24,11 +31,12 @@ function validation(username,email,password,confirmPassword){
     return 1;
 }
 
-function register(){
-    let username = document.getElementsByName("username").value();
-    let email = document.getElementsByName("username").value();
-    let password = document.getElementsByName("username").value();
-    let confirmPassword = document.getElementsByName("username").value();
+function register(request){
+    let username = request.body.username;
+    let email = request.body.email;
+    let password = request.body.password;
+    let confirmPassword = request.body.confirmPassword;
+    console.log("SLIVI");
     if (!validation(username,email,password,confirmPassword)){
         return 0;
     }
@@ -55,9 +63,4 @@ function register(){
             })
         }
     });
-}
-try {
-    server.listen(6969);
-} catch (error) {
-    console.error(error);
 }
