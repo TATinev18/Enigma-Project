@@ -9,8 +9,7 @@ function SinglePlayerGame() {
     var global_nums = [];
     var history = [];
     var guessedNums = [];
-    var gameOver = false;
-    var level=1;
+    var level = 1;
 
     function generateRandomNumbers() {
 
@@ -47,10 +46,11 @@ function SinglePlayerGame() {
                 global_nums = generateRandomNumbers();
             }
             while (checkNumbersRepeat(global_nums))
-            console.log(global_nums);
-        } else
+        }
+        if (level == 2) {
             global_nums = generateRandomNumbers();
-        return global_nums;
+        }
+        console.log("RESULT: " + global_nums);
     }
 
     function checkUserInput(input) {
@@ -79,16 +79,16 @@ function SinglePlayerGame() {
             return result;
         }
 
-        for(let i=0;i<4;i++) {
-            if( input[i]<0 || input[i]>7) {
+        for (let i = 0; i < 4; i++) {
+            if (input[i] < 0 || input[i] > 7) {
                 result.err = "Number is not in range from 0 to 7";
                 return result;
             }
         }
 
-        for(let i=0;i<guessedNums.length;i++) {
-            if(JSON.stringify(input)==JSON.stringify(guessedNums[i])) {
-                result.err="Number has already been guessed! Try a different one!";
+        for (let i = 0; i < guessedNums.length; i++) {
+            if (JSON.stringify(input) == JSON.stringify(guessedNums[i])) {
+                result.err = "Number has already been guessed! Try a different one!";
                 return result;
             }
         }
@@ -98,8 +98,6 @@ function SinglePlayerGame() {
             console.log(guessedNums);
             round++;
             recordHistory(result);
-            //if (result.cPos == 4 || round > 13)
-                //gameOver = true;
         }
 
         return result;
@@ -148,10 +146,6 @@ function SinglePlayerGame() {
         return posCount;
     }
 
-    function isGameOver() {
-        return gameOver
-    }
-
     function checkVictoryConditions(input) {
         if (countCorrectPositions(input) == 4)
             return VICTORY.BRITISH;
@@ -166,15 +160,11 @@ function SinglePlayerGame() {
     }
 
     function reset() {
-        global_nums = [];
+        generateGameNumbers();
+        console.log(global_nums);
         history = [];
         round = 0;
-        gameOver = false;
         guessedNums = [];
-    }
-
-    function getRounds() {
-        return round;
     }
 
     function getHistory() {
@@ -182,22 +172,25 @@ function SinglePlayerGame() {
     }
 
     function updateLevel(lvl) {
-        level=lvl;
+        level = lvl;
+    }
+
+    function getLevel() {
+        return level;
     }
 
     return {
-        generateRandomNumbers,
         checkNumbersRepeat,
-        generateGameNumbers,
+        checkUserInput,
         checkVictoryConditions,
+        generateGameNumbers,
+        generateRandomNumbers,
+        getHistory,
+        getLevel,
+        isNumericInput,
         recordHistory,
         reset,
-        getRounds,
-        getHistory,
-        checkUserInput,
-        isGameOver,
-        isNumericInput,
-        updateLevel
+        updateLevel,
     }
 }
 

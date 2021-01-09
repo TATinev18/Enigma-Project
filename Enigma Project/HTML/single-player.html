@@ -50,7 +50,9 @@
 
 
         <div class="container" style="background-color: rgba(99, 99, 99, 0.815); padding: 20%;">
-
+            <div id="lvl2box" style="display:none"><span>Great Job! Continue to level 2, where numbers can repeat</span><button onclick="resetUI()" id="level2">Continue</button></div>
+            <div id="winbox" style="display:none"><span>Congratulations! you beat our singleplayer game! You can either choose to play again, or for a more exciting veersion of the game, play multiplayer.</span><button onclick="resetGame()" id="resetGame">Play again</button><a href="multi-player.html"><button id="online">Play online</button></a></div>
+            <div id="retry" style="display: none;"><span>You couldn't stop the germans in time, too bad! You can always try again!</span><button onclick="resetUI()">Retry</button></div>
             <div style="position: absolute;top: 17%;left: 44%;">
                 <span style="display: inline-flex;">
                     <form onsubmit="return false;">

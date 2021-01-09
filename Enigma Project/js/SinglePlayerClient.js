@@ -25,7 +25,10 @@ function printSquares(correctSquareCount) {
 }
 
 function reportError(error) {
-    $("#error").text(error);
+    if(error=="")
+        $("#error").text("");
+    else
+        $("#error").text(error);
 }
 
 function extractNumbers() {
@@ -44,15 +47,39 @@ function checkVictoryConditions(input) {
         $("#over").attr("src","../photos/br_victory.png");
         $("#over").css("height","400px");
         $("#progressGameButton").attr("disabled",true);
+        
+        if(game.getLevel()==1) {
+            $("#lvl2box").css("display","block");
+            game.updateLevel(2);
+        } else {
+            $("#winbox").css("display","block");
+        }
         game.reset();
-        game.updateLevel(2);
+        
     }
     if (game.checkVictoryConditions(input)==VICTORY.GERMAN) {
         $("#over").attr("src","../photos/gr_victory.png");
         $("#over").css("height","400px");
         $("#progressGameButton").attr("disabled",true);
+        $("#retry").css("display","block");
         game.reset();
     }
+}
+
+function resetGame() {
+    game.updateLevel(1);
+    game.reset();
+    resetUI();
+}
+
+function resetUI() {
+    $("#over").attr("src","");
+    $("#history").empty();
+    $("#error").text("");
+    $("#lvl2box").css("display","none");
+    $("#progressGameButton").attr("disabled",false);
+    $("#winbox").css("display","none");
+    $("#retry").css("display","none");
 }
 
 function checkGameStatus() {
