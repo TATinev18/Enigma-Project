@@ -12,6 +12,7 @@
     <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
     <script src="../js/map.js"></script>
     <script src="../js/Client.js"></script>
+    <script src="../js/secrets.js"></script>
 </head>
 
 <body>
@@ -52,7 +53,7 @@
                         </h2>
                     </div>
 
-                    <div style="position: absolute;top: 28%;left: 30%;">
+                    <div  class="container">
                         <div class="row">
                             <div class="form-check">
                                 <div class="form-check">
@@ -65,6 +66,8 @@
                                     </label>
                                 </div>
                             </div>
+                            <div class="col-md-6"><div class="text-center"><img  id="germanSide" src="../photos/germanySide.png"></div></div>
+                            <div class="col-md-6"><div class="text-center"><img id="britishSide" src="../photos/britainSide.png"></div></div>
                         </div>
 
 
@@ -185,13 +188,16 @@
     function findMatch() {
         let side = document.querySelector('[name="side"]:checked');
         let user = document.getElementById("user").value;
+        $("#germanSide").click(()=>{side.value="German"});
+        $("#britishSide").click(()=>{side.value="British"});
 
         let data = {
             side: side.value,
             matchType: "unranked",
             user: user
         };
-
+        
+        //socket = io('http://' + IP_ADDRESS + ':' + PORT);
         socket = io('http://localhost:8080');
         socket.emit("matchMake", data);
 

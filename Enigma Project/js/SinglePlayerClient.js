@@ -41,12 +41,17 @@ function extractNumbers() {
 function checkVictoryConditions(input) {
     console.log(game.checkVictoryConditions(input));
     if (game.checkVictoryConditions(input)==VICTORY.BRITISH) {
-        $("#over").text("win");
+        $("#over").attr("src","../photos/br_victory.png");
+        $("#over").css("height","400px");
         $("#progressGameButton").attr("disabled",true);
+        game.reset();
+        game.updateLevel(2);
     }
     if (game.checkVictoryConditions(input)==VICTORY.GERMAN) {
-        $("#over").text("lose");
+        $("#over").attr("src","../photos/gr_victory.png");
+        $("#over").css("height","400px");
         $("#progressGameButton").attr("disabled",true);
+        game.reset();
     }
 }
 
@@ -61,9 +66,5 @@ function checkGameStatus() {
     displayHistory();
     console.log(result);
     checkVictoryConditions(input);
-    if(game.isGameOver())
-    {
-        game.reset();
-        //clear
-    }
+
 }

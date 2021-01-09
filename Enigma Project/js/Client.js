@@ -1,8 +1,6 @@
 //const { Socket } = require("socket.io");
 const { Socket } = require("socket.io");
 
-let game = new MultiPlayerGame();
-
 function displayHistory(history) {
     console.log(history);
     let str='';

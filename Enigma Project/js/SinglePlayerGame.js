@@ -4,12 +4,13 @@ let VICTORY = {
     NONE: 0
 }
 
-function SinglePlayerGame(level) {
+function SinglePlayerGame() {
     var round = 0;
     var global_nums = [];
     var history = [];
     var guessedNums = [];
     var gameOver = false;
+    var level=1;
 
     function generateRandomNumbers() {
 
@@ -180,6 +181,10 @@ function SinglePlayerGame(level) {
         return history;
     }
 
+    function updateLevel(lvl) {
+        level=lvl;
+    }
+
     return {
         generateRandomNumbers,
         checkNumbersRepeat,
@@ -191,7 +196,8 @@ function SinglePlayerGame(level) {
         getHistory,
         checkUserInput,
         isGameOver,
-        isNumericInput
+        isNumericInput,
+        updateLevel
     }
 }
 
