@@ -14,32 +14,16 @@ try {
 
 module.exports.register = register;
 
-function validation(username,email,password,confirmPassword){
-    if (email==""){
-        document.getElementById("emailErr").innerHTML = "Please provide an email";
-        return 0;
-    }else if (username.length<6){
-        document.getElementById("usernameErr").innerHTML = "Your username must be at least 6 characters long";
-        return 0;
-    }else if (password.length<6) {
-        document.getElementById("passwordErr").innerHTML = "Your username must be at least 6 characters long";
-        return 0;
-    }else if (confirmPassword!=password) {
-        document.getElementById("confirmPasswordErr").innerHTML = "Passwords does not match";
-        return 0;
-    }
-    return 1;
-}
+
 
 function register(request){
+    console.log(request);
+    return 0;
     let username = request.body.username;
     let email = request.body.email;
     let password = request.body.password;
     let confirmPassword = request.body.confirmPassword;
     console.log("SLIVI");
-    if (!validation(username,email,password,confirmPassword)){
-        return 0;
-    }
     let hashPassword = bcrypt.hashSync(password, 10);
     con.query('SELECT * FROM users WHERE username=? OR email=?', [username,email], function (error, result, fields) {
         console.log("Result: "+result);

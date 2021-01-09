@@ -1,5 +1,6 @@
-const app = require('express')();
+const express = require('express');
 var bodyParser = require('body-parser')
+var app = express();
 const server = require('http').createServer(app);
 //let register = require('./register');
 var path = require('path');
@@ -16,6 +17,7 @@ const io = require("socket.io")(server, {
 ////////////////////////////////// VANKA SPACE////////////////////
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
+// app.use(express.static(path.join(__dirname, 'public')));
 
 // parse application/json
 app.use(bodyParser.json())
@@ -51,7 +53,7 @@ app.post('/register',function (request,res) {
 })
 
 app.get('/',function (request,response) {
-    //response.sendFile(path.join(__dirname + '/../HTML/register.html'));
+    response.sendFile(path.join(__dirname + '/../HTML/register.html'));
 })
 function isValidData(obj,arg,expectedVal) {
     let status = {

@@ -1,5 +1,5 @@
 const assert = require('chai').assert;
-const app = require('../js/SinglePlayerGame');
+const app = require('../../Enigma Project/js/SinglePlayerGame');
 
 let genRandNumRes = app.SinglePlayerGame(1).generateGameNumbers();
 let checkNumRepRes = app.SinglePlayerGame(1).checkNumbersRepeat(genRandNumRes);
