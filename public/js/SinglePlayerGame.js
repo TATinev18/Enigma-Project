@@ -156,7 +156,6 @@ function SinglePlayerGame() {
 
     function recordHistory(result) {
         history.push(result);
-        return result;
     }
 
     function reset() {
