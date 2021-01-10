@@ -95,7 +95,7 @@ function SinglePlayerGame() {
 
         if (result.err == "") {
             guessedNums.push(input);
-            console.log(guessedNums);
+            //console.log(guessedNums);
             round++;
             recordHistory(result);
         }

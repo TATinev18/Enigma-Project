@@ -38,6 +38,28 @@ describe('Single player', function() {
 
         })
 
+        describe('isNumericInput()', function() {
+            it('should return true when a number is given', function() {
+                assert.equal(app.SinglePlayerGame().isNumericInput(1234), true);
+            });
+
+            it('should return false when a string is given', function() {
+                assert.equal(app.SinglePlayerGame().isNumericInput("test"), false);
+            });
+
+        })
+
+        describe('checkNumbersRepeat()', function() {
+
+            it('should return true if they repeat', function() {
+                assert.equal(app.SinglePlayerGame().checkNumbersRepeat([1, 2, 3, 3]), true);
+            });
+
+            it('should return false if they don\'t repeat', function() {
+                assert.equal(app.SinglePlayerGame().checkNumbersRepeat([1, 2, 3, 4]), false);
+            });
+
+        })
     })
 });
 
