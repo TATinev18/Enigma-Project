@@ -1,7 +1,7 @@
 const express = require('express');
 var bodyParser = require('body-parser')
 let db = require('./DB');
-let bcrypt = require('bcrypt');
+var crypto = require('crypto');
 var app = express();
 const server = require('http').createServer(app);
 let register = require('./register');
@@ -11,6 +11,8 @@ let con = db.connection;
 let britains = [];
 let germans = [];
 var roomCount = 0;
+var hash = crypto.createHash('sha256');
+let res;
 const io = require("socket.io")(server, {
     cors: {
         origin: "*",
@@ -53,23 +55,42 @@ function matchMake() {
 function retry(socket, msg) {
     socket.emit("retry", msg);
 }
-app.post('/register',function (request,res) {
+
+app.post('/login',function (request,response) {
+    let username = request.body.username;
+    let password = request.body.password;
+    console.log(username+' '+password);
+    let hashPassword = crypto.createHash('sha256').update(password).digest('base64');
+    console.log(hashPassword);
+    con.query('SELECT * FROM users WHERE username=? AND password=?',[username,hashPassword],function (error,result,field) {
+        if (error!=null && error!=undefined){
+            console.log(error);
+        }
+        console.log(result);
+        if (result.length>0){
+            if (result[0].username==username&&result[0].password ==hashPassword){
+                response.send('logged');
+            }
+        }
+    })
+})
+
+app.post('/register',function (request,response) {
     let username = request.body.username;
     let email = request.body.email;
     let password = request.body.password;
-    let confirmPassword = request.body.confirmPassword;
     console.log("SLIVI");
-    let hashPassword = bcrypt.hashSync(password, 10);
+    let hashPassword = crypto.createHash('sha256').update(password).digest('base64');
     con.query('SELECT * FROM users WHERE username=? OR email=?', [username,email], function (error, result, fields) {
         if (error!=null && error!=undefined){
             console.log(error);
         }
         if (result.length>0){
             if (result[0].username==username){
-                res.send('There is already an account with that username');
+                res='username'
             }
             if (result[0].email ==email){
-                res.send('There is already an account with that email');
+                res = 'email';
             }
             return res;
         }
@@ -80,7 +101,7 @@ app.post('/register',function (request,res) {
                 if (error!=null && error!=undefined){
                     console.log(error);
                 }else{
-                 res.send('0');
+                 res = '0';
                 }
             })
         }
@@ -88,7 +109,7 @@ app.post('/register',function (request,res) {
 })
 
 app.get('/',function (request,response) {
-   response.sendFile(path.join(__dirname + '/../../public/HTML/register.html'));
+   response.sendFile(path.join(__dirname + '/../../public/HTML/login.html'));
 })
 function isValidData(obj,arg,expectedVal) {
     let status = {
@@ -231,6 +252,10 @@ io.on('connection', socket => {
                 }
             });
         }
+    });
+    socket.on('register', ()=>{
+            console.log("SERVER ");
+          socket.emit('serverValidation',res);
     });
 });
 

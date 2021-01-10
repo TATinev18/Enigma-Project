@@ -19,6 +19,8 @@
     document.getElementById('submit').addEventListener("click", function(event){
         if (validationRegister()==0){
             event.preventDefault();
+        }else{
+            reciveServerValidation();
         }
     });
 
