@@ -1,46 +1,93 @@
-.bg_image_main{
-  background-position: center;
-  background-repeat: repeat;
-  background-size: cover;
-  background-image:url('../photos/boats.jpg');
+body,
+html {
+    height: 100%;
 }
 
-.bg_image_secondary{
-  background-position: center;
-  background-repeat: repeat;
-  background-size: cover;
-  background-image:url('../photos/boats2.jpg');
-  }
+.bg_image_main {
+    background-position: center;
+    background-repeat: repeat;
+    background-size: cover;
+    background-image: url('../photos/boats.jpg');
+}
 
-  .fade-in-animation{
+.bg_image_secondary {
+    background-position: center;
+    background-repeat: repeat;
+    background-size: cover;
+    background-image: url('../photos/boats2.jpg');
+}
+
+.fade-in-animation {
     animation: fadeIn ease 1s;
-  -webkit-animation: fadeIn ease 1s;
-  -moz-animation: fadeIn ease 1s;
-  -o-animation: fadeIn ease 1s;
-  -ms-animation: fadeIn ease 1s;
-  }
-  
-  @keyframes fadeIn {
-  0% {opacity:0;}
-  100% {opacity:1;}
-  }
-  
-  @-moz-keyframes fadeIn {
-  0% {opacity:0;}
-  100% {opacity:1;}
-  }
-  
-  @-webkit-keyframes fadeIn {
-  0% {opacity:0;}
-  100% {opacity:1;}
-  }
-  
-  @-o-keyframes fadeIn {
-  0% {opacity:0;}
-  100% {opacity:1;}
-  }
-  
-  @-ms-keyframes fadeIn {
-  0% {opacity:0;}
-  100% {opacity:1;}
-  }
+    -webkit-animation: fadeIn ease 1s;
+    -moz-animation: fadeIn ease 1s;
+    -o-animation: fadeIn ease 1s;
+    -ms-animation: fadeIn ease 1s;
+}
+
+#germanSide,
+#britishSide {
+    position: fixed;
+    height: 300px;
+    transition: transform 1s;
+    box-shadow: 0 4px 8px 0 black, 0 6px 20px 0 black;
+}
+
+#germanSide:hover,
+#britishSide:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+}
+
+#germanSide:hover {
+    box-shadow: 0 4px 8px 0 rgb(163, 33, 33), 0 6px 20px 0 rgb(163, 33, 33);
+}
+
+#britishSide:hover {
+    box-shadow: 0 4px 8px 0 rgb(32, 80, 184), 0 6px 20px 0 rgb(32, 80, 184);
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-o-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-ms-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}

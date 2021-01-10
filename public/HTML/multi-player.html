@@ -3,7 +3,7 @@
 
 <head>
     <title>Title</title>
-    <link rel="stylesheet" href="../css/style2.css">
+    <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
@@ -53,49 +53,25 @@
                         </h2>
                     </div>
 
-                    <div  class="container">
-                        <div class="row">
-                            <div class="form-check">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" id="Germans" name="side" value="German">
-                                    <label class="form-check-label" for="Germans">
-                                     <h6 class="display-6" >
-                                         German
-                                     </h6>
-                          
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-6"><div class="text-center"><img  id="germanSide" src="../photos/germanySide.png"></div></div>
-                            <div class="col-md-6"><div class="text-center"><img id="britishSide" src="../photos/britainSide.png"></div></div>
-                        </div>
-
-
-                        <div class="row">
-                            <div class="form-check">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" id="Great Britain" name="side" value="British">
-                                    <label class="form-check-label" for="Great Britain">
-                                                <h6 class="display-6" >
-                                                Britains
-                                                </h6>
-                                         </label>
-                                </div>
-                            </div>
-                        </div>
-                        <br>
+                    <div class="container" style="position: absolute;top: 25%;left: 20%;">
                         <span style="display: inline-flex;">
                             <div class="form-group mx-sm-1 mb-3">
 
                             <input type="text" class="form-control" id="user" placeholder="username">
                         </div>
-                        </span>
-
-                        <span style="display: inline-flex;">
+                        </span><span style="display: inline-flex;">
                             <button type="submit" class="btn btn-primary mb-2">Unranked</button>
                         </span>
+                        <br>
+                        <div class="row">
 
-
+                            <div class="col-md-4">
+                                <div class="text-center"><img id="germanSide" src="../photos/germanySide.png"></div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="text-center"><img id="britishSide" src="../photos/britainSide.png"></div>
+                            </div>
+                        </div>
                     </div>
 
 
@@ -122,7 +98,7 @@
                     <button id="LC+" onclick="changeUtilityValues('LCDisplay','LCCost','+',125)">></button>
                     <span id="LCCost">0</span>
                 </div>
-                <button id="createFarm" >"Create Farm ( 200 G )"</button>
+                <button id="createFarm">"Create Farm ( 200 G )"</button>
                 <button id="sendFleet" onclick="sendFleet()">send</button> <span id="total">0</span>
             </div>
             <div id="game" style="display:none">
@@ -188,15 +164,19 @@
     function findMatch() {
         let side = document.querySelector('[name="side"]:checked');
         let user = document.getElementById("user").value;
-        $("#germanSide").click(()=>{side.value="German"});
-        $("#britishSide").click(()=>{side.value="British"});
+        $("#germanSide").click(() => {
+            side.value = "German"
+        });
+        $("#britishSide").click(() => {
+            side.value = "British"
+        });
 
         let data = {
             side: side.value,
             matchType: "unranked",
             user: user
         };
-        
+
         //socket = io('http://' + IP_ADDRESS + ':' + PORT);
         socket = io('http://localhost:8080');
         socket.emit("matchMake", data);
@@ -293,8 +273,8 @@
         $("#guess").attr("disabled", true);
         $("#ET").attr("disabled", true);
         $("#scan").attr("disabled", true);
-        $("#createFarm").data("clicked",false);
-        $("#scan").data("clicked",false);
+        $("#createFarm").data("clicked", false);
+        $("#scan").data("clicked", false);
         deselectFarm();
         deselectScan();
         lockFleetMenu(1);
@@ -339,4 +319,5 @@
         }
     });
 </script>
+
 </html>
