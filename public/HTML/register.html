@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="../css/style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="../js/validations.js"></script>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
@@ -49,7 +49,7 @@
         <div class="container" style="background-color: rgba(172, 172, 172, 0.918); padding: 15%;">
             <br>
 
-            <form action="Javascript:validationRegister()">
+            <form method="post" action="/register">
 
                 <div class="row mb-4">
                     <div class="col">
@@ -61,30 +61,30 @@
                 </div>
 
                 <div class="form-outline mb-4">
-                    <input type="text" name="username" class="form-control" placeholder="USERNAME">
+                    <input type="text" name="username" class="form-control" placeholder="USERNAME" required>
                     <span id="usernameErr" class="errorTxt"></span>
                 </div>
                 <div class="form-outline mb-4">
-                    <input type="email" name="email" class="form-control" placeholder="E-mail">
+                    <input type="email" name="email" class="form-control" placeholder="E-mail" required>
                     <span id="emailErr" class="errorTxt"></span>
                 </div>
 
 
                 <div class="form-outline mb-4">
-                    <input type="password" name="password" class="form-control" placeholder="PASSWORD" id="password">
+                    <input type="password" name="password" class="form-control" placeholder="PASSWORD" id="password" required>
                     <span id="passwordErr" class="errorTxt"></span>
                 </div>
                 <div class="form-outline mb-4">
-                    <input type="password" name="confirmPassword" class="form-control" placeholder="CONFIRM PASSWORD">
+                    <input type="password" name="confirmPassword" class="form-control" placeholder="CONFIRM PASSWORD" required>
                     <span id="confirmPasswordErr" class="errorTxt"></span>
                 </div>
 
-                <button type="submit" value="Submit" class="btn btn-block mb-4" style="background-color: rgba(73, 219, 68, 0.829);">Sign up</button>
+                <button type="submit" value="Submit" class="btn btn-block mb-4" id="submit" style="background-color: rgba(73, 219, 68, 0.829);">Sign up</button>
             </form>
 
         </div>
     </div>
 
 </body>
-
+<script type="text/javascript" src="../js/validations.js"></script>
 </html>

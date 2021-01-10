@@ -1,10 +1,13 @@
 const express = require('express');
 var bodyParser = require('body-parser')
+let db = require('./DB');
+let bcrypt = require('bcrypt');
 var app = express();
 const server = require('http').createServer(app);
-//let register = require('./register');
+let register = require('./register');
 var path = require('path');
 let MP = require("./MultiPlayerGame");
+let con = db.connection;
 let britains = [];
 let germans = [];
 var roomCount = 0;
@@ -17,9 +20,12 @@ const io = require("socket.io")(server, {
 ////////////////////////////////// VANKA SPACE////////////////////
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
-// app.use(express.static(path.join(__dirname, 'public')));
+app.use("/js", express.static(__dirname + "/../../public/js"));
+app.use("/css", express.static(__dirname + "/../../public/css"));
+app.use("/photos", express.static(__dirname + "/../../public/photos"));
+//app.set('view engine','ejs');
 
-// parse application/json
+// parse application/jso n
 app.use(bodyParser.json())
 ////////////////////////////////////////////////////////////////////
 
@@ -48,12 +54,41 @@ function retry(socket, msg) {
     socket.emit("retry", msg);
 }
 app.post('/register',function (request,res) {
+    let username = request.body.username;
+    let email = request.body.email;
+    let password = request.body.password;
+    let confirmPassword = request.body.confirmPassword;
+    console.log("SLIVI");
+    let hashPassword = bcrypt.hashSync(password, 10);
+    con.query('SELECT * FROM users WHERE username=? OR email=?', [username,email], function (error, result, fields) {
+        if (error!=null && error!=undefined){
+            console.log(error);
+        }
+        if (result.length>0){
+            if (result[0].username==username){
+                res.send('There is already an account with that username');
+            }
+            if (result[0].email ==email){
+                res.send('There is already an account with that email');
+            }
+            return res;
+        }
 
-    register.register(request);
+        else{
+            console.log(password);
+            con.query('INSERT INTO users (username, email, password) VALUES  (?, ?, ?)', [username,email,hashPassword], function (error, result, fields) {
+                if (error!=null && error!=undefined){
+                    console.log(error);
+                }else{
+                 res.send('0');
+                }
+            })
+        }
+    });
 })
 
 app.get('/',function (request,response) {
-    response.sendFile(path.join(__dirname + '/../HTML/register.html'));
+   response.sendFile(path.join(__dirname + '/../../public/HTML/register.html'));
 })
 function isValidData(obj,arg,expectedVal) {
     let status = {
@@ -199,7 +234,7 @@ io.on('connection', socket => {
     });
 });
 
-server.listen(8080);
+server.listen(8080)
 
 /*
 -client connection to server $
