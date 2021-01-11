@@ -161,15 +161,18 @@
         document.getElementById("total").innerHTML = (planeCost + shipCost + LCCost);
     }
 
-    function findMatch() {
-        let side = document.querySelector('[name="side"]:checked');
+        let side = {};//document.querySelector('[name="side"]:checked');
         let user = document.getElementById("user").value;
-        $("#germanSide").click(() => {
-            side.value = "German"
-        });
+        $("#germanSide").on("click",()=>{
+            console.log("german");
+            side.value = "German";
+        })
         $("#britishSide").click(() => {
+            console.log("bri");
             side.value = "British"
         });
+
+    function findMatch() {
 
         let data = {
             side: side.value,
@@ -177,8 +180,8 @@
             user: user
         };
 
-        //socket = io('http://' + IP_ADDRESS + ':' + PORT);
-        socket = io('http://localhost:8080');
+        socket = io('http://' + IP_ADDRESS + ':' + PORT);
+        //socket = io('http://localhost:8080');
         socket.emit("matchMake", data);
 
         socket.on("begin", () => {
