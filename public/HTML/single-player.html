@@ -42,16 +42,12 @@
     <!-----NAVBAR----->
 
     <!--CONTENT-->
-    <div class="bg_image_main fade-in-animation bg-image" style="height: 100%;">
+
+    <div class="bg_image_main fade-in-animation bg-image" style="height: 100%; ">
 
 
-        <div class="container" style="background-color: rgba(99, 99, 99, 0.815); padding: 20%;">
-            <div id="lvl2box" style="display:none"><span>Great Job! Continue to level 2, where numbers can repeat</span><button onclick="resetUI()" id="level2">Continue</button></div>
-            <div id="winbox" style="display:none"><span>Congratulations! you beat our singleplayer game! You can either choose to play again, or for a more exciting veersion of the game, play multiplayer.</span><button onclick="resetGame()" id="resetGame">Play again</button>
-                <a href="multi-player.html"><button id="online">Play online</button></a>
-            </div>
-            <div id="retry" style="display: none;"><span>You couldn't stop the germans in time, too bad! You can always try again!</span><button onclick="resetUI()">Retry</button></div>
-            <div style="position: absolute;top: 17%;left: 44%;">
+        <div class="container" style="background-color: rgba(99, 99, 99, 0.815); padding: 20%; ">
+            <div class="submit_btn">
                 <span style="display: inline-flex;">
                     <form onsubmit="return false;">
                         <div class="form-group">
@@ -64,14 +60,38 @@
                     <button id="progressGameButton" class="btn btn-dark" onclick="checkGameStatus()">submit</button>
                 </span>
 
+                <div id="lvl2box" style="display:none"><span>Great Job! Continue to level 2, where numbers can repeat</span><button onclick="resetUI()" id="level2">Continue</button></div>
+                <div id="winbox" style="display:none"><span>Congratulations! you beat our singleplayer game! You can either choose to play again, or for a more exciting veersion of the game, play multiplayer.</span><button onclick="resetGame()" id="resetGame">Play again</button>
+                    <a href="multi-player.html"><button id="online">Play online</button></a>
+                </div>
+                <div id="retry" style="display: none;"><span>You couldn't stop the germans in time, too bad! You can always try again!</span><button onclick="resetUI()">Retry</button></div>
             </div>
+
+
+
+
             <p id="error"></p>
             <div class="row">
                 <div class="col"><img class="mx-auto d-block" id="over"></div>
             </div>
-            <hr>
-            <div id="history"></div>
+            <div id="heading">
 
+                <hr>
+                <div style="border: 3px black solid; color:azure;">
+                    <div class="row" style="left: 36%; background-color: rgba(116, 134, 172, 0.89); box-sizing: content-box;
+                width: 100%;margin-left: 0px;">
+                        <div class="col-sm guess1">Guessed position</div>
+                        <div class="col-sm guess2">Your input</div>
+                        <div class="col-sm guess3">Guessed numbers</div>
+                        <hr>
+                    </div>
+                    <div id="history" style="background-color: rgba(116, 134, 172, 0.89);"></div>
+                </div>
+
+
+
+
+            </div>
         </div>
     </div>
 

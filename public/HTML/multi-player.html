@@ -43,24 +43,23 @@
             <p id="error"></p>
 
             <div id="search">
-                <form action="javascript:findMatch(this.value)">
                     <div class="row" style="position: absolute;top: 18%;left: 20%;">
                         <h2 class="display-5">
-
                             <p><strong>Select side</strong></p>
-
-
                         </h2>
                     </div>
 
                     <div class="container" style="position: absolute;top: 25%;left: 20%;">
                         <span style="display: inline-flex;">
+                            <form>
                             <div class="form-group mx-sm-1 mb-3">
 
                             <input type="text" class="form-control" id="user" placeholder="username">
                         </div>
+                    </form>
                         </span><span style="display: inline-flex;">
-                            <button type="submit" class="btn btn-primary mb-2">Unranked</button>
+                            <button onclick="playUnranked()" id="unrankedButton" class="btn btn-primary mb-2" disabled>Play Unranked</button>
+                            <button onclick="playRanked()" id="rankedButton" class="btn btn-primary mb-2" disabled>Play Ranked</button>
                         </span>
                         <br>
                         <div class="row">
@@ -73,9 +72,6 @@
                             </div>
                         </div>
                     </div>
-
-
-                </form>
             </div>
 
             <div id="fleet" style="display: none;">
@@ -99,7 +95,7 @@
                     <span id="LCCost">0</span>
                 </div>
                 <button id="createFarm">"Create Farm ( 200 G )"</button>
-                <button id="sendFleet" onclick="sendFleet()">send</button> <span id="total">0</span>
+                <button id="sendFleet" onclick="sendFleet()" disabled>send</button> <span id="total">0</span>
             </div>
             <div id="game" style="display:none">
                 <span id="currency">Gold: 0</span>
@@ -113,25 +109,17 @@
                 <button id="guess" onclick="guess()">guess</button>
                 <button id="scan">Scan province for farm ( -10P );</button>
                 <button id="ET" onclick="endTurn()">End Turn</button>
+
                 <div id="Map"></div>
+
                 <p id="points"></p>
-                <div id="history">
-                    <p id="1"></p>
-                    <p id="2"></p>
-                    <p id="3"></p>
-                    <p id="4"></p>
-                    <p id="5"></p>
-                    <p id="6"></p>
-                    <p id="7"></p>
-                    <p id="8"></p>
-                    <p id="9"></p>
-                    <p id="10"></p>
-                    <p id="11"></p>
-                    <p id="12"></p>
-                    <p id="13"></p>
-                </div>
+
+                <div id="history"></div>
+
                 <p id="victory"></p>
+
                 <div id="chatbox"></div>
+
             </div>
         </div>
 
@@ -158,30 +146,125 @@
         let planeCost = parseInt(document.getElementById("planeCost").innerHTML);
         let shipCost = parseInt(document.getElementById("shipCost").innerHTML);
         let LCCost = parseInt(document.getElementById("LCCost").innerHTML);
-        document.getElementById("total").innerHTML = (planeCost + shipCost + LCCost);
+        let total = planeCost + shipCost + LCCost;
+        document.getElementById("total").innerHTML = (total);
+        if(total>0) $("#sendFleet").attr("disabled",false);
+        else $("#sendFleet").attr("disabled",true);
     }
 
-        let side = {};//document.querySelector('[name="side"]:checked');
-        let user = document.getElementById("user").value;
-        $("#germanSide").on("click",()=>{
+        let side = {};
+        let bs = $("#britishSide");
+        let gs = $("#germanSide");
+        gs.on("click",()=>{
+            enableClick(gs);
+            enableHover(bs);
             console.log("german");
             side.value = "German";
-        })
-        $("#britishSide").click(() => {
+            
+        });
+        bs.on("click",() => {
+            enableClick(bs);
+            enableHover(gs);
             console.log("bri");
             side.value = "British"
+            
         });
 
-    function findMatch() {
+    $("#rankedButton").on("click",()=>{
+        var $foo = $(this);
+        if (!$foo.data('clicked')) {
+            gs.attr("src","../photos/germanySideLock.png").off("mouseenter").off("mouseleave").off("click");
+            bs.attr("src","../photos/britainSideLock.png").off("mouseenter").off("mouseleave").off("click");
+            gs.css("cursor","auto");
+            bs.css("cursor","auto");
+            $("#rankedButton").text("Cancel");
+            $("#unrankedButton").attr("disabled",true);
+            findMatch("ranked");
+            $foo.data("clicked",true);
+        } else {
+            gs.attr("src","../photos/germanySide.png");
+            bs.attr("src","../photos/britainSide.png");
+            $("#rankedButton").text("Play Ranked");
+            $("#unrankedButton").attr("disabled",false);
 
+            enableHover(bs);
+            enableHover(gs);
+
+            gs.on("click",()=>{
+            enableClick(gs);
+            enableHover(bs);
+            console.log("german");
+            side.value = "German";
+            });
+            bs.on("click",() => {
+            enableClick(bs);
+            enableHover(gs);
+            console.log("bri");
+            side.value = "British"
+            });
+
+            $foo.data("clicked",false);
+            socket.disconnect();
+        }
+    });
+
+    $("#unrankedButton").on("click",()=>{
+        var $foo = $(this);
+        if (!$foo.data('clicked')) {
+            gs.attr("src","../photos/germanySideLock.png").off("mouseenter").off("mouseleave").off("click");
+            bs.attr("src","../photos/britainSideLock.png").off("mouseenter").off("mouseleave").off("click");
+            gs.css("cursor","auto");
+            bs.css("cursor","auto");
+            $("#unrankedButton").text("Cancel");
+            $("#rankedButton").attr("disabled",true);
+            findMatch("unranked");
+            $foo.data("clicked",true);
+        } else {
+            gs.attr("src","../photos/germanySide.png");
+            bs.attr("src","../photos/britainSide.png");
+            $("#unrankedButton").text("Play Ranked");
+            $("#rankedButton").attr("disabled",false);
+
+            enableHover(bs);
+            enableHover(gs);
+
+            gs.on("click",()=>{
+            enableClick(gs);
+            enableHover(bs);
+            console.log("german");
+            side.value = "German";
+            });
+            bs.on("click",() => {
+            enableClick(bs);
+            enableHover(gs);
+            console.log("bri");
+            side.value = "British"
+            });
+
+            $foo.data("clicked",false);
+            socket.disconnect();
+        }
+    });
+
+    function playUnranked() {
+        gs.attr("src","../photos/germanySideLock.png").off("mouseenter").off("mouseleave").off("click");
+        bs.attr("src","../photos/britainSideLock.png").off("mouseenter").off("mouseleave").off("click");
+        $("#unrankedButton").text("Cancel");
+        $("#rankedButton").attr("disabled",true);
+        findMatch("unranked");
+    }
+
+    function findMatch(rank) {
+        let user = document.getElementById("user").value;
+        
         let data = {
             side: side.value,
-            matchType: "unranked",
+            matchType: rank,
             user: user
         };
 
-        socket = io('http://' + IP_ADDRESS + ':' + PORT);
-        //socket = io('http://localhost:8080');
+        //socket = io('http://' + IP_ADDRESS + ':' + PORT);
+        socket = io('http://localhost:8080');
         socket.emit("matchMake", data);
 
         socket.on("begin", () => {
@@ -302,6 +385,36 @@
         };
         console.log("emit");
         socket.emit("fleet", fleet);
+    }
+
+    function enableClick(element) {
+        $("#unrankedButton").attr("disabled",false);
+        $("#rankedButton").attr("disabled",false);
+        element.off("mouseenter").off("mouseleave").css("cursor","auto").css("transform", "scale(1.05)")
+        if(element==gs)
+            element.css("box-shadow", "0 4px 8px 0 rgb(163, 33, 33), 0 6px 20px 0 rgb(163, 33, 33)");
+        else
+            element.css("box-shadow", "0 4px 8px 0 rgb(32, 80, 184), 0 6px 20px 0 rgb(32, 80, 184)");
+    }
+
+    function enableHover(element) {
+        element.css("transform", "scale(1)")
+        .css("box-shadow", "0 4px 8px 0 rgb(0, 0, 0), 0 6px 20px 0 rgb(0, 0, 0)")
+        .on({
+            mouseenter:()=>{
+                element.css("transform", "scale(1.05)").css("cursor","pointer");
+                if(element==gs)
+                    element.css("box-shadow", "0 4px 8px 0 rgb(163, 33, 33), 0 6px 20px 0 rgb(163, 33, 33)");
+                else
+                    element.css("box-shadow", "0 4px 8px 0 rgb(32, 80, 184), 0 6px 20px 0 rgb(32, 80, 184)");
+                    
+            },
+            mouseleave:()=>{
+                element.css("transform", "scale(1)")
+                .css("box-shadow", "0 4px 8px 0 rgb(0, 0, 0), 0 6px 20px 0 rgb(0, 0, 0)")
+                .css("cursor","auto");
+            }
+        });
     }
 
     $('#createFarm').click(function() {
