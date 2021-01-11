@@ -60,7 +60,7 @@
                             <input type="text" class="form-control" id="user" placeholder="username">
                         </div>
                         </span><span style="display: inline-flex;">
-                            <button type="submit" class="btn btn-primary mb-2">Unranked</button>
+                            <button id="matchButton" type="submit" class="btn btn-primary mb-2" disabled>Play Unranked</button>
                         </span>
                         <br>
                         <div class="row">
@@ -73,8 +73,6 @@
                             </div>
                         </div>
                     </div>
-
-
                 </form>
             </div>
 
@@ -115,21 +113,7 @@
                 <button id="ET" onclick="endTurn()">End Turn</button>
                 <div id="Map"></div>
                 <p id="points"></p>
-                <div id="history">
-                    <p id="1"></p>
-                    <p id="2"></p>
-                    <p id="3"></p>
-                    <p id="4"></p>
-                    <p id="5"></p>
-                    <p id="6"></p>
-                    <p id="7"></p>
-                    <p id="8"></p>
-                    <p id="9"></p>
-                    <p id="10"></p>
-                    <p id="11"></p>
-                    <p id="12"></p>
-                    <p id="13"></p>
-                </div>
+                <div id="history"></div>
                 <p id="victory"></p>
                 <div id="chatbox"></div>
             </div>
@@ -161,15 +145,56 @@
         document.getElementById("total").innerHTML = (planeCost + shipCost + LCCost);
     }
 
-        let side = {};//document.querySelector('[name="side"]:checked');
-        let user = document.getElementById("user").value;
-        $("#germanSide").on("click",()=>{
+        let side = {};
+        let bs = $("#britishSide");
+        let gs = $("#germanSide");
+        gs.click(()=>{
+            $("#matchButton").attr("disabled",false);
+            gs.off("mouseenter").off("mouseleave")
+            .css("cursor","auto")
+            .css("transform", "scale(1.05)")
+            .css("box-shadow", "0 4px 8px 0 rgb(163, 33, 33), 0 6px 20px 0 rgb(163, 33, 33)")
+            bs.css("transform", "scale(1)")
+            .css("box-shadow", "0 4px 8px 0 rgb(0, 0, 0), 0 6px 20px 0 rgb(0, 0, 0)")
+            .on({
+                mouseenter: ()=>{
+                    bs.css("transform", "scale(1.05)")
+                    .css("box-shadow", "0 4px 8px 0 rgb(32, 80, 184), 0 6px 20px 0 rgb(32, 80, 184)")
+                    .css("cursor","pointer");            
+                },
+                mouseleave: ()=>{
+                    bs.css("transform", "scale(1)")
+                    .css("box-shadow", "0 4px 8px 0 rgb(0, 0, 0), 0 6px 20px 0 rgb(0, 0, 0)")
+                    .css("cursor","auto");
+                }
+            });
             console.log("german");
             side.value = "German";
-        })
-        $("#britishSide").click(() => {
+            let user = document.getElementById("user").value;
+        });
+        bs.click(() => {
+            $("#matchButton").attr("disabled",false);
+            bs.off("mouseenter").off("mouseleave")
+            .css("cursor","auto")
+            .css("transform", "scale(1.05)")
+            .css("box-shadow", "0 4px 8px 0 rgb(32, 80, 184), 0 6px 20px 0 rgb(32, 80, 184)")
+            gs.css("transform", "scale(1)")
+            .css("box-shadow", "0 4px 8px 0 rgb(0, 0, 0), 0 6px 20px 0 rgb(0, 0, 0)")
+            .on({
+                mouseenter:()=>{
+                    gs.css("transform", "scale(1.05)")
+                    .css("box-shadow", "0 4px 8px 0 rgb(163, 33, 33), 0 6px 20px 0 rgb(163, 33, 33)")
+                    .css("cursor","pointer");
+                },
+                mouseleave:()=>{
+                    gs.css("transform", "scale(1)")
+                    .css("box-shadow", "0 4px 8px 0 rgb(0, 0, 0), 0 6px 20px 0 rgb(0, 0, 0)")
+                    .css("cursor","auto");
+                }
+            });
             console.log("bri");
             side.value = "British"
+            let user = document.getElementById("user").value;
         });
 
     function findMatch() {
@@ -180,8 +205,8 @@
             user: user
         };
 
-        socket = io('http://' + IP_ADDRESS + ':' + PORT);
-        //socket = io('http://localhost:8080');
+        //socket = io('http://' + IP_ADDRESS + ':' + PORT);
+        socket = io('http://localhost:8080');
         socket.emit("matchMake", data);
 
         socket.on("begin", () => {
