@@ -2,6 +2,8 @@ const express = require('express');
 var bodyParser = require('body-parser')
 let db = require('./DB');
 var crypto = require('crypto');
+let resetPassword = require('./emailsManagment');
+var cookieParser = require('cookie-parser')
 var app = express();
 const server = require('http').createServer(app);
 let register = require('./register');
@@ -11,6 +13,7 @@ let con = db.connection;
 let britains = [];
 let germans = [];
 var roomCount = 0;
+let resetPasswordEmail;
 var hash = crypto.createHash('sha256');
 let res;
 const io = require("socket.io")(server, {
@@ -25,6 +28,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use("/js", express.static(__dirname + "/../../public/js"));
 app.use("/css", express.static(__dirname + "/../../public/css"));
 app.use("/photos", express.static(__dirname + "/../../public/photos"));
+app.use(cookieParser());
 //app.set('view engine','ejs');
 
 // parse application/jso n
@@ -75,6 +79,35 @@ app.post('/login',function (request,response) {
     })
 })
 
+app.post('/resetPassword',function (request,response) {
+    let email=request.body.email;
+    let token = email+ new Date().toLocaleString();
+    token = crypto.createHash('sha256').update(token).digest('base64');
+    console.log(token);
+    console.log(email);
+    con.query('SELECT * FROM users WHERE email=?', [email], function (error, result, fields) {
+        if (error!=null && error!=undefined){
+            console.log(error);
+        }if (result.length>0){
+            if (result[0].email==email){
+                con. query('INSERT INTO ressetpassword (email,token) VALUES  (?,?)', [email,token], function (error, result, fields) {
+                    if (error!=null && error!=undefined){
+                        console.log(error);
+                    }else{
+                        res ='0';
+                        resetPasswordEmail=email;
+                        response.cookie('Biskvita',email);
+                        response.send('');
+                        resetPassword.resetPassword(email,token);
+                    }
+                });
+            }
+        }else {
+            res = 'emailReset';
+        }
+    });
+});
+
 app.post('/register',function (request,response) {
     let username = request.body.username;
     let email = request.body.email;
@@ -102,14 +135,46 @@ app.post('/register',function (request,response) {
                     console.log(error);
                 }else{
                  res = '0';
+
                 }
             })
         }
     });
 })
+app.post('/setNewPassword',function (request,response) {
+    let password = request.body.password;
+    console.log('slivki EMAIL');
+    let hashPassword = crypto.createHash('sha256').update(password).digest('Hex');
+    email = request.cookies;
+    email=email.Biskvita;
+    console.log(email);
+    con.query('UPDATE users SET password=? WHERE email=?', [hashPassword,email],function (error,result,field) {
+        if (error!=null && error!=undefined){
+            console.log(error);
+        }else{
+            console.log('STANA');
+        }
+    })
+})
+app.get('/checkToken',function (request,response) {
+        console.log(request.query);
+    console.log(request.cookie)
+    let token = request.query.token;
+    let email = request.cookie;
+    console.log(token);
+    con.query('SELECT email FROM ressetpassword WHERE token=?',[token],function (error,result,field) {
+        if (error!=null && error!=undefined){
+            console.log(error);
+        }console.log(token);
+        if (result.length>0){
+            email=result.email;
+            response.sendFile(path.join(__dirname + '/../../public/HTML/newPassword.html'));
+        }
+    })
+});
 
 app.get('/',function (request,response) {
-   response.sendFile(path.join(__dirname + '/../../public/HTML/login.html'));
+   response.sendFile(path.join(__dirname + '/../../public/HTML/resetPassword.html'));
 })
 function isValidData(obj,arg,expectedVal) {
     let status = {
