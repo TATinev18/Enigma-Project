@@ -58,8 +58,8 @@
                         </div>
                     </form>
                         </span><span style="display: inline-flex;">
-                            <button onclick="findMatch('unranked')" id="unrankedButton" class="btn btn-primary mb-2" disabled>Play Unranked</button>
-                            <button onclick="findMatch('ranked')" id="rankedButton" class="btn btn-primary mb-2" disabled>Play Ranked</button>
+                            <button onclick="playUnranked()" id="unrankedButton" class="btn btn-primary mb-2" disabled>Play Unranked</button>
+                            <button onclick="playRanked()" id="rankedButton" class="btn btn-primary mb-2" disabled>Play Ranked</button>
                         </span>
                         <br>
                         <div class="row">
@@ -160,20 +160,103 @@
             enableHover(bs);
             console.log("german");
             side.value = "German";
-            let user = document.getElementById("user").value;
+            
         });
         bs.on("click",() => {
             enableClick(bs);
             enableHover(gs);
             console.log("bri");
             side.value = "British"
-            let user = document.getElementById("user").value;
+            
         });
 
-    function findMatch(rank) {
+    $("#rankedButton").on("click",()=>{
+        var $foo = $(this);
+        if (!$foo.data('clicked')) {
+            gs.attr("src","../photos/germanySideLock.png").off("mouseenter").off("mouseleave").off("click");
+            bs.attr("src","../photos/britainSideLock.png").off("mouseenter").off("mouseleave").off("click");
+            gs.css("cursor","auto");
+            bs.css("cursor","auto");
+            $("#rankedButton").text("Cancel");
+            $("#unrankedButton").attr("disabled",true);
+            findMatch("ranked");
+            $foo.data("clicked",true);
+        } else {
+            gs.attr("src","../photos/germanySide.png");
+            bs.attr("src","../photos/britainSide.png");
+            $("#rankedButton").text("Play Ranked");
+            $("#unrankedButton").attr("disabled",false);
+
+            enableHover(bs);
+            enableHover(gs);
+
+            gs.on("click",()=>{
+            enableClick(gs);
+            enableHover(bs);
+            console.log("german");
+            side.value = "German";
+            });
+            bs.on("click",() => {
+            enableClick(bs);
+            enableHover(gs);
+            console.log("bri");
+            side.value = "British"
+            });
+
+            $foo.data("clicked",false);
+            socket.disconnect();
+        }
+    });
+
+    $("#unrankedButton").on("click",()=>{
+        var $foo = $(this);
+        if (!$foo.data('clicked')) {
+            gs.attr("src","../photos/germanySideLock.png").off("mouseenter").off("mouseleave").off("click");
+            bs.attr("src","../photos/britainSideLock.png").off("mouseenter").off("mouseleave").off("click");
+            gs.css("cursor","auto");
+            bs.css("cursor","auto");
+            $("#unrankedButton").text("Cancel");
+            $("#rankedButton").attr("disabled",true);
+            findMatch("unranked");
+            $foo.data("clicked",true);
+        } else {
+            gs.attr("src","../photos/germanySide.png");
+            bs.attr("src","../photos/britainSide.png");
+            $("#unrankedButton").text("Play Ranked");
+            $("#rankedButton").attr("disabled",false);
+
+            enableHover(bs);
+            enableHover(gs);
+
+            gs.on("click",()=>{
+            enableClick(gs);
+            enableHover(bs);
+            console.log("german");
+            side.value = "German";
+            });
+            bs.on("click",() => {
+            enableClick(bs);
+            enableHover(gs);
+            console.log("bri");
+            side.value = "British"
+            });
+
+            $foo.data("clicked",false);
+            socket.disconnect();
+        }
+    });
+
+    function playUnranked() {
         gs.attr("src","../photos/germanySideLock.png").off("mouseenter").off("mouseleave").off("click");
         bs.attr("src","../photos/britainSideLock.png").off("mouseenter").off("mouseleave").off("click");
+        $("#unrankedButton").text("Cancel");
+        $("#rankedButton").attr("disabled",true);
+        findMatch("unranked");
+    }
 
+    function findMatch(rank) {
+        let user = document.getElementById("user").value;
+        
         let data = {
             side: side.value,
             matchType: rank,

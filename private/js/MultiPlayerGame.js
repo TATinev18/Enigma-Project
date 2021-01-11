@@ -220,10 +220,10 @@ function MultiPlayerGame() {
         console.log(province);
         if (germanProvinces[province].hasFarm) {
             points = points - 10;
+            goldPerTurn-=100;
             germanProvinces[province].hasFarm = false;
             return true
         }
-
         return false;
     }
 
