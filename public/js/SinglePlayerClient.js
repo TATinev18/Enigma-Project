@@ -1,4 +1,5 @@
-let game = new SinglePlayerGame(1);
+let SinglePlayerGame = require('./SinglePlayerGame')
+let game = new SinglePlayerGame.SinglePlayerGame();
 game.generateGameNumbers();
 
 function displayHistory() {
@@ -98,3 +99,13 @@ function checkGameStatus() {
     checkVictoryConditions(input);
 
 }
+
+exports.checkGameStatus = checkGameStatus;
+exports.resetUI = resetUI;
+exports.resetGame = resetGame;
+exports.checkVictoryConditions = checkVictoryConditions;
+exports.extractNumbers = extractNumbers;
+exports.reportError = reportError;
+exports.printSquares = printSquares;
+exports.displayHistory = displayHistory;
+exports.game = game;
