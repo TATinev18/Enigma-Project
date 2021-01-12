@@ -126,6 +126,7 @@ function hideElements(side) {
         $("#fleet").css("display","none");
         $("#createFleet").css("display","none");
         $("#setCode").css("display","none");
+        $("#damage").css("display","none");
     }
     if(side=="German") {
         $("#scan").css("display","none");

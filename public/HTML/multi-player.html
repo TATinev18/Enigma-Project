@@ -100,6 +100,7 @@
             <div id="game" style="display:none">
                 <span id="rounds">Round: 1</span>
                 <span id="currency">Gold: 0</span>
+                <span id="damage">Total fleet Damage: 0</span>
                 <form>
                     <input type="text" id="send" placeholder="chat">
                     <input type="text" id="input" placeholder="input">
@@ -296,6 +297,10 @@
             updateCurrency();
         });
 
+        socket.on("getDamage",(damage)=>{
+            $("#damage").text("Total fleet damage: "+damage);
+        });
+
         socket.on("scanResult", (msg) => {
             console.log(msg);
             updateCurrency();
@@ -350,6 +355,7 @@
 
     function guess() {
         let nums = extractNumbers();
+        $("#ET").attr("disabled",false);
         socket.emit("guess", nums);
     }
 
@@ -371,7 +377,8 @@
         $("#sendFleet").attr("disabled", true);
         $("#input").attr("disabled", false);
         $("#guess").attr("disabled", false);
-        $("#ET").attr("disabled", false);
+        if(side.value=="German")
+            $("#ET").attr("disabled", false);
         $("#scan").attr("disabled", false);
         lockFleetMenu(2);
         resetFleetMenu();
@@ -388,6 +395,7 @@
         resetFleetMenu();
         console.log("emit");
         socket.emit("fleet", fleet);
+        socket.emit("damage");
     }
 
     function resetFleetMenu() {

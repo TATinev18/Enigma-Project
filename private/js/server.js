@@ -309,11 +309,11 @@ io.on('connection', socket => {
                     io.to(users.room).emit("round",game.getRounds());
                     console.log(game.getRounds());
                     if(game.checkVictoryConditions(input)==game.getVICTORY().BRITISH) {
-                        io.in(users.room).emit("victory",{victory:"BRITISH"});
+                        io.in(users.room).emit("victory",{victory:"BRITISH", type:"normal"});
                         game.reset();
                     }
                     if(game.checkVictoryConditions(input)==game.getVICTORY().GERMAN) {
-                        io.in(users.room).emit("victory",{victory:"GERMAN"});
+                        io.in(users.room).emit("victory",{victory:"GERMAN", type:"normal"});
                         game.reset();
                     }
                     
@@ -321,10 +321,13 @@ io.on('connection', socket => {
             });
 
             users.gbr.socket.on("disconnect",()=>{
-                users.ger.socket.emit("victory",{victory:"GERMAN"});
+                users.ger.socket.emit("victory",{victory:"GERMAN", type:"disconnect"});
             });
             users.ger.socket.on("disconnect",()=>{
-                users.gbr.socket.emit("victory",{victory:"BRITISH"});
+                users.gbr.socket.emit("victory",{victory:"BRITISH", type:"disconnect"});
+            });
+            users.ger.socket.on("damage",()=>{
+                users.ger.socket.emit("getDamage",game.attack());
             });
         }
     });
