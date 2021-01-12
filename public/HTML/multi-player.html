@@ -204,6 +204,7 @@
             });
 
             $foo.data("clicked",false);
+            socket.emit("cancel",{id:socket.id});
             socket.disconnect();
         }
     });
@@ -242,17 +243,10 @@
             });
 
             $foo.data("clicked",false);
+            socket.emit("cancel",{id:socket.id});
             socket.disconnect();
         }
     });
-
-    function playUnranked() {
-        gs.attr("src","../photos/germanySideLock.png").off("mouseenter").off("mouseleave").off("click");
-        bs.attr("src","../photos/britainSideLock.png").off("mouseenter").off("mouseleave").off("click");
-        $("#unrankedButton").text("Cancel");
-        $("#rankedButton").attr("disabled",true);
-        findMatch("unranked");
-    }
 
     function findMatch(rank) {
         let user = document.getElementById("user").value;

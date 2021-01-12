@@ -1,15 +1,15 @@
 const express = require('express');
 var bodyParser = require('body-parser')
-let db = require('./DB');
+//let db = require('./DB');
 var crypto = require('crypto');
 let resetPassword = require('./emailsManagment');
 var cookieParser = require('cookie-parser')
 var app = express();
 const server = require('http').createServer(app);
-let register = require('./register');
+//let register = require('./register');
 var path = require('path');
 let MP = require("./MultiPlayerGame");
-let con = db.connection;
+//let con = db.connection;
 let britains = [];
 let germans = [];
 var roomCount = 0;
@@ -322,6 +322,24 @@ io.on('connection', socket => {
             console.log("SERVER ");
           socket.emit('serverValidation',res);
     });
+    socket.on("cancel",(data)=>{
+        for(let i=0;i<germans.length;i++)
+        {
+            if(germans[i].socket.id==data.id) {
+                germans.splice(i,1);
+                console.log("slivi");
+            }
+        }
+        for(let i=0;i<britains.length;i++)
+        {
+            if(britains[i].socket.id==data.id) {
+                console.log("krushi");
+                britains.splice(i,1);
+            }
+        }
+        console.log(britains);
+        console.log(germans);
+    })
 });
 
 server.listen(8080)
