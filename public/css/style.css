@@ -3,6 +3,28 @@ html {
     height: 100%;
 }
 
+#error {
+    text-align: center;
+    color: white;
+    background: rgb(209, 0, 0);
+    border: 1.4px solid black;
+}
+
+.fade-in-down {
+    animation: fadeInDown 1s ease-in both;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translate3d(0, -20%, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
 .submit_btn {
     position: absolute;
     top: 17%;

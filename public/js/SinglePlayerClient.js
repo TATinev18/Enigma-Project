@@ -1,5 +1,5 @@
-let SinglePlayerGame = require('./SinglePlayerGame')
-let game = new SinglePlayerGame.SinglePlayerGame();
+//let SinglePlayerGame = require('./SinglePlayerGame')
+let game = new SinglePlayerGame();
 game.generateGameNumbers();
 
 function displayHistory() {
@@ -49,8 +49,9 @@ function extractNumbers() {
 function checkVictoryConditions(input) {
     console.log(game.checkVictoryConditions(input));
     if (game.checkVictoryConditions(input) == VICTORY.BRITISH) {
+        $("#error").text("");
         $("#over").attr("src", "../photos/br_victory.png");
-        $("#over").css("height", "35%");
+        $("#over").css("height", "35%").addClass("fade-in-down");
         $("#heading").css("display", "none");
         $("#history").css("display", "none");
         $("#progressGameButton").attr("disabled", true);
@@ -65,8 +66,9 @@ function checkVictoryConditions(input) {
 
     }
     if (game.checkVictoryConditions(input) == VICTORY.GERMAN) {
+        $("#error").text("");
         $("#over").attr("src", "../photos/gr_victory.png");
-        $("#over").css("height", "35%");
+        $("#over").css("height", "35%").addClass("fade-in-down");
         $("#history").css("display", "none");
         $("#heading").css("display", "none");
         $("#progressGameButton").attr("disabled", true);
@@ -80,6 +82,8 @@ function resetGame() {
     game.reset();
     resetUI();
 }
+
+
 
 function resetUI() {
     $("#over").attr("src", "");
@@ -99,6 +103,7 @@ function checkGameStatus() {
         return 0;
     }
     displayHistory();
+    $("#error").text("");
     console.log(result);
     checkVictoryConditions(input);
 
