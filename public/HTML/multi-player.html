@@ -101,6 +101,7 @@
                 <span id="rounds">Round: 1</span>
                 <span id="currency">Gold: 0</span>
                 <span id="damage">Total fleet Damage: 0</span>
+                <span id="GPT">Gold per turn: 0</span>
                 <form>
                     <input type="text" id="send" placeholder="chat">
                     <input type="text" id="input" placeholder="input">
@@ -312,8 +313,10 @@
         socket.on("updateCurrency", (currency) => {
             if (data.side == "British")
                 $("#currency").text("Points: " + currency);
-            if (data.side == "German")
-                $("#currency").text("Gold: " + currency);
+            if (data.side == "German") {
+                $("#currency").text("Gold: " + currency.gold);
+                $("#GPT").text("Gold per turn: "+currency.GPT);
+            }
         });
         socket.on("forceTurn", () => {
             $("#ET").attr("disabled", true);

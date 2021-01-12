@@ -247,7 +247,7 @@ io.on('connection', socket => {
                 users.ger.socket.emit("beginTurn");
                 game.calculateGoldNewTurn();
             });
-            users.ger.socket.on("getCurrency",() => {users.ger.socket.emit("updateCurrency",game.getGold())});
+            users.ger.socket.on("getCurrency",() => {users.ger.socket.emit("updateCurrency",{gold:game.getGold(),GPT:game.getGoldPerTurn()})});
             users.gbr.socket.on("getCurrency",() => {users.gbr.socket.emit("updateCurrency",game.getPoints())});
             users.ger.socket.on("requestProvinces", ()=>{
                 users.ger.socket.emit("receiveProvinces",game.getProvinces());
