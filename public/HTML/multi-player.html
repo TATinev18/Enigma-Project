@@ -106,9 +106,9 @@
                 <div id="Map"></div>
                 <button onclick="chat(document.getElementById('send').value);">send chat</button>
                 <button id="setCode" onclick="setCode()">Set Code</button>
-                <button id="guess" onclick="guess()">guess</button>
-                <button id="scan">Scan province for farm ( -10P );</button>
-                <button id="ET" onclick="endTurn()">End Turn</button>
+                <button id="guess" onclick="guess()" disabled>guess</button>
+                <button id="scan" disabled>Scan province for farm ( -10P );</button>
+                <button id="ET" onclick="endTurn()" disabled>End Turn</button>
 
                 <div id="Map"></div>
 
@@ -358,15 +358,18 @@
         deselectFarm();
         deselectScan();
         lockFleetMenu(1);
+        resetFleetMenu();
         socket.emit("endTurn");
     }
 
     function beginTurn() {
+        $("#sendFleet").attr("disabled", true);
         $("#input").attr("disabled", false);
         $("#guess").attr("disabled", false);
         $("#ET").attr("disabled", false);
         $("#scan").attr("disabled", false);
         lockFleetMenu(2);
+        resetFleetMenu();
     }
 
     function sendFleet() {
@@ -377,8 +380,14 @@
             farm: $("#farmDisplay").text(),
             price: $("#total").text()
         };
+        resetFleetMenu();
         console.log("emit");
         socket.emit("fleet", fleet);
+    }
+
+    function resetFleetMenu() {
+        $("#planeCost,#shipCost,#LCCost,#planeDisplay,#shipDisplay,#LCDisplay,#total").text("0");
+        $("#sendFleet").attr("disabled",true);
     }
 
     function enableClick(element) {

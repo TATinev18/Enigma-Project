@@ -327,13 +327,11 @@ io.on('connection', socket => {
         {
             if(germans[i].socket.id==data.id) {
                 germans.splice(i,1);
-                console.log("slivi");
             }
         }
         for(let i=0;i<britains.length;i++)
         {
             if(britains[i].socket.id==data.id) {
-                console.log("krushi");
                 britains.splice(i,1);
             }
         }
