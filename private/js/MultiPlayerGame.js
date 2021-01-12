@@ -109,31 +109,31 @@ function MultiPlayerGame() {
             round
         };
 
-        if (checkNumbersRepeat(input)) {
-            result.err = "repeating numbers";
-            return result;
-        }
-
         if (input.length != 4) {
-            result.err = "too many/little numbers";
+            result.err = " too many/little numbers";
             return result;
         }
 
         if (!isNumericInput(input)) {
-            result.err = "invalid characters, please try numbers only";
+            result.err = " invalid characters, please try numbers only";
+            return result;
+        }
+
+        if (checkNumbersRepeat(input)) {
+            result.err = " repeating numbers";
             return result;
         }
 
         for(let i=0;i<4;i++) {
             if( input[i]<0 || input[i]>7) {
-                result.err = "Number is not in range from 0 to 7";
+                result.err = " Number is not in range from 0 to 7";
                 return result;
             }
         }
 
         for(let i=0;i<guessedNums.length;i++) {
             if(JSON.stringify(input)==JSON.stringify(guessedNums[i])) {
-                result.err="Number has already been guessed! Try a different one!";
+                result.err=" Number has already been guessed! Try a different one!";
                 return result;
             }
         }
@@ -143,8 +143,6 @@ function MultiPlayerGame() {
             round++;
             recordHistory(result);
             calculatePoints(result.cNums,result.cPos)
-            //if (result.cPos == 4 || round > 13)
-                //gameOver = true;
         }
         return result;
     }
@@ -298,6 +296,11 @@ function MultiPlayerGame() {
         gold = newGold;
     }
 
+    function clearHistoryAndGuessedNums() {
+        history=[];
+        guessedNums=[];
+    }
+
     return {
         checkNumbersRepeat,
         checkVictoryConditions,
@@ -324,7 +327,8 @@ function MultiPlayerGame() {
         updateGold,
         getProvinces,
         setCode,
-        calculatePoints
+        calculatePoints,
+        clearHistoryAndGuessedNums
     }
 }
 

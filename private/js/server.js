@@ -9,6 +9,7 @@ const server = require('http').createServer(app);
 //let register = require('./register');
 var path = require('path');
 let MP = require("./MultiPlayerGame");
+const { Console } = require('console');
 //let con = db.connection;
 let britains = [];
 let germans = [];
@@ -54,10 +55,6 @@ function matchMake() {
     germans.splice(r1, 1);
     britains.splice(r2, 1);
     return obj;
-}
-
-function retry(socket, msg) {
-    socket.emit("retry", msg);
 }
 
 app.post('/login',function (request,response) {
@@ -196,6 +193,10 @@ function isValidData(obj,arg,expectedVal) {
     return status;
 }
 
+function sendStatus(socket,status) {
+    socket.emit("error",status);
+}
+
 io.on('connection', socket => {
     socket.on("matchMake", (data) => {
         if (data && (data.side == "British" || data.side == "German")) {
@@ -225,20 +226,27 @@ io.on('connection', socket => {
             game.initMapProvinces();
 
             users.ger.socket.on("getCode",(code)=>{
-                console.log(code);
-                game.setCode(code);
+                let result =game.checkUserInput(code);
+                console.log(result);
+                if(result.err=="") {
+                    game.setCode(code);
+                    game.clearHistoryAndGuessedNums();
+                    users.ger.socket.emit("approveCode");
+                } else {
+                    sendStatus(users.ger.socket,"invalid Number, "+result.err);
+                }
             });
             users.ger.socket.on("getProvinces", ()=>{
                 users.ger.socket.emit("receiveProvinces", game.getProvinces());
             });
 
-            users.ger.socket.on("chat", (msg) => {
-                io.to(users.room).emit("chat", { user: users.ger.name, msg: msg });
-                game.recordChat({ user: users.ger.name, msg: msg });
+            users.ger.socket.on("chat", (data) => {
+                io.to(users.room).emit("chat", { user: users.ger.name, msg: data.msg, side:data.side });
+                game.recordChat({ user: users.ger.name, msg: data.msg });
             });
-            users.gbr.socket.on("chat", (msg) => {
-                io.to(users.room).emit("chat", { user: users.gbr.name, msg: msg });
-                game.recordChat({ user: users.gbr.name, msg: msg });
+            users.gbr.socket.on("chat", (data) => {
+                io.to(users.room).emit("chat", { user: users.gbr.name, msg: data.msg, side:data.side });
+                game.recordChat({ user: users.gbr.name, msg: data.msg });
             });
             users.ger.socket.on("endTurn", () => {
                 users.gbr.socket.emit("beginTurn");
@@ -260,14 +268,15 @@ io.on('connection', socket => {
                             game.updateGold(game.getGold() - 200);
                             game.createFarm(province);
                             users.ger.socket.emit("farmResult", { status: "Farm successfully created!" });
+                            sendStatus(users.ger.socket,"Farm successfully created!");
                         } else {
-                            users.ger.socket.emit("farmResult", { status: "Province already has farm" });
+                            sendStatus(users.ger.socket,"Province already has farm");
                         }
                     } else {
-                        users.ger.socket.emit("farmResult", { status: "Not enough gold!" });
+                        sendStatus(users.ger.socket,"Not enough gold!");
                     }
                 } else {
-                    users.ger.socket.emit("farmResult", { status: "Incorrect province (internal server error, please try again)" })
+                    sendStatus(users.ger.socket,"Incorrect province (internal server error, please try again)");
                 }
             });
 
@@ -276,14 +285,15 @@ io.on('connection', socket => {
                     if (game.getPoints() >= 10) {
                         if (game.useScan(province)) {
                             users.gbr.socket.emit("scanResult", { status: "Success, farm destroyed" });
+                            sendStatus(users.gbr.socket,"Success, farm destroyed");
                         } else {
-                            users.gbr.socket.emit("scanResult", { status: "Failure, no farm detected" });
+                            sendStatus(users.gbr.socket,"Failure, no farm detected");
                         }
                     } else {
-                        users.gbr.socket.emit("scanResult", { status: "Not enough money" });
+                        sendStatus(users.gbr.socket,"Not enough gold");
                     }
                 } else {
-                    users.gbr.socket.emit("scanResult", { status: "Incorrect province (internal server error, please try again)" });
+                    sendStatus(users.gbr.socket,"Incorrect province (internal server error, please try again)");
                 }
             });
 
@@ -294,11 +304,12 @@ io.on('connection', socket => {
                         game.updateGold(game.getGold() - fleet.price);
                         console.log(game.getFleets())
                         users.ger.socket.emit("fleetResult", { status: "Success" });
+                        sendStatus(users.ger.socket,"Fleet successfully created!");
                     } else {
-                        users.ger.socket.emit("fleetResult", { status: "Fail" });
+                        sendStatus(users.ger.socket,"Not enough gold!");
                     }
                 } else {
-                    users.ger.socket.emit("fleetResult", { status: "No fleet detected, internal server error, please try again!" });
+                    sendStatus(users.ger.socket,"No fleet detected, internal server error, please try again!");
                 }
             });
 
@@ -316,7 +327,9 @@ io.on('connection', socket => {
                         io.in(users.room).emit("victory",{victory:"GERMAN", type:"normal"});
                         game.reset();
                     }
-                    
+                }
+                else {
+                    sendStatus(users.gbr.socket,result.err);
                 }
             });
 
