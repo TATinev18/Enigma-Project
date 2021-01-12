@@ -193,8 +193,12 @@ function isValidData(obj,arg,expectedVal) {
     return status;
 }
 
-function sendStatus(socket,status) {
-    socket.emit("error",status);
+function sendStatus(socket,data,type) {
+    let obj = {
+        status: data,
+        type: type
+    }
+    socket.emit("statusReport",obj);
 }
 
 io.on('connection', socket => {
@@ -233,7 +237,7 @@ io.on('connection', socket => {
                     game.clearHistoryAndGuessedNums();
                     users.ger.socket.emit("approveCode");
                 } else {
-                    sendStatus(users.ger.socket,"invalid Number, "+result.err);
+                    sendStatus(users.ger.socket,"invalid Number, "+result.err,"err");
                 }
             });
             users.ger.socket.on("getProvinces", ()=>{
@@ -268,15 +272,15 @@ io.on('connection', socket => {
                             game.updateGold(game.getGold() - 200);
                             game.createFarm(province);
                             users.ger.socket.emit("farmResult", { status: "Farm successfully created!" });
-                            sendStatus(users.ger.socket,"Farm successfully created!");
+                            sendStatus(users.ger.socket,"Farm successfully created!","succ");
                         } else {
-                            sendStatus(users.ger.socket,"Province already has farm");
+                            sendStatus(users.ger.socket,"Province already has farm","warn");
                         }
                     } else {
-                        sendStatus(users.ger.socket,"Not enough gold!");
+                        sendStatus(users.ger.socket,"Not enough gold!","warn");
                     }
                 } else {
-                    sendStatus(users.ger.socket,"Incorrect province (internal server error, please try again)");
+                    sendStatus(users.ger.socket,"Incorrect province (internal server error, please try again)","err");
                 }
             });
 
@@ -285,15 +289,15 @@ io.on('connection', socket => {
                     if (game.getPoints() >= 10) {
                         if (game.useScan(province)) {
                             users.gbr.socket.emit("scanResult", { status: "Success, farm destroyed" });
-                            sendStatus(users.gbr.socket,"Success, farm destroyed");
+                            sendStatus(users.gbr.socket,"Success, farm destroyed","succ");
                         } else {
-                            sendStatus(users.gbr.socket,"Failure, no farm detected");
+                            sendStatus(users.gbr.socket,"Failure, no farm detected","warn");
                         }
                     } else {
-                        sendStatus(users.gbr.socket,"Not enough gold");
+                        sendStatus(users.gbr.socket,"Not enough gold","warn");
                     }
                 } else {
-                    sendStatus(users.gbr.socket,"Incorrect province (internal server error, please try again)");
+                    sendStatus(users.gbr.socket,"Incorrect province (internal server error, please try again)","err");
                 }
             });
 
@@ -304,12 +308,12 @@ io.on('connection', socket => {
                         game.updateGold(game.getGold() - fleet.price);
                         console.log(game.getFleets())
                         users.ger.socket.emit("fleetResult", { status: "Success" });
-                        sendStatus(users.ger.socket,"Fleet successfully created!");
+                        sendStatus(users.ger.socket,"Fleet successfully created!","succ");
                     } else {
-                        sendStatus(users.ger.socket,"Not enough gold!");
+                        sendStatus(users.ger.socket,"Not enough gold!","warn");
                     }
                 } else {
-                    sendStatus(users.ger.socket,"No fleet detected, internal server error, please try again!");
+                    sendStatus(users.ger.socket,"No fleet detected, internal server error, please try again!","err");
                 }
             });
 
@@ -329,7 +333,7 @@ io.on('connection', socket => {
                     }
                 }
                 else {
-                    sendStatus(users.gbr.socket,result.err);
+                    sendStatus(users.gbr.socket,result.err,"err");
                 }
             });
 

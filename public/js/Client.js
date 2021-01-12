@@ -172,6 +172,11 @@ function findMatch(rank) {
         $('#search').css('display', 'none');
         $('#game').css('display', 'block');
         $("#fleet").css("display", "block");
+        $("#error").css("display","block").css("background-color","rgb(110, 185, 60)");
+        if(side.value=="British")
+            $("#error").text("Waiting for "+user+" to enter a number!");
+        if(side.value=="German")
+            $("#error").text("Please input your code in the input box.");
 
         socket.emit("side", side.value);
         hideElements(side.value);
@@ -202,10 +207,6 @@ function findMatch(rank) {
         $("#rounds").text("Round: " + round);
     })
 
-    socket.on("error", (err) => {
-        $("#error").text(err);
-    });
-
     socket.on("fleetResult", (msg) => {
         console.log(msg);
         updateCurrency();
@@ -235,17 +236,24 @@ function findMatch(rank) {
         $("#ET").attr("disabled", true);
     });
 
-    socket.on("error", (data) => {
-        $("#error").text(data.err);
+    socket.on("statusReport", (data) => {
+        console.log("aaaa");
+        $("#error").text(data.status);
+        if(data.type=="succ")
+            $("#error").css("background-color","rgb(110, 185, 60)");
+        if(data.type=="warn")
+            $("#error").css("background-color","rgb(190, 129, 36)");
+        if(data.type=="err")
+            $("#error").css("background-color","rgb(163, 33, 33)");
     });
     socket.on("approveCode", () => {
-        $("#error").text("Code successfully sent!");
+        $("#error").text("Code successfully sent!").css("background-color","rgb(110, 185, 60)");;
         $("#setCode").css("display", "none");
         $("#input").css("display", "none");
         $("#ET").attr("disabled", false);
     })
     socket.on("history", (history) => {
-        $("#error").text("");
+        $("#error").text("Your Turn");
         $("#input").attr("disabled", true);
         $("#guess").attr("disabled", true);
         displayHistory(history);
@@ -299,7 +307,7 @@ function endTurn() {
     $("#scan").attr("disabled", true);
     $("#createFarm").data("clicked", false);
     $("#scan").data("clicked", false);
-    $("#error").text("");
+    $("#error").text("Waiting for "+user+" to end their turn...").css("background-color","rgb(110, 185, 60)");
     deselectFarm();
     deselectScan();
     lockFleetMenu(1);
@@ -314,7 +322,7 @@ function beginTurn() {
     if (side.value == "German")
         $("#ET").attr("disabled", false);
     $("#scan").attr("disabled", false);
-    $("#error").text("");
+    $("#error").text("Your Turn").css("background-color","rgb(110, 185, 60)");
     lockFleetMenu(2);
     resetFleetMenu();
 }
