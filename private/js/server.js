@@ -306,6 +306,8 @@ io.on('connection', socket => {
                 let result =game.checkUserInput(input);
                 if(result.err=="") {
                     io.to(users.room).emit("history", game.getHistory());
+                    io.to(users.room).emit("round",game.getRounds());
+                    console.log(game.getRounds());
                     if(game.checkVictoryConditions(input)==game.getVICTORY().BRITISH) {
                         io.in(users.room).emit("victory",{victory:"BRITISH"});
                         game.reset();
@@ -314,7 +316,15 @@ io.on('connection', socket => {
                         io.in(users.room).emit("victory",{victory:"GERMAN"});
                         game.reset();
                     }
+                    
                 }
+            });
+
+            users.gbr.socket.on("disconnect",()=>{
+                users.ger.socket.emit("victory",{victory:"GERMAN"});
+            });
+            users.ger.socket.on("disconnect",()=>{
+                users.gbr.socket.emit("victory",{victory:"BRITISH"});
             });
         }
     });

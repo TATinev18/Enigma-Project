@@ -98,6 +98,7 @@
                 <button id="sendFleet" onclick="sendFleet()" disabled>send</button> <span id="total">0</span>
             </div>
             <div id="game" style="display:none">
+                <span id="rounds">Round: 1</span>
                 <span id="currency">Gold: 0</span>
                 <form>
                     <input type="text" id="send" placeholder="chat">
@@ -285,6 +286,10 @@
             endTurn();
             updateCurrency();
         });
+
+        socket.on("round",(round)=>{
+            $("#rounds").text("Round: "+round);
+        })
 
         socket.on("fleetResult", (msg) => {
             console.log(msg);
