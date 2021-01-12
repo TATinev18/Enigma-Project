@@ -39,19 +39,19 @@
                 </div>
             </div>
         </nav>
-    
+
         <div class="container" style="background-color: rgba(87, 87, 92, 0.863);padding: 1%;height: 94%;">
             <p id="error"></p>
 
             <div id="search">
-                    <div class="row" style="position: absolute;top: 18%;left: 20%;">
-                        <h2 class="display-5">
-                            <p><strong>Select side</strong></p>
-                        </h2>
-                    </div>
+                <div class="row" style="position: absolute;top: 18%;left: 20%;">
+                    <h2 class="display-5">
+                        <p><strong>Select side</strong></p>
+                    </h2>
+                </div>
 
-                    <div class="container" style="position: absolute;top: 25%;left: 20%;">
-                        <span style="display: inline-flex;">
+                <div class="container" style="position: absolute;top: 25%;left: 20%;">
+                    <span style="display: inline-flex;">
                             <form>
                             <div class="form-group mx-sm-1 mb-3">
 
@@ -62,72 +62,97 @@
                             <button onclick="playUnranked()" id="unrankedButton" class="btn btn-primary mb-2" disabled>Play Unranked</button>
                             <button onclick="playRanked()" id="rankedButton" class="btn btn-primary mb-2" disabled>Play Ranked</button>
                         </span>
-                        <br>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="text-center"><img id="germanSide" src="../photos/germanySide.png"></div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="text-center"><img id="britishSide" src="../photos/britainSide.png"></div>
-                            </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="text-center"><img id="germanSide" src="../photos/germanySide.png"></div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center"><img id="britishSide" src="../photos/britainSide.png"></div>
                         </div>
                     </div>
+                </div>
             </div>
 
-            <div id="fleet" style="display: none;">
-                <div>
-                    <span id="planeDisplay">0</span>
-                    <button id="plane-" onclick="changeUtilityValues('planeDisplay','planeCost','-',150)"><</button>
-                    <button id="plane+" onclick="changeUtilityValues('planeDisplay','planeCost','+',150)">></button>
 
-                    <span id="planeCost">0</span>
-                </div>
-                <div>
-                    <span id="shipDisplay">0</span>
-                    <button id="ship-" onclick="changeUtilityValues('shipDisplay','shipCost','-',250)">< </button>
-                    <button id="ship+" onclick="changeUtilityValues('shipDisplay','shipCost','+',250)">></button>
-                    <span id="shipCost">0</span>
-                </div>
-                <div>
-                    <span id="LCDisplay">0</span>
-                    <button id="LC-" onclick="changeUtilityValues('LCDisplay','LCCost','-',125)">< </button>
-                    <button id="LC+" onclick="changeUtilityValues('LCDisplay','LCCost','+',125)">></button>
-                    <span id="LCCost">0</span>
-                </div>
-                <button id="createFarm">"Create Farm ( 200 G )"</button>
-                <button id="sendFleet" onclick="sendFleet()" disabled>send</button> <span id="total">0</span>
-            </div>
             <div id="game" style="display:none">
-                <span id="rounds">Round: 0</span>
-                <span id="currency">Gold: 0</span>
-                <span id="damage">Total fleet Damage: 0</span>
-                <span id="GPT">Gold per turn: 0</span>
-                <form>
-                    <input type="text" id="send" placeholder="chat">
-                    <input type="text" id="input" placeholder="input">
-                </form>
-                <div id="Map"></div>
-                <button onclick="chat(document.getElementById('send').value);">send chat</button>
-                <button id="setCode" onclick="setCode()">Set Code</button>
-                <button id="guess" onclick="guess()" disabled>guess</button>
-                <button id="scan" disabled>Scan province for farm ( -10P );</button>
-                <button id="ET" onclick="endTurn()" disabled>End Turn</button>
+                <div id="mapANDbtn" class="row">
+                    <div class="col" id="Map" style="width: fit-content;height: 200%;">
 
-                <div id="heading" class="container">
-                    
-                <div style="border: 3px black solid; color:azure;">
-                    <div class="row" style="left: 36%; background-color: rgba(116, 134, 172, 0.89); box-sizing: content-box;
-                width: 100%;margin-left: 0px;">
-                        <div class="col-sm guess1">Guessed position</div>
-                        <div class="col-sm guess2">Your input</div>
-                        <div class="col-sm guess3">Guessed numbers</div>
-                        <hr>
                     </div>
-                    <div id="history" style="background-color: rgba(116, 134, 172, 0.89);"></div>
+
+                    <div class="col">
+                        <div style="background-color: beige;border: 2px solid black;border-radius: 5px;">
+                            <span class="text_font_multi" id="rounds">Round: 0</span>
+                            <br>
+                            <span class="text_font_multi" id="currency">Gold: 0</span>
+                            <br>
+                            <span class="text_font_multi" id="damage">Total fleet Damage: 0</span>
+                            <br>
+                            <span class="text_font_multi" id="GPT">Gold per turn: 0</span>
+                        </div>
+                        <div id="fleet" style="display: none;">
+                            <div>
+                                <span id="planeDisplay">0</span>
+                                <button class="btn btn-light btn-sm" id="plane-" onclick="changeUtilityValues('planeDisplay','planeCost','-',150)"><</button>
+                                <button class="btn btn-light btn-sm" id="plane+" onclick="changeUtilityValues('planeDisplay','planeCost','+',150)">></button>
+
+                                <span id="planeCost">0</span>
+                            </div>
+                            <div>
+                                <span id="shipDisplay">0</span>
+                                <button class="btn btn-light btn-sm" id="ship-" onclick="changeUtilityValues('shipDisplay','shipCost','-',250)">< </button>
+                                <button class="btn btn-light btn-sm" id="ship+" onclick="changeUtilityValues('shipDisplay','shipCost','+',250)">></button>
+                                <span id="shipCost">0</span>
+                            </div>
+                            <div>
+                                <span id="LCDisplay">0</span>
+                                <button class="btn btn-light btn-sm" id="LC-" onclick="changeUtilityValues('LCDisplay','LCCost','-',125)">< </button>
+                                <button class="btn btn-light btn-sm" id="LC+" onclick="changeUtilityValues('LCDisplay','LCCost','+',125)">></button>
+                                <span id="LCCost">0</span>
+                            </div>
+                            <button class="btn btn-primary" id="createFarm">"Create Farm ( 200 G )"</button>
+                            <button class="btn btn-primary" id="sendFleet" onclick="sendFleet()" disabled>send</button> <span id="total">0</span>
+                        </div>
+                    </div>
+
+
+
                 </div>
+
+
+
+
+
+                <div class="row">
+                    <div class="col">
+                        <form>
+                            <input type="text" id="send" placeholder="chat">
+                            <input type="text" id="input" placeholder="input">
+                        </form>
+                        <button class="btn btn-primary" onclick="chat(document.getElementById('send').value);">send chat</button>
+                        <button class="btn btn-primary" id="setCode" onclick="setCode()">Set Code</button>
+                        <button class="btn btn-primary" id="guess" onclick="guess()" disabled>guess</button>
+                        <button class="btn btn-info" id="scan" disabled>Scan province for farm ( -10P );</button>
+                        <button class="btn btn-danger" id="ET" onclick="endTurn()" disabled>End Turn</button>
+                        <img id="victory">
+                        <div id="chatbox" style="width: 230px;overflow: auto;height: 100px;"></div>
+                        <div id="heading">
+                        </div>
+                    </div>
+                    <div class="col" style="overflow: auto;height: 210px;">
+                        <div class="row multiplayer-History">
+                            <div class="col-sm guess1">Guessed position</div>
+                            <div class="col-sm guess2">Your input</div>
+                            <div class="col-sm guess3">Guessed numbers</div>
+                            <hr>
+                            <div id="history" style="background-color: rgba(116, 134, 172, 0.89);overflow: auto;"></div>
+                        </div>
+
+                    </div>
+
                 </div>
-                <img id="victory">
-                <div id="chatbox"></div>
+
             </div>
         </div>
     </div>
@@ -139,93 +164,97 @@
     let side = {};
     let bs = $("#britishSide");
     let gs = $("#germanSide");
-    gs.on("click",()=>{
+    gs.on("click", () => {
         enableClick(gs);
         enableHover(bs);
         console.log("german");
-        side.value = "German";    
+        side.value = "German";
     });
-    bs.on("click",() => {
+    bs.on("click", () => {
         enableClick(bs);
         enableHover(gs);
         console.log("bri");
-        side.value = "British"        
+        side.value = "British"
     });
 
-    $("#rankedButton").on("click",()=>{
+    $("#rankedButton").on("click", () => {
         var $foo = $(this);
         if (!$foo.data('clicked')) {
-            gs.attr("src","../photos/germanySideLock.png").off("mouseenter").off("mouseleave").off("click");
-            bs.attr("src","../photos/britainSideLock.png").off("mouseenter").off("mouseleave").off("click");
-            gs.css("cursor","auto");
-            bs.css("cursor","auto");
+            gs.attr("src", "../photos/germanySideLock.png").off("mouseenter").off("mouseleave").off("click");
+            bs.attr("src", "../photos/britainSideLock.png").off("mouseenter").off("mouseleave").off("click");
+            gs.css("cursor", "auto");
+            bs.css("cursor", "auto");
             $("#rankedButton").text("Cancel");
-            $("#unrankedButton").attr("disabled",true);
+            $("#unrankedButton").attr("disabled", true);
             findMatch("ranked");
-            $foo.data("clicked",true);
+            $foo.data("clicked", true);
         } else {
-            gs.attr("src","../photos/germanySide.png");
-            bs.attr("src","../photos/britainSide.png");
+            gs.attr("src", "../photos/germanySide.png");
+            bs.attr("src", "../photos/britainSide.png");
             $("#rankedButton").text("Play Ranked");
-            $("#unrankedButton").attr("disabled",false);
+            $("#unrankedButton").attr("disabled", false);
 
             enableHover(bs);
             enableHover(gs);
 
-            gs.on("click",()=>{
-            enableClick(gs);
-            enableHover(bs);
-            console.log("german");
-            side.value = "German";
+            gs.on("click", () => {
+                enableClick(gs);
+                enableHover(bs);
+                console.log("german");
+                side.value = "German";
             });
-            bs.on("click",() => {
-            enableClick(bs);
-            enableHover(gs);
-            console.log("bri");
-            side.value = "British"
+            bs.on("click", () => {
+                enableClick(bs);
+                enableHover(gs);
+                console.log("bri");
+                side.value = "British"
             });
 
-            $foo.data("clicked",false);
-            socket.emit("cancel",{id:socket.id});
+            $foo.data("clicked", false);
+            socket.emit("cancel", {
+                id: socket.id
+            });
             socket.disconnect();
         }
     });
 
-    $("#unrankedButton").on("click",()=>{
+    $("#unrankedButton").on("click", () => {
         var $foo = $(this);
         if (!$foo.data('clicked')) {
-            gs.attr("src","../photos/germanySideLock.png").off("mouseenter").off("mouseleave").off("click");
-            bs.attr("src","../photos/britainSideLock.png").off("mouseenter").off("mouseleave").off("click");
-            gs.css("cursor","auto");
-            bs.css("cursor","auto");
+            gs.attr("src", "../photos/germanySideLock.png").off("mouseenter").off("mouseleave").off("click");
+            bs.attr("src", "../photos/britainSideLock.png").off("mouseenter").off("mouseleave").off("click");
+            gs.css("cursor", "auto");
+            bs.css("cursor", "auto");
             $("#unrankedButton").text("Cancel");
-            $("#rankedButton").attr("disabled",true);
+            $("#rankedButton").attr("disabled", true);
             findMatch("unranked");
-            $foo.data("clicked",true);
+            $foo.data("clicked", true);
         } else {
-            gs.attr("src","../photos/germanySide.png");
-            bs.attr("src","../photos/britainSide.png");
+            gs.attr("src", "../photos/germanySide.png");
+            bs.attr("src", "../photos/britainSide.png");
             $("#unrankedButton").text("Play Ranked");
-            $("#rankedButton").attr("disabled",false);
+            $("#rankedButton").attr("disabled", false);
 
             enableHover(bs);
             enableHover(gs);
 
-            gs.on("click",()=>{
-            enableClick(gs);
-            enableHover(bs);
-            console.log("german");
-            side.value = "German";
+            gs.on("click", () => {
+                enableClick(gs);
+                enableHover(bs);
+                console.log("german");
+                side.value = "German";
             });
-            bs.on("click",() => {
-            enableClick(bs);
-            enableHover(gs);
-            console.log("bri");
-            side.value = "British"
+            bs.on("click", () => {
+                enableClick(bs);
+                enableHover(gs);
+                console.log("bri");
+                side.value = "British"
             });
 
-            $foo.data("clicked",false);
-            socket.emit("cancel",{id:socket.id});
+            $foo.data("clicked", false);
+            socket.emit("cancel", {
+                id: socket.id
+            });
             socket.disconnect();
         }
     });
@@ -248,12 +277,11 @@
         }
     });
 
-    $('#send').bind("enterKey",function(e){
+    $('#send').bind("enterKey", function(e) {
         chat(this.value);
     });
-    $('#send').keyup(function(e){
-        if(e.keyCode == 13)
-        {
+    $('#send').keyup(function(e) {
+        if (e.keyCode == 13) {
             $(this).trigger("enterKey");
         }
     });

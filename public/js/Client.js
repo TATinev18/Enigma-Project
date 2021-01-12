@@ -17,12 +17,12 @@ function displayHistory(history) {
 }
 
 function printSquares(correctSquareCount) {
-    let res="";
-    for(let i=0;i<correctSquareCount;i++) {
-        res+="🟩";
+    let res = "";
+    for (let i = 0; i < correctSquareCount; i++) {
+        res += "🟩";
     }
-    for(let i=0;i<4-correctSquareCount;i++) {
-        res+="🟥";
+    for (let i = 0; i < 4 - correctSquareCount; i++) {
+        res += "🟥";
     }
     return res;
 }
@@ -50,16 +50,16 @@ function scan() {
     $("#G1, #G2, #G3, #G4, #G5").css("fill", "yellow");
     for (let i = 1; i < 6; i++) {
         $("#G" + i).on({
-            mouseenter: function () {
+            mouseenter: function() {
                 $("#G" + i).css("fill", "white").css("cursor", "pointer");
             },
-            mouseleave: function () {
+            mouseleave: function() {
                 $("#G" + i).css("fill", "yellow").css("cursor", "auto");
             },
-            click: function () {
+            click: function() {
                 $("#G1, #G2, #G3, #G4, #G5").off().css("fill", "white").css("cursor", "auto");
                 console.log(i);
-                socket.emit("scan",i);
+                socket.emit("scan", i);
                 deselectScan();
                 updateCurrency();
             }
@@ -75,41 +75,41 @@ function deselectFarm() {
 }
 
 function requestProvinces() {
-    let dataObj={};
+    let dataObj = {};
     socket.emit("getProvinces");
-    socket.on("receiveProvinces", async (data)=>{
-        dataObj=await data;
+    socket.on("receiveProvinces", async(data) => {
+        dataObj = await data;
     });
     return dataObj;
 }
 
 function displayUsedProvinces(provinces) {
     console.log(provinces);
-    for(let i=1;i<6;i++) {
-        if(provinces.ger[i].hasFarm)
-            $("#G"+i).css("fill","yellow");
+    for (let i = 1; i < 6; i++) {
+        if (provinces.ger[i].hasFarm)
+            $("#G" + i).css("fill", "yellow");
     }
 }
 
-function createFarm() { 
+function createFarm() {
     $("#createFarm").text("Cancel Farm");
     $('#createFarm').data('clicked', true);
     $("#G1, #G2, #G3, #G4, #G5").css("fill", "green");
     let a = requestProvinces();
     console.log(a);
-    
+
     for (let i = 1; i < 6; i++) {
         $("#G" + i).on({
-            mouseenter: function () {
+            mouseenter: function() {
                 $("#G" + i).css("fill", "white").css("cursor", "pointer");
             },
-            mouseleave: function () {
+            mouseleave: function() {
                 $("#G" + i).css("fill", "green").css("cursor", "auto");
             },
-            click: function () {
+            click: function() {
                 $("#G1, #G2, #G3, #G4, #G5").off().css("fill", "white").css("cursor", "auto");
                 console.log(i);
-                socket.emit("createFarm",i);
+                socket.emit("createFarm", i);
                 updateCurrency();
                 $("#createFarm").text("Create Farm ( 200 G )");
             }
@@ -119,28 +119,28 @@ function createFarm() {
 
 
 function hideElements(side) {
-    if(side=="British") {
-        $("#fleet").css("display","none");
-        $("#createFleet").css("display","none");
-        $("#setCode").css("display","none");
-        $("#damage").css("display","none");
-        $("#GPT").css("display","none");
+    if (side == "British") {
+        $("#fleet").css("display", "none");
+        $("#createFleet").css("display", "none");
+        $("#setCode").css("display", "none");
+        $("#damage").css("display", "none");
+        $("#GPT").css("display", "none");
     }
-    if(side=="German") {
-        $("#scan").css("display","none");
-        $("#guess").css("display","none");
+    if (side == "German") {
+        $("#scan").css("display", "none");
+        $("#guess").css("display", "none");
 
     }
 }
 
 function lockFleetMenu(lock) {
-    if(lock==1) {
-        $("#fleet").children().attr("disabled",true);
-        $("#fleet").children().children().attr("disabled",true);
+    if (lock == 1) {
+        $("#fleet").children().attr("disabled", true);
+        $("#fleet").children().children().attr("disabled", true);
     }
-    if(lock==2) {
-        $("#fleet").children().children().attr("disabled",false);
-        $("#fleet").children().attr("disabled",false);
+    if (lock == 2) {
+        $("#fleet").children().children().attr("disabled", false);
+        $("#fleet").children().attr("disabled", false);
     }
 }
 
@@ -151,12 +151,12 @@ function updateCurrency() {
 function setCode() {
     let code = extractNumbers();
     console.log(code);
-    socket.emit("getCode",code);
+    socket.emit("getCode", code);
 }
 
 function findMatch(rank) {
     let user = document.getElementById("user").value;
-    
+
     let data = {
         side: side.value,
         matchType: rank,
@@ -180,12 +180,12 @@ function findMatch(rank) {
 
     socket.on("chat", (data) => {
         let chatColor;
-        if(data.side=="German") {
-            chatColor="style='color:red'";
+        if (data.side == "German") {
+            chatColor = "style='color:red'";
         } else {
-            chatColor="style='color:blue'";
+            chatColor = "style='color:blue'";
         }
-        $('#chatbox').html($('#chatbox').html() + '<p><span '+chatColor+'">' + data.user + ': </span><span class="txt" style="color:white">' + data.msg+'</span></p>');
+        $('#chatbox').html($('#chatbox').html() + '<p><span ' + chatColor + '">' + data.user + ': </span><span class="txt" style="color:white">' + data.msg + '</span></p>');
     });
 
     socket.on("beginTurn", () => {
@@ -198,11 +198,11 @@ function findMatch(rank) {
         updateCurrency();
     });
 
-    socket.on("round",(round)=>{
-        $("#rounds").text("Round: "+round);
+    socket.on("round", (round) => {
+        $("#rounds").text("Round: " + round);
     })
 
-    socket.on("error",(err)=>{
+    socket.on("error", (err) => {
         $("#error").text(err);
     });
 
@@ -211,8 +211,8 @@ function findMatch(rank) {
         updateCurrency();
     });
 
-    socket.on("getDamage",(damage)=>{
-        $("#damage").text("Total fleet damage: "+damage);
+    socket.on("getDamage", (damage) => {
+        $("#damage").text("Total fleet damage: " + damage);
     });
 
     socket.on("scanResult", (msg) => {
@@ -228,7 +228,7 @@ function findMatch(rank) {
             $("#currency").text("Points: " + currency);
         if (data.side == "German") {
             $("#currency").text("Gold: " + currency.gold);
-            $("#GPT").text("Gold per turn: "+currency.GPT);
+            $("#GPT").text("Gold per turn: " + currency.GPT);
         }
     });
     socket.on("forceTurn", () => {
@@ -238,11 +238,11 @@ function findMatch(rank) {
     socket.on("error", (data) => {
         $("#error").text(data.err);
     });
-    socket.on("approveCode",()=>{
+    socket.on("approveCode", () => {
         $("#error").text("Code successfully sent!");
-        $("#setCode").css("display","none");
-        $("#input").css("display","none");
-        $("#ET").attr("disabled",false);
+        $("#setCode").css("display", "none");
+        $("#input").css("display", "none");
+        $("#ET").attr("disabled", false);
     })
     socket.on("history", (history) => {
         $("#error").text("");
@@ -261,12 +261,14 @@ function findMatch(rank) {
             $("#victory").css("height", "35%").addClass("fade-in-down");
             $("#heading").css("display", "none");
             $("#history").css("display", "none");
+            $("#mapANDbtn").css("display", "none");
         }
         if (data.victory == "BRITISH") {
             $("#victory").attr("src", "../photos/br_victory.png");
             $("#victory").css("height", "35%").addClass("fade-in-down");
             $("#heading").css("display", "none");
             $("#history").css("display", "none");
+            $("#mapANDbtn").css("display", "none");
         }
         $("#input").attr("disabled", true);
         $("#guess").attr("disabled", true);
@@ -276,17 +278,17 @@ function findMatch(rank) {
 }
 
 function chat(msg) {
-    if(!$("#send").val().length==0) {
-    console.log(socket);
-    console.log(msg);
-    $("#send").val("");
-    socket.emit("chat", {msg:msg,side:side.value});
+    if (!$("#send").val().length == 0) {
+        console.log(socket);
+        console.log(msg);
+        $("#send").val("");
+        socket.emit("chat", { msg: msg, side: side.value });
     }
 }
 
 function guess() {
     let nums = extractNumbers();
-    $("#ET").attr("disabled",false);
+    $("#ET").attr("disabled", false);
     socket.emit("guess", nums);
 }
 
@@ -309,7 +311,7 @@ function beginTurn() {
     $("#sendFleet").attr("disabled", true);
     $("#input").attr("disabled", false);
     $("#guess").attr("disabled", false);
-    if(side.value=="German")
+    if (side.value == "German")
         $("#ET").attr("disabled", false);
     $("#scan").attr("disabled", false);
     $("#error").text("");
@@ -333,14 +335,14 @@ function sendFleet() {
 
 function resetFleetMenu() {
     $("#planeCost,#shipCost,#LCCost,#planeDisplay,#shipDisplay,#LCDisplay,#total").text("0");
-    $("#sendFleet").attr("disabled",true);
+    $("#sendFleet").attr("disabled", true);
 }
 
 function enableClick(element) {
-    $("#unrankedButton").attr("disabled",false);
-    $("#rankedButton").attr("disabled",false);
-    element.off("mouseenter").off("mouseleave").css("cursor","auto").css("transform", "scale(1.05)")
-    if(element==gs)
+    $("#unrankedButton").attr("disabled", false);
+    $("#rankedButton").attr("disabled", false);
+    element.off("mouseenter").off("mouseleave").css("cursor", "auto").css("transform", "scale(1.05)")
+    if (element == gs)
         element.css("box-shadow", "0 4px 8px 0 rgb(163, 33, 33), 0 6px 20px 0 rgb(163, 33, 33)");
     else
         element.css("box-shadow", "0 4px 8px 0 rgb(32, 80, 184), 0 6px 20px 0 rgb(32, 80, 184)");
@@ -348,21 +350,21 @@ function enableClick(element) {
 
 function enableHover(element) {
     element.css("transform", "scale(1)")
-    .css("box-shadow", "0 4px 8px 0 rgb(0, 0, 0), 0 6px 20px 0 rgb(0, 0, 0)")
-    .on({
-        mouseenter:()=>{
-            element.css("transform", "scale(1.05)").css("cursor","pointer");
-            if(element==gs)
-                element.css("box-shadow", "0 4px 8px 0 rgb(163, 33, 33), 0 6px 20px 0 rgb(163, 33, 33)");
-            else
-                element.css("box-shadow", "0 4px 8px 0 rgb(32, 80, 184), 0 6px 20px 0 rgb(32, 80, 184)");
-        },
-        mouseleave:()=>{
-            element.css("transform", "scale(1)")
-            .css("box-shadow", "0 4px 8px 0 rgb(0, 0, 0), 0 6px 20px 0 rgb(0, 0, 0)")
-            .css("cursor","auto");
-        }
-    });
+        .css("box-shadow", "0 4px 8px 0 rgb(0, 0, 0), 0 6px 20px 0 rgb(0, 0, 0)")
+        .on({
+            mouseenter: () => {
+                element.css("transform", "scale(1.05)").css("cursor", "pointer");
+                if (element == gs)
+                    element.css("box-shadow", "0 4px 8px 0 rgb(163, 33, 33), 0 6px 20px 0 rgb(163, 33, 33)");
+                else
+                    element.css("box-shadow", "0 4px 8px 0 rgb(32, 80, 184), 0 6px 20px 0 rgb(32, 80, 184)");
+            },
+            mouseleave: () => {
+                element.css("transform", "scale(1)")
+                    .css("box-shadow", "0 4px 8px 0 rgb(0, 0, 0), 0 6px 20px 0 rgb(0, 0, 0)")
+                    .css("cursor", "auto");
+            }
+        });
 }
 
 function changeUtilityValues(id, priceId, operation, priceUnit) {
@@ -382,6 +384,6 @@ function changeUtilityValues(id, priceId, operation, priceUnit) {
     let LCCost = parseInt(document.getElementById("LCCost").innerHTML);
     let total = planeCost + shipCost + LCCost;
     document.getElementById("total").innerHTML = (total);
-    if(total>0) $("#sendFleet").attr("disabled",false);
-    else $("#sendFleet").attr("disabled",true);
+    if (total > 0) $("#sendFleet").attr("disabled", false);
+    else $("#sendFleet").attr("disabled", true);
 }

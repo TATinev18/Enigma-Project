@@ -3,6 +3,11 @@ html {
     height: 100%;
 }
 
+.text_font_multi {
+    font-family: "Monaco", Monaco, Monospace;
+    font-size: 90%;
+}
+
 #error {
     text-align: center;
     color: white;
@@ -70,6 +75,16 @@ html {
     -moz-animation: fadeIn ease 1s;
     -o-animation: fadeIn ease 1s;
     -ms-animation: fadeIn ease 1s;
+}
+
+.multiplayer-History {
+    left: 36%;
+    background-color: rgba(116, 134, 172, 0.89);
+    box-sizing: content-box;
+    width: 96%;
+    margin-left: 0px;
+    border: 3px black solid;
+    color: azure;
 }
 
 #germanSide,
