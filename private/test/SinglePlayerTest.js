@@ -64,13 +64,30 @@ describe('SinglePlayerGame', function() {
 })
 
 describe('SinglePlayerClient', function() {
-        describe('isNumericInput()', function() {
-            it('should return true when a number is given', function() {
-                assert.equal(SinglePlayerGame.isNumericInput(1234), true);
+        describe('printSquares()', function() {
+            it('should return 0 green squares if are guessed 0 numbers or positions', function() {
+                let test = SinglePlayerClient.printSquares(0)
+                assert.equal(test, "🟥🟥🟥🟥");
             });
 
-            it('should return false when a string is given', function() {
-                assert.equal(SinglePlayerGame.isNumericInput("test"), false);
+            it('should return 1 green square if is guessed 1 number or position', function() {
+                let test = SinglePlayerClient.printSquares(1)
+                assert.equal(test, "🟩🟥🟥🟥");
+            });
+
+            it('should return 2 green squares if are guessed 2 numbers or positions', function() {
+                let test = SinglePlayerClient.printSquares(2)
+                assert.equal(test, "🟩🟩🟥🟥");
+            });
+
+            it('should return 3 green squares if are guessed 3 numbers or positions', function() {
+                let test = SinglePlayerClient.printSquares(3)
+                assert.equal(test, "🟩🟩🟩🟥");
+            });
+
+            it('should return 4 green squares if are guessed 4 numbers or positions', function() {
+                let test = SinglePlayerClient.printSquares(4)
+                assert.equal(test, "🟩🟩🟩🟩");
             });
 
         })

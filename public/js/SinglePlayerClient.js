@@ -7,8 +7,12 @@ function displayHistory() {
     console.log(history);
     let str = '';
     for (i in history) {
-        str += '<div class="row" style=";top: 22%;left: 36%;"><div class="col-sm guess1" >' + printSquares(history[i].cPos) + '</div><div class="col-sm guess2">' + history[i].input[0] + history[i].input[1] + history[i].input[2] + history[i].input[3] + '</div><div class="col-sm guess3">' + printSquares(history[i].cNums) + '</div></div>';
-        //str+="</div>";
+        str += '<div class="row" style=";top: 22%;left: 36%;"><div class="col-sm guess1" >' +
+            printSquares(history[i].cPos) + '</div><div class="col-sm guess2">' +
+            history[i].input[0] + history[i].input[1] + history[i].input[2] +
+            history[i].input[3] + '</div><div class="col-sm guess3">' +
+            printSquares(history[i].cNums) +
+            '</div></div>';
         console.log(str);
     }
     $("#history").html(str);
