@@ -14,9 +14,9 @@ For a more comprehensive guide on how to play, please visit our youtube channel 
 https://www.youtube.com/channel/UCa97dLLt3DGQJxbJIDcUYMA/featured
 ```
 ## Credits
-**Documentation** - aihristov18@codingburgas.bg\
-**Quality Assurance** - dmkalchev18@codingburgas.bg\
-**Developer** - kamilanov18@codingburgas.bg\
-**Manager** - tatinev18@codingburgas.bg\
-**Front-end Developer** - mvatanasov18@codingburgas.bg\
-**Code Checker** - iidimov18@codingburgas.bg
+**Documentation** - aihristov18\
+**Quality Assurance** - dmkalchev18\
+**Developer** - kamilanov18\
+**Manager** - tatinev18\
+**Front-end Developer** - mvatanasov18\
+**Code Checker** - iidimov18
