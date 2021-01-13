@@ -1,6 +1,11 @@
 //const { Socket } = require("socket.io");
 const { Socket } = require("socket.io");
-
+/**
+ * Display history to the html with the corresponding data from the array
+ *
+ * @author Kristian Milanov <kamilanov18@codingburgas.bg>
+ * @param {Object[]} history the history array
+ */
 function displayHistory(history) {
     console.log(history);
     let str = '';
@@ -15,7 +20,13 @@ function displayHistory(history) {
     }
     $("#history").html(str);
 }
-
+/**
+ * Print squares based on the parameter
+ *
+ * @author Kristian Milanov <kamilanov18@codingburgas.bg>
+ * @param {numbers} correctSquareCount the amount of correct squares
+ * @return {string} the square printed
+ */
 function printSquares(correctSquareCount) {
     let res = "";
     for (let i = 0; i < correctSquareCount; i++) {
@@ -26,7 +37,12 @@ function printSquares(correctSquareCount) {
     }
     return res;
 }
-
+/**
+ * Get the input from the user and put in array that is returned
+ *
+ * @author Kristian Milanov <kamilanov18@codingburgas.bg>
+ * @return {number[]} the array with the number from the user
+ */
 function extractNumbers() {
     let input = [];
     let num = document.getElementById("input").value;
@@ -36,14 +52,22 @@ function extractNumbers() {
     document.getElementById("input").value = "";
     return input;
 }
-
+/**
+ * Deselect scanning for farm
+ *
+ * @author Kristian Milanov <kamilanov18@codingburgas.bg>
+ */
 function deselectScan() {
     console.log("aaa");
     $("#scan").text("Scan province for farm ( -10P )");
     $("#G1, #G2, #G3, #G4, #G5").off().css("fill", "white").css("cursor", "auto");
     $("#scan").data('clicked', false);
 }
-
+/**
+ * Destroy farm if found on the selected province
+ *
+ * @author Kristian Milanov <kamilanov18@codingburgas.bg>
+ */
 function scan() {
     $("#scan").text("Cancel Scan");
     $("#scan").data('clicked', true);
@@ -66,14 +90,22 @@ function scan() {
         });
     }
 }
-
+/**
+ * Cancel the creating of farm
+ *
+ * @author Kristian Milanov <kamilanov18@codingburgas.bg>
+ */
 function deselectFarm() {
     console.log("aaa");
     $("#createFarm").text("Create Farm ( 200 G )");
     $("#G1, #G2, #G3, #G4, #G5").off().css("fill", "white").css("cursor", "auto");
     $("#createFarm").data('clicked', false);
 }
-
+/**
+ * Get the all the data for all provinces
+ *
+ * @author Kristian Milanov <kamilanov18@codingburgas.bg>
+ */
 function requestProvinces() {
     let dataObj = {};
     socket.emit("getProvinces");
@@ -82,7 +114,12 @@ function requestProvinces() {
     });
     return dataObj;
 }
-
+/**
+ * Display whether or not province has farm already on it
+ *
+ * @author Kristian Milanov <kamilanov18@codingburgas.bg>
+ * @param {Object} provinces all the provinces on the map
+ */
 function displayUsedProvinces(provinces) {
     console.log(provinces);
     for (let i = 1; i < 6; i++) {
@@ -90,7 +127,11 @@ function displayUsedProvinces(provinces) {
             $("#G" + i).css("fill", "yellow");
     }
 }
-
+/**
+ * Start the process of creating a farm by showing you all the available places for farm
+ *
+ * @author Kristian Milanov <kamilanov18@codingburgas.bg>
+ */
 function createFarm() {
     $("#createFarm").text("Cancel Farm");
     $('#createFarm').data('clicked', true);
@@ -117,7 +158,12 @@ function createFarm() {
     }
 }
 
-
+/**
+ * Show and hide content base on your side
+ *
+ * @author Kristian Milanov <kamilanov18@codingburgas.bg>
+ * @param {string} side the side of the player
+ */
 function hideElements(side) {
     if (side == "British") {
         $("#fleet").css("display", "none");
@@ -132,7 +178,12 @@ function hideElements(side) {
 
     }
 }
-
+/**
+ * Lock fleet menu base on the value of the parameter given
+ *
+ * @author Kristian Milanov <kamilanov18@codingburgas.bg>
+ * @param {number} lock
+ */
 function lockFleetMenu(lock) {
     if (lock == 1) {
         $("#fleet").children().attr("disabled", true);
@@ -143,17 +194,30 @@ function lockFleetMenu(lock) {
         $("#fleet").children().attr("disabled", false);
     }
 }
-
+/**
+ * Tell the server to send the currency to the client
+ *
+ * @author Kristian Milanov <kamilanov18@codingburgas.bg>
+ */
 function updateCurrency() {
     socket.emit("getCurrency");
 }
-
+/**
+ * Send the server code for the game
+ *
+ * @author Kristian Milanov <kamilanov18@codingburgas.bg>
+ */
 function setCode() {
     let code = extractNumbers();
     console.log(code);
     socket.emit("getCode", code);
 }
-
+/**
+ * Make the game possible by establishing socket connection between the client and the serve
+ *
+ * @author Kristian Milanov <kamilanov18@codingburgas.bg>
+ * @param {number} rank In progress
+ */
 function findMatch(rank) {
     let user = document.getElementById("user").value;
 
@@ -290,7 +354,12 @@ function findMatch(rank) {
         $("#scan").attr("disabled", true);
     });
 }
-
+/**
+ * Send the chat object to the server
+ *
+ * @author Kristian Milanov <kamilanov18@codingburgas.bg>
+ * @param {string} msg message to be sent
+ */
 function chat(msg) {
     if (!$("#send").val().length == 0) {
         console.log(socket);
@@ -299,13 +368,21 @@ function chat(msg) {
         socket.emit("chat", { msg: msg, side: side.value });
     }
 }
-
+/**
+ * Send user guess to the server
+ *
+ * @author Kristian Milanov <kamilanov18@codingburgas.bg>
+ */
 function guess() {
     let nums = extractNumbers();
     $("#ET").attr("disabled", false);
     socket.emit("guess", nums);
 }
-
+/**
+ * Ending the turn and sending it to the server
+ *
+ * @author Kristian Milanov <kamilanov18@codingburgas.bg>
+ */
 function endTurn() {
     $("#input").attr("disabled", true);
     $("#guess").attr("disabled", true);
@@ -320,7 +397,11 @@ function endTurn() {
     resetFleetMenu();
     socket.emit("endTurn");
 }
-
+/**
+ * Begin the new turn
+ *
+ * @author Kristian Milanov <kamilanov18@codingburgas.bg>
+ */
 function beginTurn() {
     $("#sendFleet").attr("disabled", true);
     $("#input").attr("disabled", false);
@@ -332,7 +413,11 @@ function beginTurn() {
     lockFleetMenu(2);
     resetFleetMenu();
 }
-
+/**
+ * Prepare all the fleet and send it to the server
+ *
+ * @author Kristian Milanov <kamilanov18@codingburgas.bg>
+ */
 function sendFleet() {
     let fleet = {
         plane: $("#planeDisplay").text(),
@@ -346,12 +431,21 @@ function sendFleet() {
     socket.emit("fleet", fleet);
     socket.emit("damage");
 }
-
+/**
+ * Reset the fleet menu
+ *
+ * @author Kristian Milanov <kamilanov18@codingburgas.bg>
+ */
 function resetFleetMenu() {
     $("#planeCost,#shipCost,#LCCost,#planeDisplay,#shipDisplay,#LCDisplay,#total").text("0");
     $("#sendFleet").attr("disabled", true);
 }
-
+/**
+ * Front-end function for selecting side
+ *
+ * @author Kristian Milanov <kamilanov18@codingburgas.bg>
+ * @param {Object} element the side chosen by the user
+ */
 function enableClick(element) {
     $("#unrankedButton").attr("disabled", false);
     $("#rankedButton").attr("disabled", false);
@@ -361,7 +455,12 @@ function enableClick(element) {
     else
         element.css("box-shadow", "0 4px 8px 0 rgb(32, 80, 184), 0 6px 20px 0 rgb(32, 80, 184)");
 }
-
+/**
+ * Front-end function for selecting side
+ *
+ * @author Kristian Milanov <kamilanov18@codingburgas.bg>
+ * @param {Object} element the side chosen by the user
+ */
 function enableHover(element) {
     element.css("transform", "scale(1)")
         .css("box-shadow", "0 4px 8px 0 rgb(0, 0, 0), 0 6px 20px 0 rgb(0, 0, 0)")
@@ -380,7 +479,15 @@ function enableHover(element) {
             }
         });
 }
-
+/**
+ * Change the utility values
+ *
+ * @author Kristian Milanov <kamilanov18@codingburgas.bg>
+ * @param {number} id id of the value
+ * @param {number} priceId id of the price
+ * @param {string} operation is adding or subtracting
+ * @param {number} priceUnit price per unit
+ */
 function changeUtilityValues(id, priceId, operation, priceUnit) {
     let value = parseInt(document.getElementById(id).innerHTML);
     let price = parseInt(document.getElementById(priceId).innerHTML);
