@@ -9,7 +9,7 @@ function displayHistory(history) {
             printSquares(history[i].cPos) + '</div><div class="col-sm guess2">' +
             history[i].input[0] + history[i].input[1] + history[i].input[2] +
             history[i].input[3] + '</div><div class="col-sm guess3">' +
-            printSquares(history[i].cNums) +
+            printSquares(history[i].cNums - history[i].cPos) +
             '</div></div>';
         console.log(str);
     }
@@ -172,10 +172,10 @@ function findMatch(rank) {
         $('#search').css('display', 'none');
         $('#game').css('display', 'block');
         $("#fleet").css("display", "block");
-        $("#error").css("display","block").css("background-color","rgb(110, 185, 60)");
-        if(side.value=="British")
-            $("#error").text("Waiting for "+user+" to enter a number!");
-        if(side.value=="German")
+        $("#error").css("display", "block").css("background-color", "rgb(110, 185, 60)");
+        if (side.value == "British")
+            $("#error").text("Waiting for " + user + " to enter a number!");
+        if (side.value == "German")
             $("#error").text("Please input your code in the input box.");
 
         socket.emit("side", side.value);
@@ -239,15 +239,15 @@ function findMatch(rank) {
     socket.on("statusReport", (data) => {
         console.log("aaaa");
         $("#error").text(data.status);
-        if(data.type=="succ")
-            $("#error").css("background-color","rgb(110, 185, 60)");
-        if(data.type=="warn")
-            $("#error").css("background-color","rgb(190, 129, 36)");
-        if(data.type=="err")
-            $("#error").css("background-color","rgb(163, 33, 33)");
+        if (data.type == "succ")
+            $("#error").css("background-color", "rgb(110, 185, 60)");
+        if (data.type == "warn")
+            $("#error").css("background-color", "rgb(190, 129, 36)");
+        if (data.type == "err")
+            $("#error").css("background-color", "rgb(163, 33, 33)");
     });
     socket.on("approveCode", () => {
-        $("#error").text("Code successfully sent!").css("background-color","rgb(110, 185, 60)");;
+        $("#error").text("Code successfully sent!").css("background-color", "rgb(110, 185, 60)");;
         $("#setCode").css("display", "none");
         $("#input").css("display", "none");
         $("#ET").attr("disabled", false);
@@ -266,17 +266,23 @@ function findMatch(rank) {
         console.log(data);
         if (data.victory == "GERMAN") {
             $("#victory").attr("src", "../photos/gr_victory.png");
-            $("#victory").css("height", "35%").addClass("fade-in-down");
+            $("#victory").css("height", "auto").addClass("fade-in-down");
             $("#heading").css("display", "none");
             $("#history").css("display", "none");
             $("#mapANDbtn").css("display", "none");
+            $("#error").css("display", "none");
+            $("#buttonsMenu").css("display", "none");
+            $("#historyTable").css("display", "none");
         }
         if (data.victory == "BRITISH") {
             $("#victory").attr("src", "../photos/br_victory.png");
-            $("#victory").css("height", "35%").addClass("fade-in-down");
+            $("#victory").css("width", "inherit").css("height", "auto").addClass("fade-in-down");
             $("#heading").css("display", "none");
             $("#history").css("display", "none");
             $("#mapANDbtn").css("display", "none");
+            $("#error").css("display", "none");
+            $("#buttonsMenu").css("display", "none");
+            $("#historyTable").css("display", "none");
         }
         $("#input").attr("disabled", true);
         $("#guess").attr("disabled", true);
@@ -307,7 +313,7 @@ function endTurn() {
     $("#scan").attr("disabled", true);
     $("#createFarm").data("clicked", false);
     $("#scan").data("clicked", false);
-    $("#error").text("Waiting for "+user+" to end their turn...").css("background-color","rgb(110, 185, 60)");
+    $("#error").text("Waiting for " + user + " to end their turn...").css("background-color", "rgb(110, 185, 60)");
     deselectFarm();
     deselectScan();
     lockFleetMenu(1);
@@ -322,7 +328,7 @@ function beginTurn() {
     if (side.value == "German")
         $("#ET").attr("disabled", false);
     $("#scan").attr("disabled", false);
-    $("#error").text("Your Turn").css("background-color","rgb(110, 185, 60)");
+    $("#error").text("Your Turn").css("background-color", "rgb(110, 185, 60)");
     lockFleetMenu(2);
     resetFleetMenu();
 }

@@ -43,7 +43,7 @@
 
 
 
-        <div class="container" style="background-color: rgba(87, 87, 92, 0.863);padding: 1%;">
+        <div class="container" style="background-color: rgba(87, 87, 92, 0.863);">
             <p id="error" style="display: none;"></p>
             <div id="game" style="display:none">
                 <div id="mapANDbtn" class="row">
@@ -51,41 +51,78 @@
 
                     </div>
 
-                    <div class="col">
+                    <div class="col text_font_multi">
                         <div style="background-color: beige;border: 2px solid black;border-radius: 5px;">
-                            <span class="text_font_multi" id="rounds">Round: 0</span>
+                            <span id="rounds">Round: 0</span>
                             <br>
-                            <span class="text_font_multi" id="currency">Gold: 0</span>
+                            <span id="currency">Gold: 0</span>
                             <br>
-                            <span class="text_font_multi" id="damage">Total fleet Damage: 0</span>
+                            <span id="damage">Total fleet Damage: 0</span>
                             <br>
-                            <span class="text_font_multi" id="GPT">Gold per turn: 0</span>
+                            <span id="GPT">Gold per turn: 0</span>
                         </div>
-                        <div id="fleet" style="display: none;">
-                            <div>
-                                <span>planes: </span>
-                                <span id="planeDisplay">0</span>
-                                <button class="btn btn-light btn-sm" id="plane-" onclick="changeUtilityValues('planeDisplay','planeCost','-',150)"><</button>
-                                <button class="btn btn-light btn-sm" id="plane+" onclick="changeUtilityValues('planeDisplay','planeCost','+',150)">></button>
+                        <br>
+                        <div class="pt-4" id="fleet" style="display: none; ">
+                            <div style="background-color: rgb(255, 243, 134);border: 2px solid black;border-radius: 5px;">
+                                <div class="row" style="text-align: center;">
+                                    <div class="col-sm-3">
+                                        <span>planes: </span>
+                                    </div>
+                                    <div class="col">
+                                        <span id="planeDisplay">0</span>
+                                        <button class="btn btn-light btn-sm" id="plane-" onclick="changeUtilityValues('planeDisplay','planeCost','-',150)"><</button>
+                                        <button class="btn btn-light btn-sm" id="plane+" onclick="changeUtilityValues('planeDisplay','planeCost','+',150)">></button>
 
-                                <span id="planeCost">0</span>
+                                        <span id="planeCost">0</span>
+                                        <hr>
+                                    </div>
+                                    <br>
+
+
+
+                                </div>
+                                <div class="row" style="text-align: center;">
+                                    <div class="col-sm-3">
+                                        <span>ships: </span></div>
+                                    <div class="col">
+                                        <span id="shipDisplay">0</span>
+                                        <button class="btn btn-light btn-sm" id="ship-" onclick="changeUtilityValues('shipDisplay','shipCost','-',250)">< </button>
+                                        <button class="btn btn-light btn-sm" id="ship+" onclick="changeUtilityValues('shipDisplay','shipCost','+',250)">></button>
+                                        <span id="shipCost">0</span>
+                                        <hr>
+                                    </div>
+                                    <br>
+
+
+                                </div>
+                                <div class="row" style="text-align: center;">
+                                    <div class="col-sm-3">
+                                        <span>land crafts: </span></div>
+                                    <div class="col">
+                                        <span id="LCDisplay">0</span>
+                                        <button class="btn btn-light btn-sm" id="LC-" onclick="changeUtilityValues('LCDisplay','LCCost','-',125)">< </button>
+                                        <button class="btn btn-light btn-sm" id="LC+" onclick="changeUtilityValues('LCDisplay','LCCost','+',125)">></button>
+                                        <span id="LCCost">0</span>
+                                        <hr>
+                                        <br>
+                                    </div>
+                                    <br>
+
+
+                                </div>
+                                <div class="pb-3">
+                                    <button class="btn" style="background-color: rgb(85, 126, 128); color: white;" id="sendFleet" onclick="sendFleet()" disabled>send</button> <span id="total">0</span>
+                                </div>
+
                             </div>
-                            <div>
-                                <span>ships: </span>
-                                <span id="shipDisplay">0</span>
-                                <button class="btn btn-light btn-sm" id="ship-" onclick="changeUtilityValues('shipDisplay','shipCost','-',250)">< </button>
-                                <button class="btn btn-light btn-sm" id="ship+" onclick="changeUtilityValues('shipDisplay','shipCost','+',250)">></button>
-                                <span id="shipCost">0</span>
+
+
+
+                            <div class="pt-2">
+                                <button class="btn btn-primary" id="createFarm">Create Farm ( 200 G )</button>
                             </div>
-                            <div>
-                                <span>land crafts: </span>
-                                <span id="LCDisplay">0</span>
-                                <button class="btn btn-light btn-sm" id="LC-" onclick="changeUtilityValues('LCDisplay','LCCost','-',125)">< </button>
-                                <button class="btn btn-light btn-sm" id="LC+" onclick="changeUtilityValues('LCDisplay','LCCost','+',125)">></button>
-                                <span id="LCCost">0</span>
-                            </div>
-                            <button class="btn btn-primary" id="createFarm">Create Farm ( 200 G )</button>
-                            <button class="btn btn-primary" id="sendFleet" onclick="sendFleet()" disabled>send</button> <span id="total">0</span>
+
+
                         </div>
                     </div>
 
@@ -98,22 +135,26 @@
 
 
                 <div class="row">
-                    <div class="col">
-                        <form>
-                            <input type="text" id="send" placeholder="chat">
-                            <input type="text" id="input" placeholder="input">
-                        </form>
-                        <button class="btn btn-primary" onclick="chat(document.getElementById('send').value);">send chat</button>
-                        <button class="btn btn-primary" id="setCode" onclick="setCode()">Set Code</button>
-                        <button class="btn btn-primary" id="guess" onclick="guess()" disabled>guess</button>
-                        <button class="btn btn-info" id="scan" disabled>Scan province for farm ( -10P )</button>
-                        <button class="btn btn-danger" id="ET" onclick="endTurn()" disabled>End Turn</button>
+                    <div class="col pt-5">
+                        <div id="buttonsMenu">
+                            <form>
+                                <input type="text" id="send" placeholder="chat">
+                                <input type="text" id="input" placeholder="input">
+                            </form>
+                            <button class="btn btn-primary" onclick="chat(document.getElementById('send').value);">send chat</button>
+                            <button class="btn btn-primary" id="setCode" onclick="setCode()">Set Code</button>
+                            <button class="btn btn-primary" id="guess" onclick="guess()" disabled>guess</button>
+                            <button class="btn btn-info" id="scan" disabled>Scan province for farm ( -10P )</button>
+                            <button class="btn btn-danger" id="ET" onclick="endTurn()" disabled>End Turn</button>
+                        </div>
+
+                        <br>
                         <img id="victory">
                         <div id="chatbox" style="width: 230px;overflow: auto;height: 100px;"></div>
                         <div id="heading">
                         </div>
                     </div>
-                    <div class="col" style="overflow: auto;height: 210px;">
+                    <div id="historyTable" class="col" style="overflow: auto;height: 210px;">
                         <div class="row multiplayer-History">
                             <div class="col-sm guess1">Guessed position</div>
                             <div class="col-sm guess2">Your input</div>
