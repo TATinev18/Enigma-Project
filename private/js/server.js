@@ -171,8 +171,13 @@ app.get('/checkToken',function (request,response) {
 });
 
 app.get('/',function (request,response) {
-   response.sendFile(path.join(__dirname + '/../../public/HTML/resetPassword.html'));
-})
+   response.sendFile(path.join(__dirname + '/../../public/HTML/login.html'));
+});
+
+app.get('/getIndex',function (request,response) {
+    response.sendFile(path.join(__dirname + '/../../public/HTML/index.html'));
+ });
+
 function isValidData(obj,arg,expectedVal) {
     let status = {
         err: ""
@@ -325,11 +330,21 @@ io.on('connection', socket => {
                     console.log(game.getRounds());
                     if(game.checkVictoryConditions(input)==game.getVICTORY().BRITISH) {
                         io.in(users.room).emit("victory",{victory:"BRITISH", type:"normal"});
-                        game.reset();
+                        game.reset()
+                        if(game.getLevel()==1) {
+                            game.updateLevel(2);
+                        } else {
+                            game.updateGameOver(true);
+                        }
                     }
                     if(game.checkVictoryConditions(input)==game.getVICTORY().GERMAN) {
                         io.in(users.room).emit("victory",{victory:"GERMAN", type:"normal"});
                         game.reset();
+                        if(game.getLevel()==1) { 
+                            game.updateLevel(2);
+                        } else {
+                            game.updateGameOver(true);
+                        }
                     }
                 }
                 else {
@@ -338,10 +353,12 @@ io.on('connection', socket => {
             });
 
             users.gbr.socket.on("disconnect",()=>{
-                users.ger.socket.emit("victory",{victory:"GERMAN", type:"disconnect"});
+                if(!game.getGameOver())
+                    users.ger.socket.emit("victory",{victory:"GERMAN", type:"disconnect"});
             });
             users.ger.socket.on("disconnect",()=>{
-                users.gbr.socket.emit("victory",{victory:"BRITISH", type:"disconnect"});
+                if(!game.getGameOver())
+                    users.gbr.socket.emit("victory",{victory:"BRITISH", type:"disconnect"});
             });
             users.ger.socket.on("damage",()=>{
                 users.ger.socket.emit("getDamage",game.attack());

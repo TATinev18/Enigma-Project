@@ -18,6 +18,7 @@ function MultiPlayerGame() {
     var chat = [];
     var points = 0;
     var fleetID = 0;
+    var level=0;
     var guessedNums=[];
 
     const VICTORY = {
@@ -478,9 +479,53 @@ function MultiPlayerGame() {
         gold = newGold;
     }
 
+    /**
+     *  Clear the history and guessedNums array, used for checking the input of the german player's entered code
+     *
+     * @author Kristian Milanov <kamilanov18@codingburgas.bg>
+     *
+     */
     function clearHistoryAndGuessedNums() {
         history=[];
         guessedNums=[];
+    }
+
+    /**
+     *  Return the value of gameOver
+     *
+     * @author Kristian Milanov <kamilanov18@codingburgas.bg>
+     * 
+     */
+    function getGameOver() {
+        return gameOver;
+    }
+
+    /**
+     *  Update the state of the gameOver variable
+     *
+     * @author Kristian Milanov <kamilanov18@codingburgas.bg>
+     * @param {boolean} state the new state of the variable
+     */
+    function updateGameOver(state) {
+        gameOver=state;
+    }
+
+    /**
+     *  Used to update the level of difficulty
+     *
+     * @author Kristian Milanov <kamilanov18@codingburgas.bg>
+     */
+    function updateLevel(lvl) {
+        level = lvl;
+    }
+    /**
+     *  Used to get the level
+     *
+     * @author Kristian Milanov <kamilanov18@codingburgas.bg>
+     * @return {number} return the level
+     */
+    function getLevel() {
+        return level;
     }
 
     return {
@@ -510,7 +555,11 @@ function MultiPlayerGame() {
         getProvinces,
         setCode,
         calculatePoints,
-        clearHistoryAndGuessedNums
+        clearHistoryAndGuessedNums,
+        getGameOver,
+        updateGameOver,
+        getLevel,
+        updateLevel
     }
 }
 
