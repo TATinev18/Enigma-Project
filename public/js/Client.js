@@ -233,6 +233,7 @@ function findMatch(rank) {
 
     socket.on("begin", () => {
         console.log("beggining");
+        $(".province").css("fill","white");
         $('#search').css('display', 'none');
         $('#game').css('display', 'block');
         $("#fleet").css("display", "block");
