@@ -23,7 +23,13 @@
             reciveServerValidation();
         }
     });
-
+document.getElementById('submitLogin').addEventListener("click", function(event){
+    if (validationRegister()==0){
+        event.preventDefault();
+    }else{
+        reciveServerValidation();
+    }
+});
 
 function validationRegister(){
     console.log("VALIDATION");
