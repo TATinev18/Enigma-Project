@@ -335,7 +335,7 @@ function findMatch(rank) {
         console.log(data);
         if (data.victory == "GERMAN") {
             $("#victory").attr("src", "../photos/gr_victory.png");
-            $("#victory").css("height", "auto").addClass("fade-in-down");
+            $("#victory").css("width", "inherit").css("height", "auto").addClass("fade-in-down");
             $("#heading").css("display", "none");
             $("#history").css("display", "none");
             $("#mapANDbtn").css("display", "none");
