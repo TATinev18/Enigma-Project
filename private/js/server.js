@@ -1,16 +1,16 @@
 const express = require('express');
 var bodyParser = require('body-parser')
-//let db = require('./DB');
+let db = require('./DB');
 var crypto = require('crypto');
 let resetPassword = require('./emailsManagment');
 var cookieParser = require('cookie-parser')
 var app = express();
 const server = require('http').createServer(app);
-//let register = require('./register');
+let register = require('./register');
 var path = require('path');
 let MP = require("./MultiPlayerGame");
 const { Console } = require('console');
-//let con = db.connection;
+let con = db.connection;
 let britains = [];
 let germans = [];
 var roomCount = 0;
@@ -58,24 +58,36 @@ function matchMake() {
 }
 
 app.post('/login',function (request,response) {
-    let username = request.body.username;
+    let dataFromForm = request.body.username;
     let password = request.body.password;
-    console.log(username+' '+password);
+    let time;
+    console.log(dataFromForm+' '+password);
     let hashPassword = crypto.createHash('sha256').update(password).digest('base64');
     console.log(hashPassword);
-    con.query('SELECT * FROM users WHERE username=? AND password=?',[username,hashPassword],function (error,result,field) {
+    con.query('SELECT * FROM users WHERE username=? AND password=? OR email=? AND password=?',[dataFromForm,hashPassword,dataFromForm,hashPassword],function (error,result,field) {
         if (error!=null && error!=undefined){
             console.log(error);
         }
         console.log(result);
         if (result.length>0){
-            if (result[0].username==username&&result[0].password ==hashPassword){
-                response.send('logged');
-            }
+                if (request.body.remember){
+                    time = 31*24*3600000;
+                }else{
+                    time =  600000;
+                }
+                response.cookie('ur',result[0].username, {maxAge: time});
+                response.cookie('mr',result[0].mmr,  {maxAge: time});
+                response.sendFile(path.join(__dirname + '/../../public/HTML/index.html'));
+        }else {
+            res = 'invalid credentials';
         }
-    })
-})
-
+        });
+    });
+app.get('/logout',function (request,response) {
+    response.cookie('ur',result[0].username, {maxAge: 0});
+    response.cookie('mr',result[0].mmr,  {maxAge: 0});
+    response.sendFile(path.join(__dirname + '/../../public/HTML/index.html'));
+});
 app.post('/resetPassword',function (request,response) {
     let email=request.body.email;
     let token = email+ new Date().toLocaleString();
@@ -132,7 +144,7 @@ app.post('/register',function (request,response) {
                     console.log(error);
                 }else{
                  res = '0';
-
+                    response.sendFile(path.join(__dirname + '/../../public/HTML/login.html'));
                 }
             })
         }
@@ -141,7 +153,7 @@ app.post('/register',function (request,response) {
 app.post('/setNewPassword',function (request,response) {
     let password = request.body.password;
     console.log('slivki EMAIL');
-    let hashPassword = crypto.createHash('sha256').update(password).digest('Hex');
+    let hashPassword = crypto.createHash('sha256').update(password).digest('base64');
     email = request.cookies;
     email=email.Biskvita;
     console.log(email);
@@ -171,13 +183,17 @@ app.get('/checkToken',function (request,response) {
 });
 
 app.get('/',function (request,response) {
-   response.sendFile(path.join(__dirname + '/../../public/HTML/login.html'));
+   response.sendFile(path.join(__dirname + '/../../public/HTML/resetPassword.html'));
 });
 
 app.get('/getIndex',function (request,response) {
     response.sendFile(path.join(__dirname + '/../../public/HTML/index.html'));
  });
 
+
+app.get('/getLogin',function (request,response) {
+    response.sendFile(path.join(__dirname + '/../../public/HTML/login.html'));
+});
 function isValidData(obj,arg,expectedVal) {
     let status = {
         err: ""
@@ -340,7 +356,7 @@ io.on('connection', socket => {
                     if(game.checkVictoryConditions(input)==game.getVICTORY().GERMAN) {
                         io.in(users.room).emit("victory",{victory:"GERMAN", type:"normal"});
                         game.reset();
-                        if(game.getLevel()==1) { 
+                        if(game.getLevel()==1) {
                             game.updateLevel(2);
                         } else {
                             game.updateGameOver(true);
@@ -368,6 +384,17 @@ io.on('connection', socket => {
     socket.on('register', ()=>{
             console.log("SERVER ");
           socket.emit('serverValidation',res);
+          res = '';
+    });
+    socket.on('login', ()=>{
+        console.log("SERVER ");
+        socket.emit('serverValidationLogin',res);
+        res = '';
+    });
+    socket.on('resetPassword', ()=>{
+        console.log("SERVER ");
+        socket.emit('serverValidationResetPassword',res);
+        res = '';
     });
     socket.on("cancel",(data)=>{
         for(let i=0;i<germans.length;i++)
