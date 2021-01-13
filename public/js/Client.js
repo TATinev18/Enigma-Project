@@ -271,6 +271,10 @@ function findMatch(rank) {
         $("#rounds").text("Round: " + round);
     })
 
+    socket.on("rematchAccept",()=>{
+        resetUI();
+    })
+
     socket.on("fleetResult", (msg) => {
         console.log(msg);
         updateCurrency();
@@ -335,8 +339,12 @@ function findMatch(rank) {
             $("#history").css("display", "none");
             $("#mapANDbtn").css("display", "none");
             $("#error").css("display", "none");
+            $("#chatbox").css("display","none");
             $("#buttonsMenu").css("display", "none");
             $("#historyTable").css("display", "none");
+            $("victoryMessage").css("display","block");
+            $("#vicTxt").text("Proceed to next round?");
+            $("#vicBtn").text("Next Round").css("display","?");
         }
         if (data.victory == "BRITISH") {
             $("#victory").attr("src", "../photos/br_victory.png");
@@ -344,15 +352,35 @@ function findMatch(rank) {
             $("#heading").css("display", "none");
             $("#history").css("display", "none");
             $("#mapANDbtn").css("display", "none");
+            $("#chatbox").css("display","none");
             $("#error").css("display", "none");
             $("#buttonsMenu").css("display", "none");
             $("#historyTable").css("display", "none");
+            $("victoryMessage").css("display","block");
+            $("#vicTxt").text("Proceed to next round?");
+            $("#vicBtn").text("Next Round").css("display","?");
         }
         $("#input").attr("disabled", true);
         $("#guess").attr("disabled", true);
         $("#ET").attr("disabled", true);
         $("#scan").attr("disabled", true);
     });
+}
+
+function resetUI() {
+    $("#history").html("");
+    $("#input").css("display","inline").attr("disabled",false);
+    $("#setCode").css("display","inline");
+    $("#victory").attr("src", "").removeClass("fade-in-down");
+    $("#chatbox").css("display","block");
+    $("#victoryMessage").css("display","none");
+    $("#heading").css("display", "block");
+    $("#history").css("display", "block");
+    $("#mapANDbtn").show();
+    $("#error").css("display", "block");
+    $("#buttonsMenu").css("display", "block");
+    $("#historyTable").css("display", "block");
+    hideElements(side.value);
 }
 /**
  * Send the chat object to the server
