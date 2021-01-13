@@ -15,7 +15,6 @@
     <script src="../js/Client.js"></script>
     <script src="../js/secrets.js"></script>
 </head>
-
 <body>
     <div class="bg_image_secondary fade-in-animation" style="height: 100%;">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -24,7 +23,6 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
                             <a class="nav-link active" href="index.html">Home</a>
@@ -39,18 +37,12 @@
                 </div>
             </div>
         </nav>
-
-
-
-
         <div class="container" style="background-color: rgba(87, 87, 92, 0.863);">
             <p id="error" style="display: none;"></p>
             <div id="game" style="display:none">
                 <div id="mapANDbtn" class="row">
                     <div class="col" id="Map" style="width: fit-content;height: 200%;">
-
                     </div>
-
                     <div class="col text_font_multi">
                         <div style="background-color: beige;border: 2px solid black;border-radius: 5px;">
                             <span id="rounds">Round: 0</span>
@@ -77,9 +69,6 @@
                                         <hr>
                                     </div>
                                     <br>
-
-
-
                                 </div>
                                 <div class="row" style="text-align: center;">
                                     <div class="col-sm-3">
@@ -92,12 +81,10 @@
                                         <hr>
                                     </div>
                                     <br>
-
-
                                 </div>
                                 <div class="row" style="text-align: center;">
                                     <div class="col-sm-3">
-                                        <span>land crafts: </span></div>
+                                        <span>landing crafts: </span></div>
                                     <div class="col">
                                         <span id="LCDisplay">0</span>
                                         <button class="btn btn-light btn-sm" id="LC-" onclick="changeUtilityValues('LCDisplay','LCCost','-',125)">< </button>
@@ -107,33 +94,17 @@
                                         <br>
                                     </div>
                                     <br>
-
-
                                 </div>
                                 <div class="pb-3">
                                     <button class="btn" style="background-color: rgb(85, 126, 128); color: white;" id="sendFleet" onclick="sendFleet()" disabled>send</button> <span id="total">0</span>
                                 </div>
-
                             </div>
-
-
-
                             <div class="pt-2">
                                 <button class="btn btn-primary" id="createFarm">Create Farm ( 200 G )</button>
                             </div>
-
-
                         </div>
                     </div>
-
-
-
                 </div>
-
-
-
-
-
                 <div class="row">
                     <div class="col pt-5">
                         <div id="buttonsMenu">
@@ -151,6 +122,7 @@
                         <br>
                         <img id="victory">
                         <div id="chatbox" style="width: 230px;overflow: auto;height: 100px;"></div>
+                        <div id="victoryMessage"><p id="vicTxt"></p><button id="vicBtn"></button></div>
                         <div id="heading">
                         </div>
                     </div>
@@ -356,6 +328,9 @@
             $(this).trigger("enterKey");
         }
     });
+    $("#vicBtn").on("click",()=>{
+        socket.emit("rematch");
+    })
 </script>
 
 </html>

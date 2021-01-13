@@ -192,9 +192,11 @@ function MultiPlayerGame() {
             return result;
         }
 
-        if (checkNumbersRepeat(input)) {
-            result.err = " repeating numbers";
-            return result;
+        if(level==1) {
+            if (checkNumbersRepeat(input)) {
+                result.err = " repeating numbers";
+                return result;
+            }
         }
 
         for(let i=0;i<4;i++) {
@@ -370,11 +372,10 @@ function MultiPlayerGame() {
         round = 0;
         global_nums = [];
         history = [];
-        gameOver = false;
         germanProvinces = [];
         britishProvinces = [];
         fleets = [];
-        gold = 235;
+        gold = 275;
         points = 0;
         goldPerTurn = 0;
         guessedNums=[];

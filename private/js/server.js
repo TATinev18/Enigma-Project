@@ -368,6 +368,18 @@ io.on('connection', socket => {
                 }
             });
 
+            users.ger.socket.on("rematch",()=>{
+                users.gbr.socket.on("rematch",()=>{
+                    io.to(users.room).emit("rematchAccept");
+                });
+            });
+
+            users.gbr.socket.on("rematch",()=>{
+                users.ger.socket.on("rematch",()=>{
+                    io.to(users.room).emit("rematchAccept");
+                });
+            });
+
             users.gbr.socket.on("disconnect",()=>{
                 if(!game.getGameOver())
                     users.ger.socket.emit("victory",{victory:"GERMAN", type:"disconnect"});
