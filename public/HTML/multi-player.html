@@ -40,41 +40,11 @@
             </div>
         </nav>
 
-        <div class="container" style="background-color: rgba(87, 87, 92, 0.863);padding: 1%;height: 94%;">
+
+
+
+        <div class="container" style="background-color: rgba(87, 87, 92, 0.863);padding: 1%;">
             <p id="error" style="display: none;"></p>
-
-            <div id="search">
-                <div class="row" style="position: absolute;top: 18%;left: 20%;">
-                    <h2 class="display-5">
-                        <p><strong>Select side</strong></p>
-                    </h2>
-                </div>
-
-                <div class="container" style="position: absolute;top: 25%;left: 20%;">
-                    <span style="display: inline-flex;">
-                            <form>
-                            <div class="form-group mx-sm-1 mb-3">
-
-                            <input type="text" class="form-control" id="user" placeholder="username">
-                        </div>
-                    </form>
-                        </span><span style="display: inline-flex;">
-                            <button onclick="playUnranked()" id="unrankedButton" class="btn btn-primary mb-2" disabled>Play Unranked</button>
-                            <button onclick="playRanked()" id="rankedButton" class="btn btn-primary mb-2" disabled>Play Ranked</button>
-                        </span>
-                    <br>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="text-center"><img id="germanSide" src="../photos/germanySide.png"></div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="text-center"><img id="britishSide" src="../photos/britainSide.png"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
             <div id="game" style="display:none">
                 <div id="mapANDbtn" class="row">
                     <div class="col" id="Map" style="width: fit-content;height: 200%;">
@@ -93,6 +63,7 @@
                         </div>
                         <div id="fleet" style="display: none;">
                             <div>
+                                <span>planes: </span>
                                 <span id="planeDisplay">0</span>
                                 <button class="btn btn-light btn-sm" id="plane-" onclick="changeUtilityValues('planeDisplay','planeCost','-',150)"><</button>
                                 <button class="btn btn-light btn-sm" id="plane+" onclick="changeUtilityValues('planeDisplay','planeCost','+',150)">></button>
@@ -100,18 +71,20 @@
                                 <span id="planeCost">0</span>
                             </div>
                             <div>
+                                <span>ships: </span>
                                 <span id="shipDisplay">0</span>
                                 <button class="btn btn-light btn-sm" id="ship-" onclick="changeUtilityValues('shipDisplay','shipCost','-',250)">< </button>
                                 <button class="btn btn-light btn-sm" id="ship+" onclick="changeUtilityValues('shipDisplay','shipCost','+',250)">></button>
                                 <span id="shipCost">0</span>
                             </div>
                             <div>
+                                <span>land crafts: </span>
                                 <span id="LCDisplay">0</span>
                                 <button class="btn btn-light btn-sm" id="LC-" onclick="changeUtilityValues('LCDisplay','LCCost','-',125)">< </button>
                                 <button class="btn btn-light btn-sm" id="LC+" onclick="changeUtilityValues('LCDisplay','LCCost','+',125)">></button>
                                 <span id="LCCost">0</span>
                             </div>
-                            <button class="btn btn-primary" id="createFarm">"Create Farm ( 200 G )"</button>
+                            <button class="btn btn-primary" id="createFarm">Create Farm ( 200 G )</button>
                             <button class="btn btn-primary" id="sendFleet" onclick="sendFleet()" disabled>send</button> <span id="total">0</span>
                         </div>
                     </div>
@@ -133,7 +106,7 @@
                         <button class="btn btn-primary" onclick="chat(document.getElementById('send').value);">send chat</button>
                         <button class="btn btn-primary" id="setCode" onclick="setCode()">Set Code</button>
                         <button class="btn btn-primary" id="guess" onclick="guess()" disabled>guess</button>
-                        <button class="btn btn-info" id="scan" disabled>Scan province for farm ( -10P );</button>
+                        <button class="btn btn-info" id="scan" disabled>Scan province for farm ( -10P )</button>
                         <button class="btn btn-danger" id="ET" onclick="endTurn()" disabled>End Turn</button>
                         <img id="victory">
                         <div id="chatbox" style="width: 230px;overflow: auto;height: 100px;"></div>
@@ -154,8 +127,65 @@
                 </div>
 
             </div>
+
+
+            <div id="search">
+                <div class="row" style="text-align: center;">
+                    <h2 class="display-5">
+                        <p><strong>Select side</strong></p>
+                    </h2>
+                </div>
+
+                <div class="container">
+                    <div class="row justify-content-md-center">
+                        <div class="col col-lg-3">
+                            <form>
+                                <div class="form-group mb-5">
+
+                                    <input type="text" class="form-control" id="user" placeholder="username">
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row justify-content-md-center">
+
+                        <div class="col col-lg-4">
+                            <div><img id="germanSide" src="../photos/germanySide.png"></div>
+                        </div>
+                        <div class="col col-lg-3">
+                            <div><img id="britishSide" src="../photos/britainSide.png"></div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row justify-content-md-center">
+
+
+                        <div class="col-md-auto">
+                            <button onclick="playUnranked()" id="unrankedButton" class="btn btn-primary" disabled>Play Unranked</button>
+                        </div>
+
+                        <div class="col-md-auto">
+                            <button onclick="playRanked()" id="rankedButton" class="btn btn-primary" disabled>Play Ranked</button>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
         </div>
+
+
+
     </div>
+
+
 </body>
 
 <script>

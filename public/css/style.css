@@ -56,15 +56,13 @@ html {
 }
 
 .bg_image_main {
-    background-position: center;
-    background-repeat: repeat;
+    background-position: inherit;
     background-size: cover;
     background-image: url('../photos/boats.jpg');
 }
 
 .bg_image_secondary {
     background-position: center;
-    background-repeat: repeat;
     background-size: cover;
     background-image: url('../photos/boats2.jpg');
 }
@@ -87,9 +85,18 @@ html {
     color: azure;
 }
 
+.anim {
+    transition: transform 0.3s;
+}
+
+.anim:hover {
+    cursor: pointer;
+    transform: scale(1.10);
+}
+
 #germanSide,
 #britishSide {
-    position: fixed;
+    position: initial;
     height: 300px;
     transition: transform 1s;
     box-shadow: 0 4px 8px 0 black, 0 6px 20px 0 black;
