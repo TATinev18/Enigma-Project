@@ -5,7 +5,7 @@ let config = {
     user: "root",
     password: "",
     database: 'enigmaproject',
-    port: 3306
+    port: 2502
 };
 try {
     var connection =mysql.createConnection(config);

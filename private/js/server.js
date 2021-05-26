@@ -61,6 +61,7 @@ app.post('/login',function (request,response) {
     let dataFromForm = request.body.username;
     let password = request.body.password;
     let time;
+    console.log("Parola pri login : "+password);
     console.log(dataFromForm+' '+password);
     let hashPassword = crypto.createHash('sha256').update(password).digest('base64');
     console.log(hashPassword);
@@ -121,6 +122,7 @@ app.post('/register',function (request,response) {
     let username = request.body.username;
     let email = request.body.email;
     let password = request.body.password;
+    console.log("Parola : "+password);
     console.log("SLIVI");
     let hashPassword = crypto.createHash('sha256').update(password).digest('base64');
     con.query('SELECT * FROM users WHERE username=? OR email=?', [username,email], function (error, result, fields) {
@@ -194,6 +196,24 @@ app.get('/getIndex',function (request,response) {
 app.get('/getLogin',function (request,response) {
     response.sendFile(path.join(__dirname + '/../../public/HTML/login.html'));
 });
+
+app.get('/game-menu',function (request,response) {
+    response.sendFile(path.join(__dirname + '/../../public/HTML/game-menu.html'));
+});
+
+app.get('/single-player',function (request,response) {
+    response.sendFile(path.join(__dirname + '/../../public/HTML/single-player.html'));
+});
+
+app.get('/multi-player',function (request,response) {
+    response.sendFile(path.join(__dirname + '/../../public/HTML/multi-player.html'));
+});
+
+app.get('/getRegister',function (request,response) {
+    response.sendFile(path.join(__dirname + '/../../public/HTML/register.html'));
+});
+
+
 function isValidData(obj,arg,expectedVal) {
     let status = {
         err: ""
@@ -426,7 +446,7 @@ io.on('connection', socket => {
     })
 });
 
-server.listen(8080)
+server.listen(3306, ()=>{console.log("BACAAA");})
 
 /*
 -client connection to server $
