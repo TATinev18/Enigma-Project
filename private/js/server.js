@@ -194,6 +194,13 @@ app.get('/getIndex',function (request,response) {
 app.get('/getLogin',function (request,response) {
     response.sendFile(path.join(__dirname + '/../../public/HTML/login.html'));
 });
+
+app.get('/game-menu',function (request,response) {
+    response.sendFile(path.join(__dirname + '/../../public/HTML/game-menu.html'));
+});
+
+
+
 function isValidData(obj,arg,expectedVal) {
     let status = {
         err: ""
@@ -426,7 +433,7 @@ io.on('connection', socket => {
     })
 });
 
-server.listen(8080)
+server.listen(3306, ()=>{console.log("BACAAA");})
 
 /*
 -client connection to server $
