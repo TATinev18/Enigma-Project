@@ -227,7 +227,7 @@ function findMatch(rank) {
         user: user
     };
 
-    socket = io('http://' + "10.0.0.101" + ':' + "3306");
+    socket = io('http://' + "10.0.0.100" + ':' + "3306");
     //socket = io('http://localhost:8080');
     socket.emit("matchMake", data);
 
